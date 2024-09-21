@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Swipe;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
 
 
-         \App\Models\User::factory(5)->create();
+         $users = \App\Models\User::factory(5)->create();
 
         //  \App\Models\Swipe::factory(5)->create();
 
@@ -25,9 +26,15 @@ class DatabaseSeeder extends Seeder
         //  \App\Models\Message::factory(5)->create();
 
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $testUser = \App\Models\User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+
+        #create swipes for test user
+
+        foreach ($users as $key => $user){
+            Swipe::factory()->create(['user_id'=>$user->id, 'swiped_user_id'=>$testUser->id]);
+        }
     }
 }

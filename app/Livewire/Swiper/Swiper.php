@@ -112,6 +112,9 @@ class Swiper extends Component
 
         //reset properties
         $this->reset('swipedUserId', 'currentMatchId');
+
+        //redirect to conversation
+        $conversation = $this->redirect(route('chat', $conversation->id), navigate:true);
         }
 
     public function render()
