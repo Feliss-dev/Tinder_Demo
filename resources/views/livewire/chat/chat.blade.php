@@ -1,4 +1,34 @@
-<div class="flex h-screen overflow-hidden">
+<div
+x-data="{
+    height: 0,
+    conversationElement:document.getElementById('conversation')
+}"
+
+x-init="
+height = conversationElement.scrollHeight;
+$nextTick(()=>conversationElement.scrollTop=height);
+
+Echo.private('users.{{auth()->id()}}')
+    .notification((notification) => {
+        if(notification['type']=='App\\Notifications\\MessageSentNotification' && notification['conversation_id']=={{ $conversation->id }}){
+            $wire.listenBroadcastedMessage(notification);
+        }
+    })
+"
+
+@scroll-bottom.window="
+$nextTick(()=>{
+
+conversationElement.style.overflowY = 'hidden';
+
+conversationElement.scrollTop = conversationElement.scrollHeight;
+
+conversationElement.style.overflowY = 'auto';
+
+});
+
+"
+class="flex h-screen overflow-hidden">
 
     <main class="w-full grow border flex flex-col relative">
         {{-- Header --}}
@@ -49,14 +79,37 @@
 
         {{-- Body --}}
         <section
-            class="flex flex-col gap-5 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
 
-            @for ($i = 0; $i < 12; $i++)
+        @scroll="
+        scrollTop = $el.scrollTop;
+
+        if(scrollTop <= 0){
+            @this.dispatch('loadMore');
+        }
+        "
+        @update-height.window="
+        $nextTick(()=>{
+            newHeight = $el.scrollHeight;
+            oldHeight = height;
+
+            $el.scrollTop = newHeight - oldHeight;
+            height = newHeight;
+
+            })
+        "
+        id="conversation"
+            class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
+
+            @foreach ($loadedMessages as $message )
+
+
                 @php
-                    $belongsToAuth = fake()->randomElement([true, false]);
+                    $belongsToAuth = $message->sender_id == auth()->id();
                 @endphp
 
-                <div @class([
+                <div
+                wire:ignore
+                @class([
                     'max-w-[85%] md:max-w-[78%] flex w-auto gap-2 relative mt-2',
                     'ml-auto' => $belongsToAuth,
                 ])>
@@ -73,20 +126,16 @@
                         'bg-blue-500 text-white' => $belongsToAuth,
                     ])>
                         <p class="whitespace-normal text-sm md:text-base tracking-wide lg:tracking-normal">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos nesciunt voluptatem,
-                            eum
-                            sunt blanditiis facere perspiciatis maiores sapiente, natus quas nulla excepturi,
-                            praesentium
-                            similique velit fugit ad soluta eveniet aut.</p>
+                            {{$message->body}}</p>
                     </div>
                 </div>
-            @endfor
 
+                @endforeach
         </section>
 
         {{-- Footer --}}
         <footer class="sticky bottom py-2 inset-x-0 p-2">
-            <form action="" x-data="{ body: @entangle('body') }" autocomplete="off">
+            <form action="" x-data="{ body: @entangle('body') }" @submit.prevent="$wire.sendMessage()" autocomplete="off">
                 @csrf
                 {{-- Hiddin input --}}
                 <input type="hidden" autocomplete="false" style="display: none">
@@ -103,14 +152,14 @@
                     <input x-model="body" type="text" autocomplete="off" autofocus
                         placeholder="Write your message here" maxlength="1700"
                         class="col-span-9 bg-gray-100 border-0 outline-0 focus:ring-0 hover:ring-0 rounded-lg focus:outline-none">
-                    <button x-bind@disabled="!body.trim()" type="submit" class="col-span-2">Send</button>
+                    <button x-bind@disabled="!body?.trim()" type="submit" class="col-span-2">Send</button>
                 </div>
             </form>
         </footer>
     </main>
 
     {{-- Profile --}}
-    <aside class="w-[48%] hidden sm:flex border">
+    <aside class="w-[50%] hidden sm:flex border">
         {{-- Profile Card --}}
         <div style="contain: content"
             class=" inset-0 overflow-y-auto overflow-hidden overscroll-contain w-full  bg-white space-y-4">
@@ -243,6 +292,15 @@
                     </div>
                     {{-- @endif --}}
                 </section>
+
+                <button wire:confirm="Are you sure" wire:click="deleteMatch" class="py-6 border-y flex-col flex gap-2 text-gray-500 justify-center items-center">
+                    <span class="font-bold">
+                        Unmatch
+                    </span>
+                    <span>
+                        No longer interested?, remove them from your matches
+                    </span>
+                </button>
 
 
             </section>

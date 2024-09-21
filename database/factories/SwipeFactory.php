@@ -21,9 +21,9 @@ class SwipeFactory extends Factory
     {
         return [
             //
-            'user_id' => User::factory(),
-            'swiped_user_id' => User::factory(),
-            'type' => $this->faker->randomElement(['left', 'right', 'up']),
+            'user_id'=>User::class,
+            'swiped_user_id'=>User::class,
+            'type'=>'right',
         ];
     }
 }
