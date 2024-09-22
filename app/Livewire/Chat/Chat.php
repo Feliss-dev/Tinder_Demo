@@ -2,14 +2,16 @@
 
 namespace App\Livewire\Chat;
 
-use App\Models\Conversation;
-use App\Models\Message;
+use Log;
 use App\Models\Swipe;
-use App\Models\SwipeMatch;
-use App\Notifications\MessageSentNotification;
+use App\Models\Message;
 use Livewire\Component;
-use Livewire\Attributes\Layout;
+use App\Models\SwipeMatch;
 use Livewire\Attributes\On;
+use App\Models\Conversation;
+use Livewire\Attributes\Layout;
+use App\Notifications\MessageSentNotification;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Chat extends Component
 {
@@ -111,14 +113,20 @@ class Chat extends Component
         //Redirect
         $this->redirect(route('chat.index'), navigate:true);
     }
-    function mount($chat){
+    function mount(){
         //check auth
         abort_unless(auth()->check(),401);
 
-        $this->chat = $chat;
+
 
         //get conversation
-        $this->conversation = Conversation::findOrFail($this->chat);
+
+        try {
+            $this->conversation = Conversation::findOrFail($this->chat);
+        } catch (ModelNotFoundException $e) {
+            // Redirect or handle the missing conversation case
+            return redirect()->route('chat.index');
+        }
 
         //Belong to conversation
         $belongsToConversation = auth()->user()->conversations()
