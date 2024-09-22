@@ -46,6 +46,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function isFake(){
+        return $this->is_fake;
+    }
+
     public function images(){
         return $this->hasMany(UserImage::class);
     }

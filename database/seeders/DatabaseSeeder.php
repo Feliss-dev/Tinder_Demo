@@ -15,7 +15,10 @@ class DatabaseSeeder extends Seeder
     {
 
 
-         $users = \App\Models\User::factory(5)->create();
+         $users = \App\Models\User::factory(5)->create([
+            'is_fake' =>true,
+            'is_admin' => false,
+         ]);
 
         //  \App\Models\Swipe::factory(5)->create();
 
@@ -29,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $testUser = \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'is_admin' => false,
         ]);
 
         #create swipes for test user

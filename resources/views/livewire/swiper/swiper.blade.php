@@ -153,19 +153,28 @@
                     class="relative overflow-hidden w-full h-full rounded-xl bg-cover bg-white">
 
                     @php
-                        $slides = [
-                            'https://picsum.photos/seed/' . rand() . '/500/300',
-                            'https://picsum.photos/seed/' . rand() . '/500/300',
-                            'https://picsum.photos/seed/' . rand() . '/500/300',
-                        ];
+                        $userImages = $user->images()->pluck('image_path')->toArray();
+                        $isFakeUser = $user->isFake();
+
+                        $slides = !empty($userImages)
+                            ? $userImages
+                            : [
+                                'https://picsum.photos/seed/' . rand() . '/500/300',
+                                'https://picsum.photos/seed/' . rand() . '/500/300',
+                                'https://picsum.photos/seed/' . rand() . '/500/300',
+                            ];
                     @endphp
                     {{-- Carousel section --}}
                     <section x-data="{ activeSlide: 1, slides: @js($slides) }">
 
                         {{-- Sliders --}}
                         <template x-for="(image, index) in slides" :key="index">
-                            <img x-show="activeSlide === index+1" :src="image" alt=""
-                                class="absolute inset-0 pointer-events-none w-full h-full object-cover">
+                            <img
+                                :src="(image.startsWith('http') ? image : '/storage/' + image)"
+                                alt=""
+                                class="absolute inset-0 pointer-events-none w-full h-full object-cover"
+                                :lazy-src="'/storage/' + image"
+                            />
                         </template>
 
                         {{-- Pagination --}}
@@ -361,19 +370,26 @@
                     class="absolute inset-0 overflow-y-auto overflow-hidden overscroll-contain border rounded-xl bg-white space-y-4">
 
                     @php
-                        $slides = [
-                            'https://picsum.photos/seed/' . rand() . '/500/300',
-                            'https://picsum.photos/seed/' . rand() . '/500/300',
-                            'https://picsum.photos/seed/' . rand() . '/500/300',
-                        ];
+                        $userImages = $user->images()->pluck('image_path')->toArray();
+                        $isFakeUser = $user->isFake();
+                        $slides =
+                            empty($userImages) || $isFakeUser
+                                ? [
+                                    'https://picsum.photos/seed/' . rand() . '/500/300',
+                                    'https://picsum.photos/seed/' . rand() . '/500/300',
+                                    'https://picsum.photos/seed/' . rand() . '/500/300',
+                                ]
+                                : $userImages;
                     @endphp
                     {{-- Carousel section --}}
                     <section class="relative h-96" x-data="{ activeSlide: 1, slides: @js($slides) }">
 
                         {{-- Sliders --}}
                         <template x-for="(image, index) in slides" :key="index">
-                            <img x-show="activeSlide === index+1" :src="image" alt=""
-                                class="absolute inset-0 pointer-events-none w-full h-full object-cover">
+                            <img x-show="activeSlide === index+1" :src="'/storage/' + image" alt=""
+                                class="absolute inset-0 pointer-events-none w-full h-full object-cover"
+                                style="width: 500px; height: 300px; object-fit: cover">
+
                         </template>
 
                         {{-- Pagination --}}
@@ -433,28 +449,28 @@
                     {{-- Profile Info --}}
                     <section class="grid gap-4 p-3">
                         <div class="flex items-center text-3xl gap-3 text-wrap">
-                            <h3 class="font-bold">{{ Auth::user()->name }}</h3>
+                            <h3 class="font-bold">{{ $user->name }}</h3>
                             <span class="font-semibold text-gray-800">
-                                {{ Auth::user()->age }}
+                                {{ $user->age }}
                             </span>
                         </div>
 
                         {{-- About --}}
                         <ul>
                             <li class="items-center text-gray-6000 text-lg">
-                                {{ Auth::user()->birth_date }}
+                                {{ $user->birth_date }}
                             </li>
                             <li class="items-center text-gray-6000 text-lg">
-                                {{ Auth::user()->gender}}
+                                {{ $user->gender }}
                             </li>
                             <li class="items-center text-gray-6000 text-lg">
-                                {{ Auth::user()->interests }}
+                                {{ $user->interests }}
                             </li>
                         </ul>
                         <hr class="-mx-2.5">
 
                         {{-- Bio --}}
-                        <p class="text-gray-600">{{ Auth::user()->bio }}</p>
+                        <p class="text-gray-600">{{ $user->bio }}</p>
 
                         {{-- Relationships Goals --}}
                         <div class="rounded-xl bg-green-200 h-24 px-4 py-2 max-w-fit flex gap-4 items-center">
@@ -463,29 +479,29 @@
 
                                 <span class="font-bold text-sm text-green-800">Looking for</span>
                                 <span class="text-lg text-green-800 capitalize">
-                                    {{ Auth::user()->dating_goal}}👋</span>
+                                    {{ $user->dating_goal }}👋</span>
                             </div>
                         </div>
                         {{-- More information --}}
                         {{-- @if ($user->languages) --}}
-                            <section class="divide-y space-y-2">
-                                <div class="space-y-3 py-2">
+                        <section class="divide-y space-y-2">
+                            <div class="space-y-3 py-2">
 
-                                    <h3 class="font-bold text-xl">Languages i know</h3>
-                                    <ul class="flex flex-wrap gap-3">
+                                <h3 class="font-bold text-xl">Languages i know</h3>
+                                <ul class="flex flex-wrap gap-3">
 
-                                        {{-- @foreach ($user->languages as $language)
+                                    {{-- @foreach ($user->languages as $language)
                                             <li
                                                 class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5 capitalize">
                                                 {{ $language->name }}</li>
                                         @endforeach --}}
 
 
-                                    </ul>
-                                </div>
-                        {{-- @endif --}}
+                                </ul>
+                            </div>
+                            {{-- @endif --}}
 
-                        {{-- @if ($user->basics) --}}
+                            {{-- @if ($user->basics) --}}
                             <div class="space-y-3 py-2">
 
                                 <h3 class="font-bold text-xl">Basics</h3>
@@ -497,8 +513,8 @@
 
                                 </ul>
                             </div>
-                        {{-- @endif --}}
-                    </section>
+                            {{-- @endif --}}
+                        </section>
 
 
                     </section>
@@ -567,15 +583,9 @@
         @endforeach
     </div>
     {{-- Match found. --}}
-    <div
-
-    x-data="{ modalOpen: false }"
-    @keydown.escape.window="modalOpen = false"
-    @close-match-modal.window="modalOpen=false"
-    @match-found.window="modalOpen=true"
-
-
-      class="relative z-50 w-auto h-auto">
+    <div x-data="{ modalOpen: false }" @keydown.escape.window="modalOpen = false"
+        @close-match-modal.window="modalOpen=false" @match-found.window="modalOpen=true"
+        class="relative z-50 w-auto h-auto">
 
         <template x-teleport="body">
             <div x-show="modalOpen"
@@ -610,7 +620,13 @@
                         <div class="mx-auto flex flex-col gap-2 items-center justify-center">
                             {{-- Tinder logo --}}
                             <div class="mx-auto">
-                                <svg class="ml-5" fill="#000000"  width="50px" height="50px" viewBox="0 0 24 24" id="tinder" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color"><path id="primary" d="M11.39,2.08a1,1,0,0,0-1,.14,1,1,0,0,0-.35,1c.72,3.62.41,6.08-1,7.46A7.57,7.57,0,0,1,8,7.85a1,1,0,0,0-.68-.8,1,1,0,0,0-1,.24C6.16,7.43,3,10.62,3,14c0,5,3.36,8,9,8,3.23,0,7-2.09,7-8A13.17,13.17,0,0,0,11.39,2.08Z" style="fill: rgb(237, 105, 129);"></path></svg>
+                                <svg class="ml-5" fill="#000000" width="50px" height="50px"
+                                    viewBox="0 0 24 24" id="tinder" data-name="Flat Color"
+                                    xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+                                    <path id="primary"
+                                        d="M11.39,2.08a1,1,0,0,0-1,.14,1,1,0,0,0-.35,1c.72,3.62.41,6.08-1,7.46A7.57,7.57,0,0,1,8,7.85a1,1,0,0,0-.68-.8,1,1,0,0,0-1,.24C6.16,7.43,3,10.62,3,14c0,5,3.36,8,9,8,3.23,0,7-2.09,7-8A13.17,13.17,0,0,0,11.39,2.08Z"
+                                        style="fill: rgb(237, 105, 129);"></path>
+                                </svg>
 
                             </div>
                             <h5 class="font-bold text-3xl">
@@ -619,21 +635,25 @@
                         </div>
                         <div class="flex items-center justify-center gap-4 mx-">
                             <span>
-                                <img src="https://picsum.photos/seed/' . rand() . '/300/300" alt="" class="rounded-full h-32 w-32 ring ring-rose-500">
+                                <img src="https://picsum.photos/seed/' . rand() . '/300/300" alt=""
+                                    class="rounded-full h-32 w-32 ring ring-rose-500">
                             </span>
 
                             <span>
-                                <img src="https://picsum.photos/seed/' . rand() . '/300/300" alt="" class="rounded-full h-32 w-32 ring ring-pink-500/40">
+                                <img src="https://picsum.photos/seed/' . rand() . '/300/300" alt=""
+                                    class="rounded-full h-32 w-32 ring ring-pink-500/40">
                             </span>
                         </div>
 
                         {{-- Action --}}
                         <div class="mx-auto flex flex-col gap-5">
-                            <button wire:click="createConversation" class="bg-tinder text-white font-bold items-center px-3 py-2 rounded-full">
+                            <button wire:click="createConversation"
+                                class="bg-tinder text-white font-bold items-center px-3 py-2 rounded-full">
                                 Send a message
                             </button>
 
-                            <button @click="modalOpen=false" class="bg-gray-500 text-white font-bold items-center px-3 py-2 rounded-full">
+                            <button @click="modalOpen=false"
+                                class="bg-gray-500 text-white font-bold items-center px-3 py-2 rounded-full">
                                 Continue Swiping
                             </button>
                         </div>
@@ -644,4 +664,3 @@
     </div>
 
 </div>
-

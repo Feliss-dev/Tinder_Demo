@@ -34,6 +34,10 @@ new class extends Component
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('view_my_details')" :active="request()->routeIs('view_my_details')" wire:navigate>
+                        {{ __('View My Profile') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -87,6 +91,7 @@ new class extends Component
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>
+
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">

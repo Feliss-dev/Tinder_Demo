@@ -226,28 +226,28 @@ class="flex h-screen overflow-hidden">
             {{-- Profile Info --}}
             <section class="grid gap-4 p-3">
                 <div class="flex items-center text-3xl gap-3 text-wrap">
-                    <h3 class="font-bold">{{ Auth::user()->name }}</h3>
+                    <h3 class="font-bold">{{ $user->name }}</h3>
                     <span class="font-semibold text-gray-800">
-                        {{ Auth::user()->age }}
+                        {{ $user->age }}
                     </span>
                 </div>
 
                 {{-- About --}}
                 <ul>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ Auth::user()->birth_date }}
+                        {{ $user->birth_date }}
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ Auth::user()->gender }}
+                        {{ $user->gender }}
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ Auth::user()->interests }}
+                        {{ $user->interests }}
                     </li>
                 </ul>
                 <hr class="-mx-2.5">
 
                 {{-- Bio --}}
-                <p class="text-gray-600">{{ Auth::user()->bio }}</p>
+                <p class="text-gray-600">{{ $user->bio }}</p>
 
                 {{-- Relationships Goals --}}
                 <div class="rounded-xl bg-green-200 h-24 px-4 py-2 max-w-fit flex gap-4 items-center">
@@ -256,7 +256,7 @@ class="flex h-screen overflow-hidden">
 
                         <span class="font-bold text-sm text-green-800">Looking for</span>
                         <span class="text-lg text-green-800 capitalize">
-                            {{ Auth::user()->dating_goal }}👋</span>
+                            {{ $user->dating_goal }}👋</span>
                     </div>
                 </div>
                 {{-- More information --}}

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Livewire\Chat\Chat;
 use App\Livewire\Chat\Index;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,9 @@ use App\Livewire\Chat\Index;
 Route::view('/', 'welcome')->name('home');
 
 Route::middleware('auth')->group(function () {
+   Route::get('view_my_details', [UserController::class, 'viewMyDetails'])->name('view_my_details');
+   
+
    Route::get('/profile', [UserController::class, 'userProfile'])->name('profile');
    Route::get('/info', [UserController::class, 'showProfileForm'])->name('info');
    Route::post('/info', [UserController::class, 'updateInfor'])->name('info.update');

@@ -128,7 +128,7 @@ class Chat extends Component
 
         #mark message as read
         Message::where('conversation_id', $this->conversation->id)
-                        ->where('receiver_id)', auth()->id())
+                        ->where('receiver_id', auth()->id())
                         ->whereNull('read_at')
                         ->update(['read_at'=>now()]);
 
