@@ -101,7 +101,7 @@ class Swiper extends Component
     }
 
     public function createConversation(){
-        Conversation::create([
+        $conversation=Conversation::create([
             'sender_id'=>auth()->id(),
             'receiver_id'=>$this->swipedUserId,
             'match_id'=>$this->currentMatchId,
@@ -114,7 +114,7 @@ class Swiper extends Component
         $this->reset('swipedUserId', 'currentMatchId');
 
         //redirect to conversation
-        $conversation = $this->redirect(route('chat', $conversation->id), navigate:true);
+          $this->redirect(route('chat', $conversation->id), navigate:true);
         }
 
     public function render()

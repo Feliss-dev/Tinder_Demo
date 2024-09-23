@@ -13,7 +13,7 @@ Echo.private('users.{{auth()->id()}}')
         if(notification['type']=='App\\Notifications\\MessageSentNotification' && notification['conversation_id']=={{ $conversation->id }}){
             $wire.listenBroadcastedMessage(notification);
         }
-    })
+    });
 "
 
 @scroll-bottom.window="

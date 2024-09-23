@@ -159,9 +159,9 @@
                         $slides = !empty($userImages)
                             ? $userImages
                             : [
+                                'https://randomuser.me/api/portraits/women/' . rand(0, 99) . '.jpg',
                                 'https://picsum.photos/seed/' . rand() . '/500/300',
-                                'https://picsum.photos/seed/' . rand() . '/500/300',
-                                'https://picsum.photos/seed/' . rand() . '/500/300',
+                                'https://randomuser.me/api/portraits/women/' . rand(0, 99) . '.jpg',
                             ];
                     @endphp
                     {{-- Carousel section --}}
@@ -169,50 +169,43 @@
 
                         {{-- Sliders --}}
                         <template x-for="(image, index) in slides" :key="index">
-                            <img
-                                :src="(image.startsWith('http') ? image : '/storage/' + image)"
-                                alt=""
+                            <img :src="(image.startsWith('http') ? image : '/storage/' + image)" alt="User Image"
                                 class="absolute inset-0 pointer-events-none w-full h-full object-cover"
-                                :lazy-src="'/storage/' + image"
-                            />
+                                :lazy-src="'/storage/' + image" x-show="activeSlide === index"
+                                x-transition:enter="transition-opacity ease-out duration-500"
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                x-transition:leave="transition-opacity ease-in duration-500"
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" />
                         </template>
 
                         {{-- Pagination --}}
-                        <div draggable="true" :class="{ 'hidden': slides.length === 1 }"
+                        <div :class="{ 'hidden': slides.length === 1 }"
                             class="absolute top-1 inset-x-0 z-10 w-full flex items-center justify-center">
-
                             <template x-for="(image, index) in slides" :key="index">
-                                <button @click="activeSlide = index+1"
-                                    :class="{ 'bg-white': activeSlide === index + 1, 'bg-gray-500': activeSlide !== index + 1 }"
-                                    class="flex-1 w-4 h-2 mx-1 rounded-full overflow-hidden"></button>
+                                <button @click="activeSlide = index"
+                                    :class="{ 'bg-white': activeSlide === index, 'bg-gray-500': activeSlide !== index }"
+                                    class="flex-1 w-4 h-2 mx-1 rounded-full overflow-hidden transition-colors duration-300"></button>
                             </template>
                         </div>
 
                         {{-- Prev Button --}}
-                        <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
-                            @click="activeSlide = activeSlide === 1 ? slides.length : activeSlide - 1"
-                            class="absolute left-2 top-1/2 my-auto">
-
+                        <button :class="{ 'hidden': slides.length === 1 }"
+                            @click="activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1"
+                            class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 p-2 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-9 text-white">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                             </svg>
-
-
                         </button>
 
                         {{-- Next Button --}}
-                        <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
-                            @click="activeSlide = activeSlide === slides.length ? 1 : activeSlide + 1"
-                            class="absolute right-2 top-1/2 my-auto">
-
+                        <button :class="{ 'hidden': slides.length === 1 }"
+                            @click="activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 p-2 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-9 text-white ">
+                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                             </svg>
-
-
-
                         </button>
 
                     </section>
@@ -372,63 +365,58 @@
                     @php
                         $userImages = $user->images()->pluck('image_path')->toArray();
                         $isFakeUser = $user->isFake();
-                        $slides =
-                            empty($userImages) || $isFakeUser
-                                ? [
-                                    'https://picsum.photos/seed/' . rand() . '/500/300',
-                                    'https://picsum.photos/seed/' . rand() . '/500/300',
-                                    'https://picsum.photos/seed/' . rand() . '/500/300',
-                                ]
-                                : $userImages;
+                        $slides = !empty($userImages)
+                            ? $userImages
+                            : [
+                                'https://picsum.photos/seed/' . rand() . '/500/300',
+                                'https://randomuser.me/api/portraits/women/' . rand(0, 99) . '.jpg',
+                                'https://picsum.photos/seed/' . rand() . '/500/300',
+                            ];
                     @endphp
                     {{-- Carousel section --}}
                     <section class="relative h-96" x-data="{ activeSlide: 1, slides: @js($slides) }">
 
                         {{-- Sliders --}}
                         <template x-for="(image, index) in slides" :key="index">
-                            <img x-show="activeSlide === index+1" :src="'/storage/' + image" alt=""
+                            <img :src="(image.startsWith('http') ? image : '/storage/' + image)" alt="User Image"
                                 class="absolute inset-0 pointer-events-none w-full h-full object-cover"
-                                style="width: 500px; height: 300px; object-fit: cover">
+                                :lazy-src="'/storage/' + image" x-show="activeSlide === index"
+                                x-transition:enter="transition-opacity ease-out duration-500"
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                x-transition:leave="transition-opacity ease-in duration-500"
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" />
 
                         </template>
 
                         {{-- Pagination --}}
-                        <div draggable="true" :class="{ 'hidden': slides.length === 1 }"
+                        <div :class="{ 'hidden': slides.length === 1 }"
                             class="absolute top-1 inset-x-0 z-10 w-full flex items-center justify-center">
-
                             <template x-for="(image, index) in slides" :key="index">
-                                <button @click="activeSlide = index+1"
-                                    :class="{ 'bg-white': activeSlide === index + 1, 'bg-gray-500': activeSlide !== index + 1 }"
+                                <button @click="activeSlide = index"
+                                    :class="{ 'bg-white': activeSlide === index, 'bg-gray-500': activeSlide !== index }"
                                     class="flex-1 w-4 h-2 mx-1 rounded-full overflow-hidden"></button>
                             </template>
                         </div>
 
                         {{-- Prev Button --}}
-                        <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
-                            @click="activeSlide = activeSlide === 1 ? slides.length : activeSlide - 1"
-                            class="absolute left-2 top-1/2 my-auto">
-
+                        <button :class="{ 'hidden': slides.length === 1 }"
+                            @click="activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1"
+                            class="absolute left-2 top-1/2 transform -translate-y-1/2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-9 text-white text-bold">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M15.75 19.5 8.25 12l7.5-7.5" />
                             </svg>
-
-
                         </button>
 
                         {{-- Next Button --}}
-                        <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
-                            @click="activeSlide = activeSlide === slides.length ? 1 : activeSlide + 1"
-                            class="absolute right-2 top-1/2 my-auto">
-
+                        <button :class="{ 'hidden': slides.length === 1 }"
+                            @click="activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-9 text-white text-bold">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                             </svg>
-
-
-
                         </button>
 
                         {{-- Close Profile Button --}}
