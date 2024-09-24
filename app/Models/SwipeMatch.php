@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SwipeMatch extends Model
-{
+class SwipeMatch extends Model {
     use HasFactory;
     protected $guarded=[];
 

@@ -62,9 +62,11 @@
                             </span>
                         </div>
                     </header>
+
                     {{-- Tab Section --}}
                     <livewire:components.tabs />
                 </aside>
+
                 <!-- Page Content -->
                 <main class="flex-1 flex-col overflow-y-auto hidden md:flex">
                     @livewire('home')

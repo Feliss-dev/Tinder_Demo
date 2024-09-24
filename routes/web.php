@@ -22,7 +22,6 @@ Route::view('/', 'welcome')->name('home');
 
 Route::middleware('auth')->group(function () {
    Route::get('view_my_details', [UserController::class, 'viewMyDetails'])->name('view_my_details');
-   
 
    Route::get('/profile', [UserController::class, 'userProfile'])->name('profile');
    Route::get('/info', [UserController::class, 'showProfileForm'])->name('info');
@@ -39,7 +38,5 @@ Route::middleware('auth')->group(function () {
         ->middleware('isAdmin')
         ->name('admin.dashboard');
 });
-
-
 
 require __DIR__.'/auth.php';

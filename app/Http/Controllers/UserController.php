@@ -8,30 +8,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class UserController extends Controller
-{
-    //
-
-    public function admin_dashboard(){
+class UserController extends Controller {
+    public function admin_dashboard() {
         return view('layouts.admin.dashboard');
     }
-    public function showProfileForm(){
+
+    public function showProfileForm() {
         return view('layouts.user.input');
     }
-    public function userDashboard(){
 
+    public function userDashboard() {
         return view('layouts.app');
     }
-    public function userProfile(){
+
+    public function userProfile() {
         return view('profile');
     }
 
-    public function viewMyDetails(){
+    public function viewMyDetails() {
         $user = Auth::user();
         return view('layouts.user.my_details', compact('user'));
     }
-    public function updateInfor(Request $request){
-        // Xác thực dữ liệu đầu vào
+
+    public function updateInfor(Request $request) {
+        // Validate before update.
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'birth_date' => 'nullable|date',
@@ -42,27 +42,26 @@ class UserController extends Controller
             'dating_goal' => 'nullable|string',
         ]);
 
-        // Cập nhật thông tin người dùng
+        // Update user informations
         $user = User::find(Auth::user()->id);
         $user->update($validated);
 
-        // Xử lý tải hình ảnh
-        $imagePaths = []; // Tạo mảng để chứa đường dẫn các ảnh
+        // Profile picture handling.
+        $imagePaths = [];
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('user_images', 'public'); // Lưu ảnh
-                $imagePaths[] = $path; // Thêm đường dẫn ảnh vào mảng
+                $path = $image->store('user_images', 'public');
+                $imagePaths[] = $path;
             }
-            // Lưu mảng ảnh dưới dạng JSON trong cột `images`
+
             $user->update(['images' => json_encode($imagePaths)]);
         }
 
-        // Xử lý sở thích và mục đích hẹn hò
         $preferencesData = $request->only(['interests', 'desired_gender', 'dating_goal']);
         $user->preferences()->updateOrCreate([], $preferencesData);
 
+        // Report successfully profile updating.
         return redirect()->route('dashboard')->with('success', 'Profile updated successfully!');
     }
-
 }

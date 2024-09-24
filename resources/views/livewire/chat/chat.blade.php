@@ -6,30 +6,25 @@ x-data="{
 
 x-init="
 height = conversationElement.scrollHeight;
-$nextTick(()=>conversationElement.scrollTop=height);
+$nextTick(() => conversationElement.scrollTop=height);
 
 Echo.private('users.{{auth()->id()}}')
     .notification((notification) => {
-        if(notification['type']=='App\\Notifications\\MessageSentNotification' && notification['conversation_id']=={{ $conversation->id }}){
+        if (notification['type']=='App\\Notifications\\MessageSentNotification' && notification['conversation_id']=={{ $conversation->id }}){
             $wire.listenBroadcastedMessage(notification);
         }
     });
 "
 
 @scroll-bottom.window="
-$nextTick(()=>{
-
-conversationElement.style.overflowY = 'hidden';
-
-conversationElement.scrollTop = conversationElement.scrollHeight;
-
-conversationElement.style.overflowY = 'auto';
-
+$nextTick(() => {
+    conversationElement.style.overflowY = 'hidden';
+    conversationElement.scrollTop = conversationElement.scrollHeight;
+    conversationElement.style.overflowY = 'auto';
 });
 
 "
 class="flex h-screen overflow-hidden">
-
     <main class="w-full grow border flex flex-col relative">
         {{-- Header --}}
         <header class="flex items-center gap-2.5 p-2 border">
@@ -264,16 +259,13 @@ class="flex h-screen overflow-hidden">
                 <section class="divide-y space-y-2">
                     <div class="space-y-3 py-2">
 
-                        <h3 class="font-bold text-xl">Languages i know</h3>
+                        <h3 class="font-bold text-xl">Languages I know</h3>
                         <ul class="flex flex-wrap gap-3">
-
                             {{-- @foreach ($user->languages as $language)
                                 <li
                                     class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5 capitalize">
                                     {{ $language->name }}</li>
                             @endforeach --}}
-
-
                         </ul>
                     </div>
                     {{-- @endif --}}
@@ -301,11 +293,7 @@ class="flex h-screen overflow-hidden">
                         No longer interested?, remove them from your matches
                     </span>
                 </button>
-
-
             </section>
-
-
         </div>
     </aside>
 </div>

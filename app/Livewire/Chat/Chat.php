@@ -92,7 +92,7 @@ class Chat extends Component
         #get count
         $count = Message::where('conversation_id', $this->conversation->id)->count();
 
-        #skip and query
+        // skip and query
         $this->loadedMessages = Message::where('conversation_id', $this->conversation->id)
                                             ->skip($count - $this->paginate_var)
                                             ->take($this->paginate_var)
@@ -100,25 +100,32 @@ class Chat extends Component
             return $this->loadedMessages;
     }
 
-    function deleteMatch(){
+    function deleteMatch() {
         abort_unless(auth()->check(), 401);
 
         //Make sure user belong to match
         $belongsToMatch = auth()->user()->matches()->where('swipe_matches.id', $this->conversation->match_id)->exists();
         abort_unless($belongsToMatch, 403);
 
-        #Delete match
+        // Delete match
         SwipeMatch::where('id', $this->conversation->match_id)->delete();
 
         //Redirect
-        $this->redirect(route('chat.index'), navigate:true);
+        $this->redirect(route("dashboard"), navigate: true);
+//        $this->redirect(route('chat.index'), navigate: true);
     }
+<<<<<<< Updated upstream
     function mount(){
+=======
+
+    function mount($chat) {
+>>>>>>> Stashed changes
         //check auth
         abort_unless(auth()->check(),401);
 
 
 
+<<<<<<< Updated upstream
         //get conversation
 
         try {
@@ -127,14 +134,18 @@ class Chat extends Component
             // Redirect or handle the missing conversation case
             return redirect()->route('chat.index');
         }
+=======
+        // get conversation
+        $this->conversation = Conversation::findOrFail($this->chat);
+>>>>>>> Stashed changes
 
-        //Belong to conversation
+        // Belong to conversation
         $belongsToConversation = auth()->user()->conversations()
                                     ->where('id', $this->conversation->id)
                                     ->exists();
         abort_unless($belongsToConversation,403);
 
-        #mark message as read
+        // mark message as read
         Message::where('conversation_id', $this->conversation->id)
                         ->where('receiver_id', auth()->id())
                         ->whereNull('read_at')
@@ -146,8 +157,7 @@ class Chat extends Component
         $this->loadMessages();
     }
     #[Layout('layouts.chat')]
-    public function render()
-    {
+    public function render() {
         return view('livewire.chat.chat') ;
     }
 }

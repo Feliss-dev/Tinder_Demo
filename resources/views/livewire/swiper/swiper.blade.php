@@ -1,44 +1,37 @@
 <div id="tinder" class="m-auto md:p-10 w-full h-full relative">
-
     <div class="relative h-full md:h-[600px] w-full md:w-96 m-auto">
 
-
         @foreach ($users as $i => $user)
-            <div @swipedright.window="console.log('right')" @swipedleft.window="console.log('left')"
-                @swipedup.window="console.log('up')" wire:key="swipe-{{ $user->id }}" x-data="{
+            <div @swipedright.window="console.log('right')"
+                 @swipedleft.window="console.log('left')"
+                 @swipedup.window="console.log('up')"
+                wire:key="swipe-{{ $user->id }}" x-data="{
                     profile: false,
                     isSwiping: false,
                     swipingLeft: false,
                     swipingRight: false,
                     swipingUp: false,
                     swipeRight: function() {
-
                         moveOutWidth = document.body.clientWidth * 1.5;
                         $el.style.transform = 'translate(' + moveOutWidth + 'px, -100px ) rotate(-30deg)';
 
                         setTimeout(() => {
-
                             $el.remove();
                         }, 300);
 
-                        {{-- dispatch --}}
                         $dispatch('swipedright', { user: '{{ $user->id }}' });
                     },
                     swipeLeft: function() {
-
                         moveOutWidth = document.body.clientWidth * 1.5;
                         $el.style.transform = 'translate(' + -moveOutWidth + 'px, -100px ) rotate(-30deg)';
 
                         setTimeout(() => {
-
                             $el.remove();
                         }, 300);
 
-                        {{-- dispatch --}}
                         $dispatch('swipedleft', { user: '{{ $user->id }}' });
                     },
                     swipeUp: function() {
-
                         moveOutWidth = document.body.clientWidth * 1.5;
                         $el.style.transform = 'translate(0px, ' + -moveOutWidth + 'px) rotate(-30deg)';
 
@@ -47,7 +40,6 @@
                             $el.remove();
                         }, 300);
 
-                        {{-- dispatch --}}
                         $dispatch('swipedup', { user: '{{ $user->id }}' });
                     }
                 }"
@@ -130,7 +122,6 @@
                         var moveOutWidth = document.body.clientWidth;
                         var moveOutHeight = document.body.clientHeight;
 
-                        {{-- // Decide to push left, right or up --}}
                         if (event.deltaX > 20) {
                             event.target.style.transform = 'translate(' + moveOutWidth + 'px, 10px)';
                             $dispatch('swipedright', { user: '{{ $user->id }}' });
