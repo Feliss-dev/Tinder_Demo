@@ -112,50 +112,35 @@ class Chat extends Component
 
         //Redirect
         $this->redirect(route("dashboard"), navigate: true);
-//        $this->redirect(route('chat.index'), navigate: true);
     }
-<<<<<<< Updated upstream
-    function mount(){
-=======
 
-    function mount($chat) {
->>>>>>> Stashed changes
+    function mount($chat){
         //check auth
         abort_unless(auth()->check(),401);
 
+        $this->chat = $chat;
 
-
-<<<<<<< Updated upstream
         //get conversation
-
-        try {
-            $this->conversation = Conversation::findOrFail($this->chat);
-        } catch (ModelNotFoundException $e) {
-            // Redirect or handle the missing conversation case
-            return redirect()->route('chat.index');
-        }
-=======
-        // get conversation
         $this->conversation = Conversation::findOrFail($this->chat);
->>>>>>> Stashed changes
 
-        // Belong to conversation
+        //Belong to conversation
         $belongsToConversation = auth()->user()->conversations()
-                                    ->where('id', $this->conversation->id)
-                                    ->exists();
+            ->where('id', $this->conversation->id)
+            ->exists();
         abort_unless($belongsToConversation,403);
 
-        // mark message as read
+        #mark message as read
         Message::where('conversation_id', $this->conversation->id)
-                        ->where('receiver_id', auth()->id())
-                        ->whereNull('read_at')
-                        ->update(['read_at'=>now()]);
+            ->where('receiver_id', auth()->id())
+            ->whereNull('read_at')
+            ->update(['read_at'=>now()]);
 
         #set receiver
         $this->receiver = $this->conversation->getReceiver();
 
         $this->loadMessages();
     }
+
     #[Layout('layouts.chat')]
     public function render() {
         return view('livewire.chat.chat') ;

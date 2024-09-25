@@ -1,6 +1,6 @@
-<div>
+<div class="h-full">
     <section
-        x-data="{ tab:{{request()->routeIs('chat.index') || request()->routeIs('chat') ? '2' : '1'}}}"
+        x-data="{ tab: {{request()->routeIs('chat.index') || request()->routeIs('chat') ? '2' : '1'}}}"
         @match-found.window="$wire.$refresh()"
         x-init="
         Echo.private('users.{{auth()->id()}}')
@@ -14,9 +14,9 @@
                 <button @click="tab='1'" :class="{'border-b-2 border-red-500': tab=='1'}" class="font-bold text-sm px-2 pb-1.5" >
                     Matches
 
-                    @if (auth()->user()->matches->count() > 0)
+                    @if (auth()->user()->matches()->count() > 0)
                         <span class="rounded-full text-xs p-1 px-2 font-bold text-white bg-tinder">
-                            {{auth()->user()->matches->count()}}
+                            {{auth()->user()->matches()->count()}}
                         </span>
                     @endif
                 </button>
