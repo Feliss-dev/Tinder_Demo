@@ -20,21 +20,22 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        
+
         return [
-           'name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
-            'password' => bcrypt('password'), // or use Hash::make('password') if you prefer
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'), // mật khẩu mặc định
             'remember_token' => Str::random(10),
-            'birth_date' => $this->faker->optional()->date(),
-            'gender' => $this->faker->optional()->randomElement(['male', 'female']),
-            'bio' => $this->faker->optional()->text(),
-            'interests' => $this->faker->optional()->words(3, true),
-            'desired_gender' => $this->faker->optional()->randomElement(['male', 'female', 'any']),
-            'dating_goal' => $this->faker->optional()->words(3, true),
-            'images' => $this->faker->optional()->imageUrl(),
-            'email_verified_at' => $this->faker->optional()->dateTime(),
-            'is_admin' => $this->faker->boolean(20), // 20% chance of being true
+            'birth_date' => $this->faker->date('Y-m-d'),
+            'gender' => $this->faker->randomElement(['male', 'female']),
+            'bio' => $this->faker->text(),
+            'interests' => implode(',', $this->faker->words(3)), // Ví dụ: 'music, sports, travel'
+            'desired_gender' => $this->faker->randomElement(['male', 'female']),
+            'dating_goal' => $this->faker->sentence(),
+            'images' => 'https://example.com/image.jpg', // Link ảnh giả
+            'is_fake' => false,
+            'is_admin' => false,
          ];
     }
 

@@ -2,16 +2,22 @@
 
 namespace App\Livewire\Swiper;
 
-use App\Models\Conversation;
-use App\Models\Swipe;
-use App\Models\SwipeMatch;
+use Carbon\Carbon;
 use App\Models\User;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\On;
+use App\Models\Swipe;
 use Livewire\Component;
+use App\Models\SwipeMatch;
+use Livewire\Attributes\On;
+use App\Models\Conversation;
+use Livewire\Attributes\Locked;
 
 class Swiper extends Component
 {
+
+    public $ageFrom;
+    public $ageTo;
+    public $gender;
+
     #[Locked]
     public $currentMatchId;
 
@@ -100,6 +106,30 @@ class Swiper extends Component
 
     }
 
+    public function applyFilters(){
+        $query = User::query();
+
+        // Apply age filtering
+        if ($this->ageFrom) {
+            $query->whereDate('birth_date', '<=', Carbon::now()->subYears($this->ageFrom)->toDateString());
+        }
+
+        if ($this->ageTo) {
+            $query->whereDate('birth_date', '>=', Carbon::now()->subYears($this->ageTo)->toDateString());
+        }
+        if($this->gender){
+            $query->where('gender', $this->gender);
+        }
+
+         // Ensure not to show users who have already been swiped
+         $query->whereNotSwiped()->where('id', '<>', auth()->id());
+
+         // Get the filtered users
+         $users = $query->limit(10)->get();
+
+         return view('livewire.swiper.swiper', ['users' => $users]);
+    }
+
     public function createConversation(){
         $conversation=Conversation::create([
             'sender_id'=>auth()->id(),
@@ -119,7 +149,20 @@ class Swiper extends Component
 
     public function render()
     {
+        $query = User::query();
 
+         // Apply age filtering
+         if ($this->ageFrom) {
+            $query->whereDate('birth_date', '<=', Carbon::now()->subYears($this->ageFrom)->toDateString());
+        }
+
+        if ($this->ageTo) {
+            $query->whereDate('birth_date', '>=', Carbon::now()->subYears($this->ageTo)->toDateString());
+        }
+
+        if ($this->gender) {
+            $query->where('gender', $this->gender);
+        }
        // dd(auth()->user()->matches()->get());
 
        // dd(SwipeMatch::first()->swipe2);

@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
 
 
-         $users = \App\Models\User::factory(5)->create([
+         $users = \App\Models\User::factory(20)->create([
             'is_fake' =>true,
             'is_admin' => false,
          ]);

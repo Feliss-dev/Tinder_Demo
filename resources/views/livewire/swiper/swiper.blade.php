@@ -1,5 +1,40 @@
-<div id="tinder" class="m-auto md:p-10 w-full h-full relative">
+<div id="tinder" class="m-auto md:p-10 w-full h-full relative flex">
+
+    <div class="flex flex-row mt-12">
+        <form wire:submit.prevent="applyFilters" class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center space-y-6 w-72">
+
+
+
+            <!-- Dropdown chọn giới tính -->
+            <div class="w-full">
+                <label for="ageFrom">Age From</label>
+                <input type="number" id="ageFrom" wire:model="ageFrom" placeholder="Min Age">
+
+            </div>
+            <div class="w-full">
+                <label for="ageTo">Age To</label>
+            <input type="number" id="ageTo" wire:model="ageTo" placeholder="Max Age">
+
+            </div>
+            <div class="w-full">
+                <label for="gender">Gender</label>
+                <select id="gender" wire:model="gender">
+                    <option value="other">Any</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <!-- Add more gender options as needed -->
+                </select>
+
+            </div>
+
+            <!-- Nút lọc -->
+            <div class="w-full">
+                <button type="submit" class="w-full bg-tinder text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Filter</button>
+            </div>
+        </form>
+    </div>
     <div class="relative h-full md:h-[600px] w-full md:w-96 m-auto">
+
 
         @foreach ($users as $i => $user)
             <div @swipedright.window="console.log('right')"
