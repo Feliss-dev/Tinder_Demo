@@ -14,9 +14,12 @@ use Livewire\Attributes\Locked;
 class Swiper extends Component
 {
 
+    public $searchTerm;
     public $ageFrom;
     public $ageTo;
     public $gender;
+    public $users;
+    public $filtersApplied = false; // Theo dõi trạng thái bộ lọc có được áp dụng hay chưa
 
     #[Locked]
     public $currentMatchId;
@@ -28,35 +31,35 @@ class Swiper extends Component
     public function swipedRight(User $user)
     {
         //make user user is authenticated
-        abort_unless(auth()->check(),401);
+        abort_unless(auth()->check(), 401);
 
-         #create Swipe Right
-         $this->createSwipe($user,'right');
-
+        #create Swipe Right
+        $this->createSwipe($user, 'right');
     }
 
     #[On('swipedleft')]
     public function swipedLeft(User $user)
     {
         //make user user is authenticated
-        abort_unless(auth()->check(),401);
+        abort_unless(auth()->check(), 401);
 
-         #create Swipe Right
-         $this->createSwipe($user,'left');
+        #create Swipe Right
+        $this->createSwipe($user, 'left');
     }
 
     #[On('swipedup')]
     public function swipedUp(User $user)
     {
         //make user user is authenticated
-        abort_unless(auth()->check(),401);
+        abort_unless(auth()->check(), 401);
 
-         #create Swipe Right
-         $this->createSwipe($user,'up');
+        #create Swipe Right
+        $this->createSwipe($user, 'up');
     }
 
 
-    protected function createSwipe($user,$type){
+    protected function createSwipe($user, $type)
+    {
 
         //reset properties
         $this->reset('swipedUserId', 'currentMatchId');
@@ -68,73 +71,76 @@ class Swiper extends Component
 
         #create Swipe
         $swipe =  Swipe::create([
-            'user_id'=>auth()->id(),
-            'swiped_user_id'=>$user->id,
-            'type'=>$type,
+            'user_id' => auth()->id(),
+            'swiped_user_id' => $user->id,
+            'type' => $type,
         ]);
 
         #before creating match we want to make sure auth user swiped Right or  Up
-        if ($type=='up'||$type=='right') {
+        if ($type == 'up' || $type == 'right') {
             # code...
 
-        #creating Match
-        $authUserId = auth()->id();
-        $this->swipedUserId = $user->id;
+            #creating Match
+            $authUserId = auth()->id();
+            $this->swipedUserId = $user->id;
 
-        #Now Also check if swiped user  has swipe match with authenticated user.
-        $matchingSwipe =  Swipe::where('user_id', $this->swipedUserId)
-                            ->where('swiped_user_id', $authUserId)
-                            ->whereIn('type',['up','right'])
-                            ->first();
-
-
-        #If true, create a SwipeMatch
-        if ($matchingSwipe) {
-            $match = SwipeMatch::create([
-                'swipe_id_1' => $swipe->id,
-                'swipe_id_2' => $matchingSwipe->id,
-            ]);
+            #Now Also check if swiped user  has swipe match with authenticated user.
+            $matchingSwipe =  Swipe::where('user_id', $this->swipedUserId)
+                ->where('swiped_user_id', $authUserId)
+                ->whereIn('type', ['up', 'right'])
+                ->first();
 
 
-        //Show match found alert
-        $this->dispatch('match-found');
+            #If true, create a SwipeMatch
+            if ($matchingSwipe) {
+                $match = SwipeMatch::create([
+                    'swipe_id_1' => $swipe->id,
+                    'swipe_id_2' => $matchingSwipe->id,
+                ]);
 
-        $this->currentMatchId=$match->id;
+
+                //Show match found alert
+                $this->dispatch('match-found');
+
+                $this->currentMatchId = $match->id;
+            }
         }
-
     }
 
-    }
+    public function applyFilters()
+    {
+        $this->filtersApplied = true; // Đánh dấu rằng bộ lọc đã được áp dụng
+        $query = User::query()
+            ->whereNotSwiped()
+            ->where('id', '<>', auth()->id());
 
-    public function applyFilters(){
-        $query = User::query();
-
-        // Apply age filtering
+        // Lọc theo tuổi
         if ($this->ageFrom) {
-            $query->whereDate('birth_date', '<=', Carbon::now()->subYears($this->ageFrom)->toDateString());
+            $query->where('birth_date', '<=', now()->subYears($this->ageFrom));
+        }
+        if ($this->ageTo) {
+            $query->where('birth_date', '>=', now()->subYears($this->ageTo));
         }
 
-        if ($this->ageTo) {
-            $query->whereDate('birth_date', '>=', Carbon::now()->subYears($this->ageTo)->toDateString());
-        }
-        if($this->gender){
+        // Lọc theo giới tính
+        if ($this->gender) {
             $query->where('gender', $this->gender);
         }
 
-         // Ensure not to show users who have already been swiped
-         $query->whereNotSwiped()->where('id', '<>', auth()->id());
+        // Tìm kiếm theo tên
+        if ($this->searchTerm) {
+            $query->where('name', 'like', '%' . $this->searchTerm . '%');
+        }
 
-         // Get the filtered users
-         $users = $query->limit(10)->get();
-
-         return view('livewire.swiper.swiper', ['users' => $users]);
+        $this->users = $query->limit(10)->get();
     }
 
-    public function createConversation(){
-        $conversation=Conversation::create([
-            'sender_id'=>auth()->id(),
-            'receiver_id'=>$this->swipedUserId,
-            'match_id'=>$this->currentMatchId,
+    public function createConversation()
+    {
+        $conversation = Conversation::create([
+            'sender_id' => auth()->id(),
+            'receiver_id' => $this->swipedUserId,
+            'match_id' => $this->currentMatchId,
         ]);
 
         // dispatch an event
@@ -144,30 +150,19 @@ class Swiper extends Component
         $this->reset('swipedUserId', 'currentMatchId');
 
         //redirect to conversation
-          $this->redirect(route('chat', $conversation->id), navigate:true);
-        }
+        $this->redirect(route('chat', $conversation->id), navigate: true);
+    }
 
     public function render()
     {
-        $query = User::query();
-
-         // Apply age filtering
-         if ($this->ageFrom) {
-            $query->whereDate('birth_date', '<=', Carbon::now()->subYears($this->ageFrom)->toDateString());
+        // Nếu bộ lọc chưa được áp dụng, lấy danh sách người dùng mặc định
+        if (!$this->filtersApplied) {
+            $this->users = User::limit(10)
+                ->whereNotSwiped()
+                ->where('id', '<>', auth()->id())
+                ->get();
         }
 
-        if ($this->ageTo) {
-            $query->whereDate('birth_date', '>=', Carbon::now()->subYears($this->ageTo)->toDateString());
-        }
-
-        if ($this->gender) {
-            $query->where('gender', $this->gender);
-        }
-       // dd(auth()->user()->matches()->get());
-
-       // dd(SwipeMatch::first()->swipe2);
-        $users=User::limit(10)->whereNotSwiped()->where('id','<>',auth()->id())->get();
-        return view('livewire.swiper.swiper',['users'=>$users]);
-        //<button wire:click="refreshUsers">Refresh Users</button>
+        return view('livewire.swiper.swiper', ['users' => $this->users]);
     }
 }

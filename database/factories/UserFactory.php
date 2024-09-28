@@ -33,7 +33,7 @@ class UserFactory extends Factory
             'interests' => implode(',', $this->faker->words(3)), // Ví dụ: 'music, sports, travel'
             'desired_gender' => $this->faker->randomElement(['male', 'female']),
             'dating_goal' => $this->faker->sentence(),
-            'images' => 'https://example.com/image.jpg', // Link ảnh giả
+            'images' => 'https://randomuser.me/api/portraits/women/' . rand(0, 99) . '.jpg', // Link ảnh giả
             'is_fake' => false,
             'is_admin' => false,
          ];
