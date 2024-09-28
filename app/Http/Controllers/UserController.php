@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\UserImage;
 use Illuminate\Http\Request;
@@ -64,4 +65,6 @@ class UserController extends Controller {
         // Report successfully profile updating.
         return redirect()->route('dashboard')->with('success', 'Profile updated successfully!');
     }
+
+    
 }

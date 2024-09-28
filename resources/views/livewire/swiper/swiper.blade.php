@@ -1,11 +1,60 @@
-<div id="tinder" class="m-auto md:p-10 w-full h-full relative">
-    <div class="relative h-full md:h-[600px] w-full md:w-96 m-auto">
+<div id="tinder" class="m-auto md:p-10 w-full h-full relative flex">
 
+    <div class="flex flex-row mt-12">
+        <form wire:submit.prevent="applyFilters"
+            class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center space-y-6 w-72">
+            <!-- Search Input (Tìm kiếm tên người dùng) -->
+            <div class="w-full">
+                <label for="searchTerm">Search Name</label>
+                <input type="text" id="searchTerm" wire:model="searchTerm" placeholder="Enter name..."
+                    class="w-full border p-2 rounded-md">
+            </div>
+
+            <!-- Age From -->
+            <div class="w-full">
+                <label for="ageFrom">Age From</label>
+                <input type="number" id="ageFrom" min="0" max="120" wire:model="ageFrom"
+                    placeholder="Min Age" class="w-full border p-2 rounded-md">
+            </div>
+
+            <!-- Age To -->
+            <div class="w-full">
+                <label for="ageTo">Age To</label>
+                <input type="number" id="ageTo" min="0" max="120" wire:model="ageTo"
+                    placeholder="Max Age" class="w-full border p-2 rounded-md">
+            </div>
+
+            <!-- Gender Filter -->
+            <div class="w-full">
+                <label for="gender">Gender</label>
+                <select id="gender" wire:model="gender" class="w-full border p-2 rounded-md">
+                    <option value="">Any</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="w-full">
+                <button type="submit"
+                    class="w-full bg-tinder text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Filter</button>
+            </div>
+        </form>
+    </div>
+    <div class="relative h-full md:h-[600px] w-full md:w-96 m-auto flex items-center justify-center">
+
+        @if($users->isEmpty())
+        <!-- Nếu không có người dùng, hiển thị thông báo -->
+
+            <div class="col-span-full text-center ">
+                <p class="text-gray-500">Không tìm thấy người dùng nào phù hợp.</p>
+            </div>
+
+    @else
         @foreach ($users as $i => $user)
-            <div @swipedright.window="console.log('right')"
-                 @swipedleft.window="console.log('left')"
-                 @swipedup.window="console.log('up')"
-                wire:key="swipe-{{ $user->id }}" x-data="{
+            <div @swipedright.window="console.log('right')" @swipedleft.window="console.log('left')"
+                @swipedup.window="console.log('up')" wire:key="swipe-{{ $user->id }}" x-data="{
                     profile: false,
                     isSwiping: false,
                     swipingLeft: false,
@@ -560,6 +609,7 @@
             </div>
             {{-- End for --}}
         @endforeach
+    @endif
     </div>
     {{-- Match found. --}}
     <div x-data="{ modalOpen: false }" @keydown.escape.window="modalOpen = false"

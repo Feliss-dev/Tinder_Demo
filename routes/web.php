@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Livewire\Chat\Chat;
 use App\Livewire\Chat\Index;
+use App\Livewire\Swiper\Swiper;
+use App\Models\Swipe;
 use App\Models\User;
 
 /*
@@ -30,6 +32,9 @@ Route::middleware('auth')->group(function () {
    Route::get('/dashboard', [UserController::class, 'userDashboard'])
         ->middleware('verified')
         ->name('dashboard');
+
+        Route::get('/filter', Swiper::class)->name('filter');
+
 
         Route::get('/dashboard/chat', Index::class)->name('chat.index');
         Route::get('/dashboard/chat/{chat}', Chat::class)->name('chat');
