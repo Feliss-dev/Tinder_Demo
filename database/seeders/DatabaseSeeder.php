@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Swipe;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,9 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-
-         $users = \App\Models\User::factory(20)->create([
+         $users = User::factory(200)->create([
             'is_fake' =>true,
             'is_admin' => false,
          ]);
@@ -29,7 +28,7 @@ class DatabaseSeeder extends Seeder
         //  \App\Models\Message::factory(5)->create();
 
 
-        $testUser = \App\Models\User::factory()->create([
+        $testUser = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
             'is_admin' => false,
