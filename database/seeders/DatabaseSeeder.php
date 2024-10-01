@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
 
         #create swipes for test user
 
-        foreach ($users as $key => $user){
+        foreach ($users as $user){
             Swipe::factory()->create(['user_id'=>$user->id, 'swiped_user_id'=>$testUser->id]);
         }
     }
