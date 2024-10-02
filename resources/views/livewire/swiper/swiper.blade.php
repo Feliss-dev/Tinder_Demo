@@ -1,4 +1,4 @@
-<div id="tinder" class="m-auto md:p-10 w-full h-full relative flex">
+<div id="tinder" class="m-auto md:pl-10 md:pr-10 w-full h-full relative flex">
 
     <div class="flex flex-row mt-12">
         <form wire:submit.prevent="applyFilters"

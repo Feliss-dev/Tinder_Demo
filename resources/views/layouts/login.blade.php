@@ -53,10 +53,10 @@
 
     <body class="font-sans text-gray-900 antialiased">
         <div class="relative min-h-screen
-                            flex flex-col sm:justify-center items-center
-                            pt-6 sm:pt-0
-                            bg-gradient-to-tr from-pink-400 to-purple-400
-                            overflow-hidden">
+                    flex flex-col sm:justify-center items-center
+                    pt-6 sm:pt-0
+                    bg-gradient-to-tr from-pink-400 to-purple-400
+                    overflow-hidden">
             <div class="wave-body">
                 <div class="wave"></div>
                 <div class="wave"></div>
