@@ -1,13 +1,12 @@
 <div class="h-full">
     <section x-data="{ tab: {{request()->routeIs('chat.index') || request()->routeIs('chat') ? '2' : '1'}}}"
              @match-found.window="$wire.$refresh()"
-             x-init="
-             Echo.private('users.{{auth()->id()}}')
-                 .notification((notification) => {
-                 if (notification['type']=='App\\Notifications\\MessageSentNotification' ){
-                     $wire.$refresh();
-                 }
-             })"
+             x-init="Echo.private('users.{{auth()->id()}}')
+                     .notification((notification) => {
+                        if (notification['type']=='App\\Notifications\\MessageSentNotification') {
+                             $wire.$refresh();
+                        }
+                     })"
             class="mb-auto overflow-y-auto h-full relative w-full">
 
         <!-- Tab Buttons -->
@@ -63,7 +62,7 @@
             <!-- Messages -->
             <aside class="px-2" x-cloak x-show="tab=='2'">
                 <ul>
-                    @foreach ($conversations as $i=> $conversation )
+                    @foreach ($conversations as $i => $conversation)
                         @php
                             $lastMessage = $conversation->messages()?->latest()->first();
                         @endphp
