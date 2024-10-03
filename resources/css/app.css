@@ -13,4 +13,12 @@
                bg-gradient-to-r from-[#B200FF] to-[#FF00DC]
                hover:bg-gradient-to-r hover:from-[#8700C6] hover:to-[#CC00B0];
     }
+
+    .tab-btn-unselected {
+        @apply font-normal
+    }
+
+    .tab-btn-selected {
+        @apply font-bold border-b-2;
+    }
 }
