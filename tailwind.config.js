@@ -14,8 +14,25 @@ export default {
             fontFamily: {
                 sans: ['nunito', ...defaultTheme.fontFamily.sans],
             },
+
+            animation: {
+                'background-test': 'background-test 1s ease infinite',
+            },
+
+            keyframes: {
+                'background-test': {
+                    '0%, 100%': {
+                        'background-color': 'red',
+                    },
+                    '50%': {
+                        'background-color': 'blue',
+                    },
+                }
+            }
         },
     },
 
-    plugins: [forms],
+    plugins: [
+        forms,
+    ],
 };

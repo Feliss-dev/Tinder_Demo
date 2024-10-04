@@ -3,7 +3,14 @@
 @tailwind utilities;
 
 @layer components {
-    .bg-tinder{
+    .bg-tinder {
         @apply bg-gradient-to-r from-pink-500 via-red-500 to-rose-500;
+    }
+
+    .bg-register {
+        @apply mt-8 w-full py-2 outline-none font-medium rounded-lg
+               text-white
+               bg-gradient-to-r from-[#B200FF] to-[#FF00DC]
+               hover:bg-gradient-to-r hover:from-[#8700C6] hover:to-[#CC00B0];
     }
 }

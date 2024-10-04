@@ -19,13 +19,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
     </head>
-    <body style="background-image: url(' {{asset('assets/TinderApp.webp')}}'); background-size:cover; background-attachment:fixed;"
-     class="antialiased">
+    <body style="background-image: url(' {{asset('assets/TinderApp.webp')}}'); background-size:cover; background-attachment:fixed;" class="antialiased">
         <div class="relative min-h-screen bg-black/40 flex flex-col">
-
-                <livewire:welcome.navigation />
-
-
+            <livewire:welcome.navigation />
 
             <nav x-data="{ open: false }" class="sm:sticky top-0 left-0 right-0 w-full bg-gradient-to-b from-black/90 to-black/0 pt-2">
                 <!-- Primary Navigation Menu -->
@@ -121,38 +117,34 @@
                     Create an account
                 </a>
             </center>
-            </div>
-
-            {{-- Testimonials --}}
-            <main class="bg-white w-full px-8 lg:px-24 py-9 mx-auto">
-
-                <section class="grid grid-cols-2 lg:grid-cols-3 gap-5">
-
-                    @for ($i = 0; $i < 5; $i++)
-
-
-
-                    <div class="border rounded-lg p-3 h-96 shadow overflow-hidden">
-
-                    <div class="flex justify-between items-center">
-                        <h5 class="font-bold my-3">{{fake()->name}}</h5>
-
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-quote w-10 h-10 text-gray-700" viewBox="0 0 16 16">
-                            <path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388q0-.527.062-1.054.093-.558.31-.992t.559-.683q.34-.279.868-.279V3q-.868 0-1.52.372a3.3 3.3 0 0 0-1.085.992 4.9 4.9 0 0 0-.62 1.458A7.7 7.7 0 0 0 9 7.558V11a1 1 0 0 0 1 1zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612q0-.527.062-1.054.094-.558.31-.992.217-.434.559-.683.34-.279.868-.279V3q-.868 0-1.52.372a3.3 3.3 0 0 0-1.085.992 4.9 4.9 0 0 0-.62 1.458A7.7 7.7 0 0 0 3 7.558V11a1 1 0 0 0 1 1z"/>
-                          </svg>
-                    </div>
-
-                <hr class="font-bold my-2">
-
-                <p>{{fake()->sentence(50)}}</p>
-                    </div>
-
-                    @endfor
-                </section>
-            </main>
-
-
         </div>
+
+        {{-- Testimonials --}}
+        <main class="bg-white w-full px-8 lg:px-24 py-9 mx-auto">
+
+            <section class="grid grid-cols-2 lg:grid-cols-3 gap-5">
+
+                @for ($i = 0; $i < 6; $i++)
+                    <div class="border rounded-lg p-3 h-96 shadow overflow-hidden">
+                        <div class="flex justify-between items-center">
+                            <h5 class="font-bold my-3">{{fake()->name}}</h5>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-quote w-10 h-10 text-gray-700" viewBox="0 0 16 16">
+                                <path d="M12 12a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1h-1.388q0-.527.062-1.054.093-.558.31-.992t.559-.683q.34-.279.868-.279V3q-.868 0-1.52.372a3.3 3.3 0 0 0-1.085.992 4.9 4.9 0 0 0-.62 1.458A7.7 7.7 0 0 0 9 7.558V11a1 1 0 0 0 1 1zm-6 0a1 1 0 0 0 1-1V8.558a1 1 0 0 0-1-1H4.612q0-.527.062-1.054.094-.558.31-.992.217-.434.559-.683.34-.279.868-.279V3q-.868 0-1.52.372a3.3 3.3 0 0 0-1.085.992 4.9 4.9 0 0 0-.62 1.458A7.7 7.7 0 0 0 3 7.558V11a1 1 0 0 0 1 1z"/>
+                            </svg>
+                        </div>
+
+                        <hr class="font-bold my-2">
+
+                        {{fake()->image}}
+
+                        <p>{{fake()->sentence(50)}}</p>
+                    </div>
+
+                @endfor
+            </section>
+        </main>
+
         @livewireScripts
     </body>
 </html>
