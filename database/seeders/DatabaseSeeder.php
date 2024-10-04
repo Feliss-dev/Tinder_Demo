@@ -35,6 +35,13 @@ class DatabaseSeeder extends Seeder
             'is_admin' => false,
         ]);
 
+        $testAdmin = \App\Models\User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'is_admin' => true,
+        ]);
+
+
         #create swipes for test user
 
         foreach ($users as $key => $user){

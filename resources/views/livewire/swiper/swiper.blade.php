@@ -263,7 +263,7 @@
                         </span>
 
                         <span x-cloak :class="{ 'invisible': !swipingUp }"
-                            class="border-2 rounded-md p-1 px-2 border-green-500 text-green-500 text-4xl -rotate-12 capitalize font-extrabold bottom-48 max-w-fit inset-x-0 mx-auto absolute z-5">
+                            class="border-2 rounded-md p-1 px-2 border-green-500 text-green-500 text-4xl -rotate-12 capitalize font-extrabold bottom-48 max-w-fit inset-x-0 mx-auto absolute z-30">
                             SUPER LIKE
                         </span>
                     </div>

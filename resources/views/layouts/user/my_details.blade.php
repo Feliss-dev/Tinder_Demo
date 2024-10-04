@@ -1,135 +1,295 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- Favicon --}}
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
+            <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+            {{-- Favicon --}}
+            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+            <link rel="manifest" href="/site.webmanifest">
 
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
-    <!-- Add these to your <head> section -->
-    <link href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.3/dist/css/lightbox.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.3/dist/js/lightbox.min.js"></script>
+            <!-- Fonts -->
+            <link rel="preconnect" href="https://fonts.bunny.net">
+            <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <style>
-        .container {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
+            <!-- Scripts -->
+            @vite(['resources/css/app.css', 'resources/js/app.js'])
+            @livewireStyles
 
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-        h1 {
-            font-size: 2rem;
-            color: #ff5864;
-        }
-        img {
-            border-radius: 10px;
-            margin: 0.5rem;
-        }
-        .btn {
-            padding: 0.5rem 1rem;
-            border:none;
-            border-radius: 30px;
-            color:white;
-            background-color: #ff5864;
-            font-size: 1rem;
-            cursor: pointer;
-            margin: 1rem 0.5rem;
-            transition: background-color 0.3s;
-        }
-        .btn:hover{
-            background-color: #ff404e;
 
-        }
-        .btn-secondary {
-            background-color: #2ecc71;
-        }
-        .btn-danger {
-            background-color: #e74c3c;
-        }
-        .btn-danger:hover {
-            background-color: #c0392b;
-        }
-    </style>
+
+
 </head>
 <body>
     <livewire:layout.navigation />
-    <div class="container">
-        <h1>{{ $user->name }}'s Profile</h1>
 
-        <!-- Display user information -->
-        <div>
-            <p><strong>Email:</strong> {{ $user->email }}</p>
-            <p><strong>Birth Date:</strong> {{ $user->birth_date }}</p>
-            <p><strong>Gender:</strong> {{ $user->gender }}</p>
-            <p><strong>Bio:</strong> {{ $user->bio }}</p>
-            <p><strong>Interests:</strong> {{ $user->preferences->interests ?? 'N/A' }}</p>
-            <p><strong>Desired Gender:</strong> {{ $user->preferences->desired_gender ?? 'N/A' }}</p>
-            <p><strong>Dating Goal:</strong> {{ $user->preferences->dating_goal ?? 'N/A' }}</p>
-        </div>
+    <div class="wrapper">
+        <div class="container">
+            <div class="profile">
+                <header>
+                    {{ $user->name }}'s Profile
+                </header>
 
-        <!-- Display uploaded images -->
-        <div>
-            <h4>Uploaded Images: </h4>
-            @php
-            $images = json_decode($user->images, true); // Giải mã JSON thành mảng
-        @endphp
-
-        @if($images && count($images) > 0)
-            @foreach($images as $image)
-                @if(!empty($image)) <!-- Chỉ hiển thị nếu có đường dẫn ảnh -->
-                <div style="display: inline-block; margin-right: 10px;">
-                    <!-- Hiển thị hình ảnh nhỏ và phóng to khi click -->
-                    <a href="{{ asset('storage/' . $image) }}" data-lightbox="user-gallery" data-title="Click the download button below to save the image.">
-                        <img src="{{ asset('storage/' . $image) }}" alt="User Image" width="150" height="auto" style="cursor: zoom-in;">
-                    </a>
-                    
+                <div class="main-info">
+                    <p><strong>Email:</strong> {{ $user->email }}</p>
+                    <p><strong>Birth Date:</strong> {{ $user->birth_date }}</p>
+                    <p><strong>Gender:</strong> {{ $user->gender }}</p>
+                    <p><strong>Bio:</strong> {{ $user->bio }}</p>
+                    <p><strong>Interests:</strong> {{ $user->preferences->interests ?? 'N/A' }}</p>
+                    <p><strong>Desired Gender:</strong> {{ $user->preferences->desired_gender ?? 'N/A' }}</p>
+                    <p><strong>Dating Goal:</strong> {{ $user->preferences->dating_goal ?? 'N/A' }}</p>
                 </div>
-                @endif
-            @endforeach
-        @else
-            <p>No images uploaded yet.</p>
-        @endif
 
-        </div>
+                <!-- AlpineJS-powered image slider and modal -->
+                <div x-data="{
+                    currentSlide: 0,
+                    images: [
+                        @php
+                            $images = json_decode($user->images, true); // Fetch images from the database
+                        @endphp
 
-        <!-- Nút điều hướng -->
-        <div>
-            <a href=
-            "{{ route('dashboard') }}"class="btn btn-secondary">BACK</a>
-            <a href=
-             "{{ route('dashboard') }}"
-            class="btn">EDIT</a>
+                        @if($images && count($images) > 0)
+                            @foreach($images as $image)
+                                @if(!empty($image))
+                                    { id: {{ $loop->index }}, url: '{{ asset('storage/' . $image) }}' },
+                                @endif
+                            @endforeach
+                        @endif
+                    ],
+                    showModal: false,
+                    selectedImage: null,
+                    nextSlide() {
+                        if (this.currentSlide < this.images.length - 1) {
+                            this.currentSlide++;
+                        } else {
+                            this.currentSlide = 0;
+                        }
+                    },
+                    prevSlide() {
+                        if (this.currentSlide > 0) {
+                            this.currentSlide--;
+                        } else {
+                            this.currentSlide = this.images.length - 1;
+                        }
+                    },
+                    openModal(imageUrl) {
+                        this.selectedImage = imageUrl;
+                        this.showModal = true;
+                    },
+                    closeModal() {
+                        this.showModal = false;
+                        this.selectedImage = null;
+                    }
+                }">
+                    <!-- Image Slider -->
+                    <div class="image">
+                        <div class="image-slider" :style="'transform: translateX(-' + (currentSlide * 100) + '%);'">
+                            <template x-for="image in images" :key="image.id">
+                                <img :src="image.url" alt="User Image" @click="openModal(image.url)" width="150" height="auto" style="cursor: zoom-in;">
+                            </template>
+                        </div>
 
-            <form action=
-            {{-- "{{ route('delete_user', $user->id) }}" --}}
-            method="POST" style="display:inline-block;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete your profile?');">DELETE</button>
-            </form>
+                        <!-- Slider controls -->
+                        <div class="slider-controls">
+                            <button @click="prevSlide">Prev</button>
+                            <button @click="nextSlide">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Modal for image display -->
+                    <div class="modal" x-show="showModal" @click.self="closeModal">
+                        <div class="modal-content">
+                            <button class="close-btn" @click="closeModal">&times;</button>
+                            <img :src="selectedImage" alt="Enlarged Image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-control">
+                    <button><a href="#">Edit Profile</a></button>
+                    <button><a href="#">Delete Profile</a></button>
+                </div>
+            </div>
         </div>
     </div>
+
     @livewireScripts
 </body>
+<style>
+    /* Basic styling adjustments for better user experience */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    .wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f0f0f0;
+    }
+
+    .container {
+        width: 80%;
+        max-width: 1200px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .profile {
+        display: grid;
+        grid-template-areas:
+            "header header"
+            "main-info image"
+            "button-control button-control";
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
+    }
+
+    header {
+        grid-area: header;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+    }
+
+    .main-info {
+        grid-area: main-info;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 30px;
+    }
+
+    .main-info p {
+        font-size: 16px;
+        color: #666;
+    }
+
+    /* Image slider styling */
+    .image {
+        grid-area: image;
+        overflow: hidden;
+        position: relative;
+        height: 400px;
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .image-slider {
+        display: flex;
+        transition: transform 0.5s ease;
+    }
+
+    .image-slider img {
+        min-width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .slider-controls {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+    }
+
+    .slider-controls button {
+        background-color: rgba(0, 0, 0, 0.5);
+        border: none;
+        padding: 10px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .button-control {
+        grid-area: button-control;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    button {
+        padding: 10px 20px;
+        margin-top: 20px;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        color: white;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    button a {
+        color: white;
+        text-decoration: none;
+    }
+
+    /* Modal styling */
+    .modal {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .modal-content {
+        max-width: 90%;
+        max-height: 90%;
+        position: relative;
+    }
+
+    .modal-content img {
+        width: 400px;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #ff0000;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 18px;
+        border-radius: 5px;
+    }
+
+    .close-btn:hover {
+        background-color: #cc0000;
+    }
+</style>
 </html>
