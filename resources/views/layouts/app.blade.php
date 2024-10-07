@@ -22,26 +22,32 @@
         @livewireStyles
     </head>
 
-    <body class="font-sans antialiased flex flex-col">
+    <body class="font-sans antialiased flex flex-col w-full h-screen overflow-hidden">
         <livewire:layout.navigation />
 
-        <div class="grid grid-cols-12 h-full w-full">
+        <!-- Main Layout -->
+        <div class="w-full flex-auto overflow-hidden grid grid-cols-4">
             <!-- Sidebar -->
-            <div class="col-span-3">
-                <!-- Display current user avatar, name, bio -->
-                <div class="h-16 p-2.5 bg-gradient-to-r from-[#266DD3] to-[#17BEBB] w-full">
+            <div class="h-full flex flex-col">
+                <div class="h-16 p-2.5 w-full
+                            flex-shrink-0
+                            bg-gradient-to-r from-[#266DD3] to-[#17BEBB]
+                            flex flex-row">
                     <x-avatar class="w-10 h-10" src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->name }}" />
 
-                    <div class="h-full bg-red-600">
+                    <div class="ml-2 h-full flex-auto flex-shrink-0">
                         <p class="text-white text-lg">{{auth()->user()->name}}</p>
-                        <p class="text-white text-xs whitespace-nowrap overflow-hidden text-ellipsis w-full border-black">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAA</p>
+                        <!-- <p class="text-white text-xs whitespace-nowrap overflow-hidden text-ellipsis w-full border-black">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAA</p> -->
                     </div>
                 </div>
 
-                <livewire:components.tabs />
+                <div class="basis-full">
+                    <livewire:components.tabs />
+                </div>
             </div>
 
-            <div class="col-span-9">
+            <!-- Swiper -->
+            <div class="col-span-3">
                 <main class="flex-1 flex-col overflow-y-auto hidden md:flex">
                     @livewire('home')
                 </main>
