@@ -29,16 +29,12 @@
             <!-- Sidebar -->
             <div class="col-span-3">
                 <!-- Display current user avatar, name, bio -->
-                <div class="h-16 p-2.5 bg-gradient-to-r from-[#266DD3] to-[#17BEBB]">
-                    <div class="flex flex-row w-full h-full">
-                        <div class="h-full flex items-center">
-                            <x-avatar class="w-10 h-10" src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->name }}" />
-                        </div>
+                <div class="h-16 p-2.5 bg-gradient-to-r from-[#266DD3] to-[#17BEBB] w-full">
+                    <x-avatar class="w-10 h-10" src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->name }}" />
 
-                        <div class="ml-2 max-w-full h-full bg-red-600 flex flex-col">
-                            <p class="text-white text-lg">{{auth()->user()->name}}</p>
-                            <p class="text-white text-xs overflow-ellipsis overflow-hidden max-w-full whitespace-nowrap">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</p>
-                        </div>
+                    <div class="h-full bg-red-600">
+                        <p class="text-white text-lg">{{auth()->user()->name}}</p>
+                        <p class="text-white text-xs whitespace-nowrap overflow-hidden text-ellipsis w-full border-black">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAA</p>
                     </div>
                 </div>
 
