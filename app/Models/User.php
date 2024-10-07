@@ -50,8 +50,26 @@ class User extends Authenticatable {
         return $this->is_fake;
     }
 
+
+    public function languages(){
+        return $this->belongsToMany(Language::class, 'language_users', 'user_id', 'language_id');
+    }
+
+    public function interests(){
+        return $this->belongsToMany(Interest::class, 'interest_users', 'user_id', 'interest_id');
+    }
+
+    public function datingGoals(){
+        return $this->belongsTo(DatingGoal::class, 'dating_goal_id');
+    }
     public function images(){
         return $this->hasMany(UserImage::class);
+    }
+    public function desiredGenders(){
+        return $this->belongsTo(Gender::class, 'desired_gender_id');
+    }
+    public function genders(){
+        return $this->belongsTo(Gender::class, 'gender_id');
     }
 
     public function preferences(){

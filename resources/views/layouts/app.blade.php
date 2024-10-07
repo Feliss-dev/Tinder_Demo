@@ -21,8 +21,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
     </head>
-    <body class="font-sans antialiased flex flex-col h-screen">
-        <div class="min-h-screen bg-gray-100">
+    <body class="font-sans antialiased flex flex-col h-screen overflow-visible">
+        <div class="min-h-screen bg-gray-100 ">
             <livewire:layout.navigation />
             {{-- This is a Livewire component.
             Livewire is a full-stack framework for Laravel that allows you to build
@@ -43,9 +43,9 @@
             @endif
 
 
-            <div class="flex flex-1">
+            <div class="flex flex-1 ">
                 {{-- Siderbar --}}
-                <aside class=" flex flex-col  bg-gray-100 sm:w-[25rem] w-full">
+                <aside class=" flex flex-col  bg-gray-100 w-full md:w-[25rem]">
                     <header class="bg-tinder py-5 flex items-center p-2.5 sticky top-0">
                         {{-- Avatar --}}
                         <x-avatar class="w-10 h-10" src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->name }}" />

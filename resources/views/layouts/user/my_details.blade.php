@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 
-    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-        <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-            <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-            {{-- Favicon --}}
-            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-            <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-            <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-            <link rel="manifest" href="/site.webmanifest">
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-            <!-- Fonts -->
-            <link rel="preconnect" href="https://fonts.bunny.net">
-            <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    {{-- Favicon --}}
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 
-            <!-- Scripts -->
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
-            @livewireStyles
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
 
 
 
 
 </head>
+
 <body>
     <livewire:layout.navigation />
 
@@ -39,11 +41,37 @@
                 <div class="main-info">
                     <p><strong>Email:</strong> {{ $user->email }}</p>
                     <p><strong>Birth Date:</strong> {{ $user->birth_date }}</p>
-                    <p><strong>Gender:</strong> {{ $user->gender }}</p>
+                    <p><strong>Gender:</strong> {{ optional($user->gender)->name ?: 'N/A' }}</p>
                     <p><strong>Bio:</strong> {{ $user->bio }}</p>
-                    <p><strong>Interests:</strong> {{ $user->preferences->interests ?? 'N/A' }}</p>
-                    <p><strong>Desired Gender:</strong> {{ $user->preferences->desired_gender ?? 'N/A' }}</p>
-                    <p><strong>Dating Goal:</strong> {{ $user->preferences->dating_goal ?? 'N/A' }}</p>
+                    <!-- Interests -->
+                    <p><strong>Interests:</strong>
+                        @if ($user->interests->isNotEmpty())
+                            <ul class="list-disc mb-6">
+                                @foreach ($user->interests as $interest)
+                                    <li>{{ $interest->name }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            N/A
+                        @endif
+                    </p>
+                    <!-- Desired Gender -->
+                    <p><strong>Desired Gender:</strong> {{ optional($user->desiredGender)->name ?: 'N/A' }}</p>
+
+                    <p><strong>Dating Goal:</strong> {{ optional($user->datingGoal)->name ?: 'N/A' }}</p>
+
+                    {{-- Languages --}}
+                    <p><strong>Languages:</strong>
+                        @if ($user->languages->isNotEmpty())
+                            <ul class="list-disc mb-6 ">
+                                @foreach ($user->languages as $language)
+                                    <li class="inline-block">{{ $language->name }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            N/A
+                        @endif
+                    </p>
                 </div>
 
                 <!-- AlpineJS-powered image slider and modal -->
@@ -51,15 +79,12 @@
                     currentSlide: 0,
                     images: [
                         @php
-                            $images = json_decode($user->images, true); // Fetch images from the database
-                        @endphp
+$images = json_decode($user->images, true); // Fetch images from the database @endphp
 
-                        @if($images && count($images) > 0)
-                            @foreach($images as $image)
-                                @if(!empty($image))
-                                    { id: {{ $loop->index }}, url: '{{ asset('storage/' . $image) }}' },
-                                @endif
-                            @endforeach
+                        @if ($images && count($images) > 0) @foreach ($images as $image)
+                                @if (!empty($image))
+                                    { id: {{ $loop->index }}, url: '{{ asset('storage/' . $image) }}' }, @endif
+                        @endforeach
                         @endif
                     ],
                     showModal: false,
@@ -91,7 +116,8 @@
                     <div class="image">
                         <div class="image-slider" :style="'transform: translateX(-' + (currentSlide * 100) + '%);'">
                             <template x-for="image in images" :key="image.id">
-                                <img :src="image.url" alt="User Image" @click="openModal(image.url)" width="150" height="auto" style="cursor: zoom-in;">
+                                <img :src="image.url" alt="User Image" @click="openModal(image.url)"
+                                    width="150" height="auto" style="cursor: zoom-in;">
                             </template>
                         </div>
 
@@ -112,7 +138,7 @@
                 </div>
 
                 <div class="button-control">
-                    <button><a href="#">Edit Profile</a></button>
+                    <button><a href="{{ route('info.update') }}">Edit Profile</a></button>
                     <button><a href="#">Delete Profile</a></button>
                 </div>
             </div>
@@ -292,4 +318,5 @@
         background-color: #cc0000;
     }
 </style>
+
 </html>

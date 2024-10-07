@@ -1,4 +1,4 @@
-<div class="h-full">
+<div class="h-full ">
     <section
         x-data="{ tab: {{request()->routeIs('chat.index') || request()->routeIs('chat') ? '2' : '1'}}}"
         @match-found.window="$wire.$refresh()"

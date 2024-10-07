@@ -18,11 +18,20 @@ return new class extends Migration
             $table->tinyInteger('is_admin')->default(0);
 
             $table->date('birth_date')->required();
-            $table->string('gender')->required();
+
             $table->text('bio')->required();
-            $table->string('interests')->required();
-            $table->string('desired_gender')->required();
-            $table->string('dating_goal')->required();
+
+            $table->unsignedBigInteger('gender_id')->nullable();
+            $table->foreign('gender_id')->references('id')->on('genders')->onUpdate('cascade');
+
+            $table->unsignedBigInteger('desired_gender_id')->nullable();
+            $table->foreign('desired_gender_id')->references('id')->on('desired_genders')->onUpdate('cascade');
+
+            $table->unsignedBigInteger('dating_goal_id')->nullable();
+            $table->foreign('dating_goal_id')->references('id')->on('dating_goals')->onUpdate('cascade');
+
+
+
             $table->string('images')->required();
             $table->boolean('is_fake')->default(false);
             $table->timestamp('email_verified_at')->required();
