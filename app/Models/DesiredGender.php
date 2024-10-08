@@ -9,6 +9,6 @@ class DesiredGender extends Model
 {
     use HasFactory;
     public function users(){
-        return $this->hasMany(User::class, 'desired_gender_id', );
+        return $this->belongsToMany(User::class, 'desired_gender_users', 'user_id','desired_gender_id' );
     }
 }

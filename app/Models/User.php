@@ -60,16 +60,16 @@ class User extends Authenticatable {
     }
 
     public function datingGoals(){
-        return $this->belongsTo(DatingGoal::class, 'dating_goal_id');
+        return $this->belongsToMany(DatingGoal::class, 'dating_goal_users', 'user_id', 'dating_goal_id');
     }
     public function images(){
         return $this->hasMany(UserImage::class);
     }
     public function desiredGenders(){
-        return $this->belongsTo(Gender::class, 'desired_gender_id');
+        return $this->belongsToMany(Gender::class, 'desired_gender_users', 'user_id','desired_gender_id');
     }
     public function genders(){
-        return $this->belongsTo(Gender::class, 'gender_id');
+        return $this->belongsToMany(Gender::class, 'genders', 'user_id', 'gender_id');
     }
 
     public function preferences(){

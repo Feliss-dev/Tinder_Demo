@@ -9,6 +9,6 @@ class DatingGoal extends Model
 {
     use HasFactory;
     public function users(){
-        return $this->belongsToMany(User::class, 'dating_goal_id');
+        return $this->belongsToMany(User::class, 'dating_goal_users', 'user_id', 'dating_goal_id');
     }
 }

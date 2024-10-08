@@ -21,16 +21,6 @@ return new class extends Migration
 
             $table->text('bio')->required();
 
-            $table->unsignedBigInteger('gender_id')->nullable();
-            $table->foreign('gender_id')->references('id')->on('genders')->onUpdate('cascade');
-
-            $table->unsignedBigInteger('desired_gender_id')->nullable();
-            $table->foreign('desired_gender_id')->references('id')->on('desired_genders')->onUpdate('cascade');
-
-            $table->unsignedBigInteger('dating_goal_id')->nullable();
-            $table->foreign('dating_goal_id')->references('id')->on('dating_goals')->onUpdate('cascade');
-
-
 
             $table->string('images')->required();
             $table->boolean('is_fake')->default(false);

@@ -38,38 +38,73 @@
                     {{ $user->name }}'s Profile
                 </header>
 
-                <div class="main-info">
-                    <p><strong>Email:</strong> {{ $user->email }}</p>
-                    <p><strong>Birth Date:</strong> {{ $user->birth_date }}</p>
-                    <p><strong>Gender:</strong> {{ optional($user->gender)->name ?: 'N/A' }}</p>
-                    <p><strong>Bio:</strong> {{ $user->bio }}</p>
-                    <!-- Interests -->
-                    <p><strong>Interests:</strong>
-                        @if ($user->interests->isNotEmpty())
-                            <ul class="list-disc mb-6">
-                                @foreach ($user->interests as $interest)
-                                    <li>{{ $interest->name }}</li>
-                                @endforeach
-                            </ul>
+                <div class="main-info bg-gray-50 p-4 rounded-lg shadow-md">
+                    <p class="mb-2"><strong>Email:</strong> {{ $user->email }}</p>
+                    <p class="mb-2"><strong>Birth Date:</strong> {{ $user->birth_date }}</p>
+
+                    <p class="mb-2"><strong>Gender:</strong>
+                        @if ($user->genders->isNotEmpty())
+                        <ul class="list-disc ml-4">
+                            @foreach ($user->genders as $gender)
+                            <li>{{ $gender->name }}</li>
+                            @endforeach
+                        </ul>
                         @else
-                            N/A
+                        N/A
                         @endif
                     </p>
-                    <!-- Desired Gender -->
-                    <p><strong>Desired Gender:</strong> {{ optional($user->desiredGender)->name ?: 'N/A' }}</p>
 
-                    <p><strong>Dating Goal:</strong> {{ optional($user->datingGoal)->name ?: 'N/A' }}</p>
+                    <p class="mb-2"><strong>Bio:</strong> {{ $user->bio }}</p>
 
-                    {{-- Languages --}}
-                    <p><strong>Languages:</strong>
-                        @if ($user->languages->isNotEmpty())
-                            <ul class="list-disc mb-6 ">
-                                @foreach ($user->languages as $language)
-                                    <li class="inline-block">{{ $language->name }}</li>
-                                @endforeach
-                            </ul>
+                    <!-- Interests -->
+                    <p class="mb-2"><strong>Interests:</strong>
+                        @if ($user->interests->isNotEmpty())
+                        <ul class="list-disc ml-4">
+                            @foreach ($user->interests as $interest)
+                            <li>{{ $interest->name }}</li>
+                            @endforeach
+                        </ul>
                         @else
-                            N/A
+                        N/A
+                        @endif
+                    </p>
+
+                    <!-- Desired Gender -->
+                    <p class="mb-2"><strong>Desired Gender:</strong>
+                        @if ($user->desiredGenders->isNotEmpty())
+                        <ul class="list-disc ml-4">
+                            @foreach ($user->desiredGenders as $desiredGender)
+                            <li>{{ $desiredGender->name }}</li>
+                            @endforeach
+                        </ul>
+                        @else
+                        N/A
+                        @endif
+                    </p>
+
+                    <!-- Dating Goal -->
+                    <p class="mb-2"><strong>Dating Goal:</strong>
+                        @if ($user->datingGoals->isNotEmpty())
+                        <ul class="list-disc ml-4">
+                            @foreach ($user->datingGoals as $datingGoal)
+                            <li>{{ $datingGoal->name }}</li>
+                            @endforeach
+                        </ul>
+                        @else
+                        N/A
+                        @endif
+                    </p>
+
+                    <!-- Languages -->
+                    <p class="mb-2"><strong>Languages:</strong>
+                        @if ($user->languages->isNotEmpty())
+                        <ul class="list-disc ml-4">
+                            @foreach ($user->languages as $language)
+                            <li>{{ $language->name }}</li>
+                            @endforeach
+                        </ul>
+                        @else
+                        N/A
                         @endif
                     </p>
                 </div>
@@ -79,29 +114,25 @@
                     currentSlide: 0,
                     images: [
                         @php
-$images = json_decode($user->images, true); // Fetch images from the database @endphp
+                            $images = json_decode($user->images, true); // Fetch images from the database
+                        @endphp
 
-                        @if ($images && count($images) > 0) @foreach ($images as $image)
+                        @if ($images && count($images) > 0)
+                            @foreach ($images as $image)
                                 @if (!empty($image))
-                                    { id: {{ $loop->index }}, url: '{{ asset('storage/' . $image) }}' }, @endif
-                        @endforeach
+                                    { id: {{ $loop->index }}, url: '{{ asset('storage/' . $image) }}' },
+                                @endif
+                            @endforeach
                         @endif
                     ],
                     showModal: false,
                     selectedImage: null,
+                    zoomLevel: 1.5, // Đặt giá trị mặc định lớn hơn 1 để ảnh lớn hơn khi mở
                     nextSlide() {
-                        if (this.currentSlide < this.images.length - 1) {
-                            this.currentSlide++;
-                        } else {
-                            this.currentSlide = 0;
-                        }
+                        this.currentSlide = (this.currentSlide + 1) % this.images.length; // Sử dụng modulo để quay lại đầu
                     },
                     prevSlide() {
-                        if (this.currentSlide > 0) {
-                            this.currentSlide--;
-                        } else {
-                            this.currentSlide = this.images.length - 1;
-                        }
+                        this.currentSlide = (this.currentSlide - 1 + this.images.length) % this.images.length; // Sử dụng modulo để quay lại cuối
                     },
                     openModal(imageUrl) {
                         this.selectedImage = imageUrl;
@@ -110,8 +141,23 @@ $images = json_decode($user->images, true); // Fetch images from the database @e
                     closeModal() {
                         this.showModal = false;
                         this.selectedImage = null;
+                    },
+                    zoomIn() {
+                        this.zoomLevel += 0.1; // Tăng zoom level
+                    },
+                    zoomOut() {
+                        this.zoomLevel = Math.max(1, this.zoomLevel - 0.1); // Đảm bảo zoom level không thấp hơn 1
+                    },
+                    deleteImage(imageId) {
+                        if (confirm('Are you sure you want to delete this image?')) {
+                            // Thực hiện logic xóa hình ảnh tại đây
+                            alert('Delete image with ID: ' + imageId);
+                        }
                     }
                 }">
+                    <!-- Your HTML content here -->
+                </div>
+
                     <!-- Image Slider -->
                     <div class="image">
                         <div class="image-slider" :style="'transform: translateX(-' + (currentSlide * 100) + '%);'">

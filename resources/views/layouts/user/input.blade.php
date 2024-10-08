@@ -79,13 +79,16 @@
             class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Gender</div>
         <div x-show="open" @click.away="open = false"
             class="dropdown-menu bg-white border border-gray-300 absolute w-auto max-h-48 overflow-y-auto mt-1 z-10">
+
+
             @foreach ($genders as $gender)
-                <label class="flex items-center px-2 py-4">
-                    <input type="radio" name="gender" value="{{ $gender->id }}"
-                        {{ $user->gender_id == $gender->id ? 'checked' : '' }} class="mr-2">
-                    {{ $gender->name }}
-                </label>
-            @endforeach
+            <label class="dropdown-item flex flex-row text-center items-center p-2">
+                <input type="radio" name="genders[]" value="{{ $gender->id }}"
+                    {{ in_array($gender->id, $user->genders->pluck('id')->toArray()) ? 'checked' : '' }}
+                    class="mr-2">
+                {{ $gender->name }}
+            </label>
+        @endforeach
         </div>
     </div>
 </div>
@@ -134,13 +137,16 @@
             class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Desired Gender</div>
         <div x-show="open" @click.away="open = false"
             class="dropdown-menu bg-white border border-gray-300 absolute w-auto max-h-48 overflow-y-auto mt-1 z-10">
+
+
             @foreach ($desiredGenders as $desiredGender)
-                <label class="flex items-center px-2 py-4">
-                    <input type="radio" name="desiredGender" value="{{ $desiredGender->id }}"
-                        {{ $user->desired_gender_id == $desiredGender->id ? 'checked' : '' }} class="mr-2">
-                    {{ $desiredGender->name }}
-                </label>
-            @endforeach
+            <label class="dropdown-item flex flex-row text-center items-center p-2">
+                <input type="radio" name="desiredGenders[]" value="{{ $desiredGender->id }}"
+                    {{ in_array($desiredGender->id, $user->desiredGenders->pluck('id')->toArray()) ? 'checked' : '' }}
+                    class="mr-2">
+                {{ $desiredGender->name }}
+            </label>
+        @endforeach
         </div>
     </div>
 </div>
@@ -153,13 +159,17 @@
             class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Dating Goal</div>
         <div x-show="open" @click.away="open = false"
             class="dropup-menu bg-white border border-gray-300 absolute w-50 max-h-48 overflow-y-auto mt-1 z-10">
+
             @foreach ($datingGoals as $datingGoal)
-                <label class="flex items-center px-2 py-4">
-                    <input type="radio" name="datingGoal" value="{{ $datingGoal->id }}"
-                        {{ $user->dating_goal_id == $datingGoal->id ? 'checked' : '' }} class="mr-2">
-                    {{ $datingGoal->goal_name }}
-                </label>
-            @endforeach
+            <label class="dropdown-item flex flex-row text-center items-center p-2">
+                <input type="radio" name="datingGoals[]" value="{{ $datingGoal->id }}"
+                    {{ in_array($datingGoal->id, $user->datingGoals->pluck('id')->toArray()) ? 'checked' : '' }}
+                    class="mr-2">
+                {{ $datingGoal->name }}
+            </label>
+        @endforeach
+
+
         </div>
     </div>
 </div>

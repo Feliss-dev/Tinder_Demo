@@ -49,53 +49,61 @@ class UserController extends Controller
     }
 
     public function updateInfor(Request $request)
-    {
-        // Validate before update.
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'bio' => 'nullable|string',
-            'birth_date' => 'required|date',
+{
+    // Validate before update.
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'bio' => 'nullable|string',
+        'birth_date' => 'required|date',
+        'images' => 'nullable|array', // Validate images as an array
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Each image should be valid
+        'languages' => 'nullable|array',
+        'interests' => 'nullable|array',
+        'genders' => 'nullable|array',
+        'dating_goals' => 'nullable|array',
+        'desired_genders' => 'nullable|array',
+    ]);
 
-        ]);
+    // Update user information
+    $user = User::find(Auth::user()->id);
 
-        // Update user informations
-        $user = User::find(Auth::user()->id);
-        // Cập nhật thông tin chung của người dùng (name, bio, birth_date)
-        $user->update($validatedData);
+    // Cập nhật thông tin chung của người dùng (name, bio, birth_date)
+    $user->name = $validatedData['name'];
+    $user->bio = $validatedData['bio'];
+    $user->birth_date = $validatedData['birth_date'];
 
-        // Cập nhật các giá trị của radio (gender_id, desired_gender_id, dating_goal_id)
-        $user->gender_id = $request->input('gender');  // gender_id từ radio "My Gender"
-        $user->desired_gender_id = $request->input('desiredGender');  // desired_gender_id từ radio "Desired Gender"
-        $user->dating_goal_id = $request->input('datingGoal');  // dating_goal_id từ radio "Dating Goal"
-
-        // Lưu các thay đổi về giới tính, giới tính mong muốn, và mục tiêu hẹn hò
-        $user->save();
-
-        // Profile picture handling.
+    // Profile picture handling.
+    if ($request->hasFile('images')) {
         $imagePaths = [];
-
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('user_images', 'public');
-                $imagePaths[] = $path;
-            }
-
-            $user->update(['images' => json_encode($imagePaths)]);
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('user_images', 'public');
+            $imagePaths[] = $path;
         }
 
-
-
-        // Sync the languages the user selected
-        $user->languages()->sync($request->languages ?? []);
-
-        $user->interests()->sync($request->interests ?? []);
-
-
-
-        // Save the updated user data
-
-
-        // Report successfully profile updating.
-        return redirect()->route('dashboard')->with('success', 'Profile updated successfully!');
+        // Save image paths as a JSON string in the 'images' field
+        $user->images = json_encode($imagePaths);
     }
+
+    // Sync the languages the user selected
+    $user->languages()->sync($request->input('languages', []));
+
+    // Sync interests
+    $user->interests()->sync($request->input('interests', []));
+
+    // Sync genders
+    $user->genders()->sync($request->input('genders', []));
+
+    // Sync dating goals
+    $user->datingGoals()->sync($request->input('dating_goals', []));
+
+    // Sync desired genders
+    $user->desiredGenders()->sync($request->input('desired_genders', []));
+
+    // Save the updated user data
+    $user->save(); // Make sure to save the user after updating the fields
+
+    // Report successfully profile updating.
+    return redirect()->route('dashboard')->with('success', 'Profile updated successfully!');
+}
+
 }
