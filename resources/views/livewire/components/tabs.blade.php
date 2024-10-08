@@ -42,7 +42,7 @@
                         @foreach ($matches as $i=> $match)
                             <div wire:click="createConversation('{{$match->id}}')" class="relative cursor-pointer">
                                 <!-- Dot -->
-                                <span class="absolute">
+                                <span class="absolute -top-1 -right-0.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10">
                                         <circle r="5" cx="5" cy="5" fill="red"/>
                                     </svg>
