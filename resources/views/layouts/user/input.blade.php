@@ -72,26 +72,26 @@
             </div>
 
             <!-- Gender -->
-<div class="flex flex-col">
-    <label for="gender" class="font-bold mb-1 text-left">My Gender</label>
-    <div class="relative" x-data="{ open: false }">
-        <div @click="open = !open"
-            class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Gender</div>
-        <div x-show="open" @click.away="open = false"
-            class="dropdown-menu bg-white border border-gray-300 absolute w-auto max-h-48 overflow-y-auto mt-1 z-10">
+            <div class="flex flex-col">
+                <label for="gender" class="font-bold mb-1 text-left">My Gender</label>
+                <div class="relative" x-data="{ open: false }">
+                    <div @click="open = !open"
+                        class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Gender</div>
+                    <div x-show="open" @click.away="open = false"
+                        class="dropdown-menu bg-white border border-gray-300 absolute w-auto max-h-48 overflow-y-auto mt-1 z-10">
 
 
-            @foreach ($genders as $gender)
-            <label class="dropdown-item flex flex-row text-center items-center p-2">
-                <input type="radio" name="genders[]" value="{{ $gender->id }}"
-                    {{ in_array($gender->id, $user->genders->pluck('id')->toArray()) ? 'checked' : '' }}
-                    class="mr-2">
-                {{ $gender->name }}
-            </label>
-        @endforeach
-        </div>
-    </div>
-</div>
+                        @foreach ($genders as $gender)
+                            <label class="dropdown-item flex flex-row text-center items-center p-2">
+                                <input type="radio" name="genders[]" value="{{ $gender->id }}"
+                                    {{ in_array($gender->id, $user->genders->pluck('id')->toArray()) ? 'checked' : '' }}
+                                    class="mr-2">
+                                {{ $gender->name }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
 
             <!-- Bio -->
             <div class="flex flex-col col-span-2">
@@ -129,50 +129,52 @@
             </div>
 
 
-           <!-- Desired Gender -->
-<div class="flex flex-col">
-    <label for="desired_gender" class="font-bold mb-1 text-left">My Desired Gender</label>
-    <div class="relative" x-data="{ open: false }">
-        <div @click="open = !open"
-            class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Desired Gender</div>
-        <div x-show="open" @click.away="open = false"
-            class="dropdown-menu bg-white border border-gray-300 absolute w-auto max-h-48 overflow-y-auto mt-1 z-10">
+            <!-- Desired Gender -->
+            <div class="flex flex-col">
+                <label for="desired_gender" class="font-bold mb-1 text-left">My Desired Gender</label>
+                <div class="relative" x-data="{ open: false }">
+                    <div @click="open = !open"
+                        class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Desired Gender
+                    </div>
+                    <div x-show="open" @click.away="open = false"
+                        class="dropdown-menu bg-white border border-gray-300 absolute w-auto max-h-48 overflow-y-auto mt-1 z-10">
 
 
-            @foreach ($desiredGenders as $desiredGender)
-            <label class="dropdown-item flex flex-row text-center items-center p-2">
-                <input type="radio" name="desiredGenders[]" value="{{ $desiredGender->id }}"
-                    {{ in_array($desiredGender->id, $user->desiredGenders->pluck('id')->toArray()) ? 'checked' : '' }}
-                    class="mr-2">
-                {{ $desiredGender->name }}
-            </label>
-        @endforeach
-        </div>
-    </div>
-</div>
+                        @foreach ($desiredGenders as $desiredGender)
+                            <label class="dropdown-item flex flex-row text-center items-center p-2">
+                                <input type="radio" name="desiredGenders[]" value="{{ $desiredGender->id }}"
+                                    {{ in_array($desiredGender->id, $user->desiredGenders->pluck('id')->toArray()) ? 'checked' : '' }}
+                                    class="mr-2">
+                                {{ $desiredGender->name }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
 
             <!-- Dating Goal -->
-<div class="flex flex-col">
-    <label for="dating_goal" class="font-bold mb-1 text-left">My Dating Goal</label>
-    <div class="relative" x-data="{ open: false }">
-        <div @click="open = !open"
-            class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Dating Goal</div>
-        <div x-show="open" @click.away="open = false"
-            class="dropup-menu bg-white border border-gray-300 absolute w-50 max-h-48 overflow-y-auto mt-1 z-10">
+            <div class="flex flex-col">
+                <label for="dating_goal" class="font-bold mb-1 text-left">My Dating Goal</label>
+                <div class="relative" x-data="{ open: false }">
+                    <div @click="open = !open"
+                        class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Dating Goal
+                    </div>
+                    <div x-show="open" @click.away="open = false"
+                        class="dropup-menu bg-white border border-gray-300 absolute w-50 max-h-48 overflow-y-auto mt-1 z-10">
 
-            @foreach ($datingGoals as $datingGoal)
-            <label class="dropdown-item flex flex-row text-center items-center p-2">
-                <input type="radio" name="datingGoals[]" value="{{ $datingGoal->id }}"
-                    {{ in_array($datingGoal->id, $user->datingGoals->pluck('id')->toArray()) ? 'checked' : '' }}
-                    class="mr-2">
-                {{ $datingGoal->name }}
-            </label>
-        @endforeach
+                        @foreach ($datingGoals as $datingGoal)
+                            <label class="dropdown-item flex flex-row text-center items-center p-2">
+                                <input type="radio" name="datingGoals[]" value="{{ $datingGoal->id }}"
+                                    {{ in_array($datingGoal->id, $user->datingGoals->pluck('id')->toArray()) ? 'checked' : '' }}
+                                    class="mr-2">
+                                {{ $datingGoal->name }}
+                            </label>
+                        @endforeach
 
 
-        </div>
-    </div>
-</div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Submit Button -->
             <button type="submit"

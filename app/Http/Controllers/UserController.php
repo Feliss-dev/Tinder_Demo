@@ -49,61 +49,61 @@ class UserController extends Controller
     }
 
     public function updateInfor(Request $request)
-{
-    // Validate before update.
-    $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'bio' => 'nullable|string',
-        'birth_date' => 'required|date',
-        'images' => 'nullable|array', // Validate images as an array
-        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Each image should be valid
-        'languages' => 'nullable|array',
-        'interests' => 'nullable|array',
-        'genders' => 'nullable|array',
-        'dating_goals' => 'nullable|array',
-        'desired_genders' => 'nullable|array',
-    ]);
+    {
+        // Validate trước khi cập nhật thông tin.
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'bio' => 'nullable|string',
+            'birth_date' => 'required|date',
+            'images' => 'nullable|array', // Validate các ảnh là mảng
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Mỗi ảnh phải hợp lệ
+            'languages' => 'nullable|array',
+            'interests' => 'nullable|array',
+            'genders' => 'nullable|array',
+            'dating_goals' => 'nullable|array',
+            'desired_genders' => 'nullable|array',
+        ]);
 
-    // Update user information
-    $user = User::find(Auth::user()->id);
+        // Lấy thông tin người dùng hiện tại
+        $user = User::find(Auth::user()->id);
 
-    // Cập nhật thông tin chung của người dùng (name, bio, birth_date)
-    $user->name = $validatedData['name'];
-    $user->bio = $validatedData['bio'];
-    $user->birth_date = $validatedData['birth_date'];
+        // Cập nhật thông tin người dùng (name, bio, birth_date)
+        $user->name = $validatedData['name'];
+        $user->bio = $validatedData['bio'];
+        $user->birth_date = $validatedData['birth_date'];
 
-    // Profile picture handling.
-    if ($request->hasFile('images')) {
-        $imagePaths = [];
-        foreach ($request->file('images') as $image) {
-            $path = $image->store('user_images', 'public');
-            $imagePaths[] = $path;
+        // Xử lý hình ảnh
+        if ($request->hasFile('images')) {
+            $imagePaths = [];
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('user_images', 'public');
+                $imagePaths[] = $path;
+            }
+
+            // Lưu các đường dẫn ảnh dưới dạng JSON
+            $user->images = json_encode($imagePaths);
         }
 
-        // Save image paths as a JSON string in the 'images' field
-        $user->images = json_encode($imagePaths);
+        // Cập nhật ngôn ngữ người dùng chọn
+        $user->languages()->sync($request->input('languages', []));
+
+        // Cập nhật sở thích
+        $user->interests()->sync($request->input('interests', []));
+
+        // Cập nhật giới tính
+        $user->genders()->sync($request->input('genders', []));
+
+        // Cập nhật mục tiêu hẹn hò
+        $user->datingGoals()->sync($request->input('datingGoals', []));
+
+        // Cập nhật giới tính mong muốn
+        $user->desiredGenders()->sync($request->input('desiredGenders', []));
+
+        // Lưu lại thông tin người dùng
+        $user->save();
+
+        // Trả về thông báo thành công
+        return redirect()->route('dashboard')->with('success', 'Profile updated successfully!');
     }
-
-    // Sync the languages the user selected
-    $user->languages()->sync($request->input('languages', []));
-
-    // Sync interests
-    $user->interests()->sync($request->input('interests', []));
-
-    // Sync genders
-    $user->genders()->sync($request->input('genders', []));
-
-    // Sync dating goals
-    $user->datingGoals()->sync($request->input('dating_goals', []));
-
-    // Sync desired genders
-    $user->desiredGenders()->sync($request->input('desired_genders', []));
-
-    // Save the updated user data
-    $user->save(); // Make sure to save the user after updating the fields
-
-    // Report successfully profile updating.
-    return redirect()->route('dashboard')->with('success', 'Profile updated successfully!');
-}
 
 }

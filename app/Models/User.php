@@ -69,7 +69,7 @@ class User extends Authenticatable {
         return $this->belongsToMany(Gender::class, 'desired_gender_users', 'user_id','desired_gender_id');
     }
     public function genders(){
-        return $this->belongsToMany(Gender::class, 'genders', 'user_id', 'gender_id');
+        return $this->belongsToMany(Gender::class, 'gender_users', 'user_id', 'gender_id');
     }
 
     public function preferences(){
