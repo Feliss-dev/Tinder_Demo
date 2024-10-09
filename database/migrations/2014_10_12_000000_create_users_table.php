@@ -18,11 +18,10 @@ return new class extends Migration
             $table->tinyInteger('is_admin')->default(0);
 
             $table->date('birth_date')->required();
-            $table->string('gender')->required();
+
             $table->text('bio')->required();
-            $table->string('interests')->required();
-            $table->string('desired_gender')->required();
-            $table->string('dating_goal')->required();
+
+
             $table->string('images')->required();
             $table->boolean('is_fake')->default(false);
             $table->timestamp('email_verified_at')->required();

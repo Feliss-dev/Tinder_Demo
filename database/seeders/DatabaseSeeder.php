@@ -3,9 +3,12 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Swipe;
+
+use App\Models\Interest;
 use App\Models\User;
+use App\Models\Swipe;
 use Illuminate\Database\Seeder;
+use Database\Seeders\LanguageSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,6 +17,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+
          $users = User::factory(200)->create([
             'is_fake' =>true,
             'is_admin' => false,
@@ -32,6 +37,20 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
             'is_admin' => false,
+        ]);
+
+        $testAdmin = \App\Models\User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'is_admin' => true,
+        ]);
+
+        $this->call([
+            GenderSeeder::class,
+            DatingGoalSeeder::class,
+            LanguageSeeder::class,
+            InterestSeeder::class,
+            DesiredGenderSeeder::class,
         ]);
 
         #create swipes for test user

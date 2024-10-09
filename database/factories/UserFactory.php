@@ -28,11 +28,9 @@ class UserFactory extends Factory
             'password' => bcrypt('password'), // mật khẩu mặc định
             'remember_token' => Str::random(10),
             'birth_date' => $this->faker->date('Y-m-d'),
-            'gender' => $this->faker->randomElement(['male', 'female']),
+
             'bio' => $this->faker->text(),
-            'interests' => implode(',', $this->faker->words(3)), // Ví dụ: 'music, sports, travel'
-            'desired_gender' => $this->faker->randomElement(['male', 'female']),
-            'dating_goal' => $this->faker->sentence(),
+            
             'images' => 'https://randomuser.me/api/portraits/women/' . rand(0, 99) . '.jpg', // Link ảnh giả
             'is_fake' => false,
             'is_admin' => false,
