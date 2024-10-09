@@ -1,5 +1,6 @@
 <div id="tinder" class="m-auto md:pl-4 md:pr-4 w-full h-full relative overflow-hidden">
     <div class="grid grid-cols-4 h-full">
+        <!-- Filtering Form -->
         <div>
             <form wire:submit.prevent="applyFilters" class="bg-white p-6 rounded-lg shadow-lg flex flex-col space-y-6 mt-3">
                 <!-- Name search -->
@@ -42,6 +43,7 @@
             </form>
         </div>
 
+        <!-- User Swipe -->
         <div class="col-span-3">
             <!-- Main User Swiping -->
             <div class="relative h-full md:h-[600px] w-full md:w-96 m-auto flex items-center justify-center">
@@ -189,7 +191,6 @@
 
                             <!-- Swipe Card -->
                             <div x-show="!profile" x-transition.duration.150ms.origin.bottom class="relative overflow-hidden w-full h-full rounded-xl bg-cover bg-white">
-
                                 @php
                                     $userImages = $user->images()->pluck('image_path')->toArray();
                                     $isFakeUser = $user->isFake();
@@ -203,7 +204,7 @@
                                         ];
                                 @endphp
 
-                                    <!-- Carousel section -->
+                                <!-- Carousel section -->
                                 <section x-data="{ activeSlide: 1, slides: @js($slides) }">
                                     <!-- Sliders -->
                                     <template x-for="(image, index) in slides" :key="index">
@@ -316,7 +317,7 @@
                                                         class="rounded-full border-2 pointer-events-auto group border-red-600 p-3 shrink-0 max-w-fit flex items-center text-red-600">
 
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                         stroke-width="1.5" stroke="currentColor" stroke-width="3"
+                                                         stroke-width="3" stroke="currentColor"
                                                          class="w-9 h-9 shrink-0 m-auto group:hover-scale-10 stroke-current transition-transform stroke-2">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                               d="M6 18 18 6M6 6l12 12" />
@@ -529,7 +530,7 @@
                                                 class="bg-white rounded-full border-2 pointer-events-auto group border-red-600 p-3 shrink-0 max-w-fit flex items-center text-red-600">
 
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                 stroke-width="1.5" stroke="currentColor" stroke-width="3"
+                                                 stroke-width="3" stroke="currentColor"
                                                  class="w-9 h-9 shrink-0 m-auto group:hover-scale-10 stroke-current transition-transform stroke-2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                                             </svg>
@@ -583,7 +584,7 @@
         </div>
     </div>
 
-    {{-- Match found. --}}
+    <!-- Match found model -->
     <div x-data="{ modalOpen: false }" @keydown.escape.window="modalOpen = false"
          @close-match-modal.window="modalOpen=false" @match-found.window="modalOpen=true"
          class="relative z-50 w-auto h-auto">
@@ -604,7 +605,7 @@
                      x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                      class="relative w-full py-6 bg-white h-full sm:h-[550px] px-7 sm:max-w-lg sm:rounded-lg border-2 border-rose-500">
 
-                    {{-- Close Button --}}
+                    <!-- Close Button -->
                     <div class=" items-center justify-between p-2 py-3 block ">
 
                         <button @click="modalOpen=false"
@@ -616,14 +617,14 @@
                         </button>
                     </div>
 
-                    {{-- Main --}}
+                    <!-- Main -->
                     <main class="relative w-auto flex flex-col gap-y-9">
                         <div class="mx-auto flex flex-col gap-2 items-center justify-center">
-                            {{-- Tinder logo --}}
+                            <!-- Tinder logo -->
                             <div class="mx-auto">
-                                <svg class="ml-5" fill="#000000" width="50px" height="50px"
+                                <svg class="ml-5 icon flat-color" fill="#000000" width="50px" height="50px"
                                      viewBox="0 0 24 24" id="tinder" data-name="Flat Color"
-                                     xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+                                     xmlns="http://www.w3.org/2000/svg">
                                     <path id="primary"
                                           d="M11.39,2.08a1,1,0,0,0-1,.14,1,1,0,0,0-.35,1c.72,3.62.41,6.08-1,7.46A7.57,7.57,0,0,1,8,7.85a1,1,0,0,0-.68-.8,1,1,0,0,0-1,.24C6.16,7.43,3,10.62,3,14c0,5,3.36,8,9,8,3.23,0,7-2.09,7-8A13.17,13.17,0,0,0,11.39,2.08Z"
                                           style="fill: rgb(237, 105, 129);"></path>
@@ -646,7 +647,7 @@
                             </span>
                         </div>
 
-                        {{-- Action --}}
+                        <!-- Action -->
                         <div class="mx-auto flex flex-col gap-5">
                             <button wire:click="createConversation"
                                     class="bg-tinder text-white font-bold items-center px-3 py-2 rounded-full">
@@ -663,5 +664,4 @@
             </div>
         </template>
     </div>
-
 </div>

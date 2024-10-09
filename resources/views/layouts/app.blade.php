@@ -33,11 +33,12 @@
                             flex-shrink-0
                             bg-gradient-to-r from-[#266DD3] to-[#17BEBB]
                             flex flex-row">
-                    <x-avatar class="w-10 h-10" src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->name }}" />
+                    <div class="flex flex-col items-center justify-center">
+                        <x-avatar class="w-10 h-10" src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->name }}" />
+                    </div>
 
                     <div class="ml-2 h-full flex-auto flex-shrink-0">
                         <p class="text-white text-lg">{{auth()->user()->name}}</p>
-                        <!-- <p class="text-white text-xs whitespace-nowrap overflow-hidden text-ellipsis w-full border-black">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAA</p> -->
                     </div>
                 </div>
 
