@@ -11,6 +11,7 @@ use App\Models\UserImage;
 use App\Models\SwipeMatch;
 use App\Enums\BasicGroupEnum;
 use App\Models\UserPreference;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\RelationshipGoalsEnum;
 use Illuminate\Notifications\Notifiable;
@@ -19,8 +20,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -46,8 +46,30 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function isFake(){
+        return $this->is_fake;
+    }
+
+
+    public function languages(){
+        return $this->belongsToMany(Language::class, 'language_users', 'user_id', 'language_id');
+    }
+
+    public function interests(){
+        return $this->belongsToMany(Interest::class, 'interest_users', 'user_id', 'interest_id');
+    }
+
+    public function datingGoals(){
+        return $this->belongsToMany(DatingGoal::class, 'dating_goal_users', 'user_id', 'dating_goal_id');
+    }
     public function images(){
         return $this->hasMany(UserImage::class);
+    }
+    public function desiredGenders(){
+        return $this->belongsToMany(Gender::class, 'desired_gender_users', 'user_id','desired_gender_id');
+    }
+    public function genders(){
+        return $this->belongsToMany(Gender::class, 'gender_users', 'user_id', 'gender_id');
     }
 
     public function preferences(){
@@ -62,7 +84,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-
     ];
 
     public function getAgeAttribute(){
@@ -73,82 +94,72 @@ class User extends Authenticatable
 
     protected static function boot(){
         parent::boot();
-
-
-
     }
-
-
 
     //Swipe models relationshop
     /* user has many swipes */
-    public function swipes()
-    {
+    public function swipes() {
         return $this->hasMany(Swipe::class, 'user_id');
     }
+
     // Allow to check if user has swiped with another user
-   /* Allows you to check if a user has swiped with another user */
-   public function hasSwiped(User $user, $type = null):bool
-   {
+    /* Allows you to check if a user has swiped with another user */
+    public function hasSwiped(User $user, $type = null) : bool {
        $query = $this->swipes() ->where('swiped_user_id', $user->id);
 
        if ($type !== null) {
            $query->where('type', $type);
        }
        return $query->exists();
-   }
+    }
 
-  /** Scope to exclude users who have already been swiped by the authenticated user. */
-  public function scopeWhereNotSwiped($query)
-  {
-      // Exclude users whose IDs are in the result of the subquery
-      return $query->whereNotIn('id', function ($subquery) {
+    /** Scope to exclude users who have already been swiped by the authenticated user. */
+    public function scopeWhereNotSwiped($query) {
+        // Exclude users whose IDs are in the result of the subquery
+        return $query->whereNotIn('id', function ($subquery) {
            // Select the swiped_user_id from the swipes table where user_id is the authenticated user's ID
              $subquery->select('swiped_user_id')
               ->from('swipes')
               ->where('user_id', auth()->id());
-      });
-  }
+        });
+    }
 
-  public function matches()
-     {
-         return $this->hasManyThrough(
-             SwipeMatch::class,
-             Swipe::class,
-             'user_id',
-             'swipe_id_1',
-             'id',
-             'id'
-         )->orWhereHas('swipe2', function ($query) {
-             $query->where('user_id', $this->id);
-         });
-     }
+    public function matches() {
+        return $this->hasManyThrough(
+            SwipeMatch::class,
+            Swipe::class,
+            'user_id',
+            'swipe_id_1',
+            'id',
+            'id'
+        )->orWhereHas('swipe2', function ($query) {
+            $query->where('user_id', $this->id);
+        });
+    }
 
-     public function hasMatchWith(User $user):bool
-     {
-         return $this->matches()
-                     ->where(function ($query) use ($user) {
-                         $query->where('swipe_id_1', $user->id)
-                               ->orWhere('swipe_id_2', $user->id);
-                     })
-                     ->exists();
-     }
-
-     //User can have many conversations
-     public function conversations(){
-        return $this->hasMany(Conversation::class,'sender_id')->orWhere('receiver_id', $this->id);
-     }
-
-     // Unread Messages count
-     function unReadMessagesCount(){
-        return $this->hasMany(Message::class,'receiver_id')->where('read_at', null)->count();
-     }
-
-     /**
-     * The channels the user receives notification broadcasts on.
-     */
-    public function receivesBroadcastNotificationsOn(): string
+    public function hasMatchWith(User $user) : bool
     {
+        return $this->matches()
+                    ->where(function ($query) use ($user) {
+                        $query->where('swipe_id_1', $user->id)->orWhere('swipe_id_2', $user->id);
+                    })
+                    ->exists();
+    }
+
+    //User can have many conversations
+    public function conversations() {
+        return $this->hasMany(Conversation::class,'sender_id')->orWhere('receiver_id', $this->id);
+    }
+
+    // Unread Messages count
+    function unReadMessagesCount() : int {
+        return $this->hasMany(Message::class,'receiver_id')->where('read_at', null)->count();
+    }
+
+    /**
+    * The channels the user receives notification broadcasts on.
+    */
+    public function receivesBroadcastNotificationsOn() : string {
         return 'users.'.$this->id;
     }
 }

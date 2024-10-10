@@ -1,81 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Update Profile</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    {{-- Favicon --}}
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+
 </head>
-<body>
-    <form action="{{ route('info.update') }}" method="POST" enctype="multipart/form-data">
-        @csrf
 
-        <!-- Name -->
-        <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" value="{{ old('name', Auth::user()->name) }}" required>
-        </div>
+<body class="bg-pink-100 h-screen flex items-center justify-center ">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-3xl w-1200 h-auto text-center mt-20 overflow-y-scroll ">
+        <h2 class="text-2xl font-bold italic mb-5">Account Information</h2>
+        <form action="{{ route('info.update') }}" method="POST" enctype="multipart/form-data"
+            class="grid grid-cols-2 gap-6">
+            @csrf
 
-        <!-- Date of Birth -->
-        <div>
-            <label for="birth_date">Date of Birth</label>
-            <input type="date" id="birth_date" name="birth_date" value="{{ old('birth_date', Auth::user()->birth_date) }}" required>
-        </div>
+            <!-- Name -->
+            <div class="flex flex-col">
+                <label for="name" class="font-bold mb-1 text-left">Name</label>
+                <input type="text" id="name" name="name" value="{{ old('name', Auth::user()->name) }}"
+                    required class="p-2 border border-gray-300 rounded">
+            </div>
 
-        <!-- Gender -->
-        <div>
-            <label for="gender">Gender</label>
-            <select id="gender" name="gender" required>
-                <option value="male" {{ old('gender', Auth::user()->gender) === 'male' ? 'selected' : '' }}>Male</option>
-                <option value="female" {{ old('gender', Auth::user()->gender) === 'female' ? 'selected' : '' }}>Female</option>
-                <option value="other" {{ old('gender', Auth::user()->gender) === 'other' ? 'selected' : '' }}>Other</option>
-            </select>
-        </div>
+            <!-- Dropdown for Languages -->
+            <div class="flex flex-col">
+                <label for="languages" class="font-bold mb-1 text-left">Languages you know</label>
+                <div class="" x-data="{ open: false }" class="relative">
+                    <div @click="open = !open"
+                        class=" bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left ">Select
+                        Languages</div>
+                    <div x-show="open" @click.away="open = false"
+                        class="dropdown-menu bg-white border border-gray-300 absolute w-50 max-h-48 overflow-y-auto mt-1 z-10">
+                        @foreach ($languages as $language)
+                            <label class="dropdown-item flex flex-row text-center items-center p-2">
+                                <input type="checkbox" name="languages[]" value="{{ $language->id }}"
+                                    {{ in_array($language->id, $user->languages->pluck('id')->toArray()) ? 'checked' : '' }}
+                                    class="mr-2">
+                                {{ $language->name }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
 
-        <!-- Bio -->
-        <div>
-            <label for="bio">Bio</label>
-            <textarea id="bio" name="bio">{{ old('bio', Auth::user()->bio) }}</textarea>
-        </div>
+            <!-- Date of Birth -->
+            <div class="flex flex-col">
+                <label for="birth_date" class="font-bold mb-1 text-left">Date of Birth</label>
+                <input type="date" id="birth_date" name="birth_date"
+                    value="{{ old('birth_date', Auth::user()->birth_date) }}" required
+                    class="p-2 border border-gray-300 rounded">
+            </div>
 
-        <!-- Images -->
-        <div>
-            <label for="images">Upload Images</label>
-            <input type="file" id="images" name="images[]" multiple>
-        </div>
+            <!-- Gender -->
+            <div class="flex flex-col">
+                <label for="gender" class="font-bold mb-1 text-left">My Gender</label>
+                <div class="relative" x-data="{ open: false }">
+                    <div @click="open = !open"
+                        class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Gender</div>
+                    <div x-show="open" @click.away="open = false"
+                        class="dropdown-menu bg-white border border-gray-300 absolute w-auto max-h-48 overflow-y-auto mt-1 z-10">
 
-        <!-- Interests -->
-        <div>
-            <label for="interests">Interests</label>
-            <select id="interests" name="interests" required>
-                <option value="sports" {{ old('interests') === 'sports' ? 'selected' : '' }}>Sports</option>
-                <option value="music" {{ old('interests') === 'music' ? 'selected' : '' }}>Music</option>
-                <option value="travel" {{ old('interests') === 'travel' ? 'selected' : '' }}>Travel</option>
-                <!-- Add more options -->
-            </select>
-        </div>
 
-        <!-- Desired Gender -->
-        <div>
-            <label for="desired_gender">Preferred Gender</label>
-            <select id="desired_gender" name="desired_gender" required>
-                <option value="male" {{ old('desired_gender') === 'male' ? 'selected' : '' }}>Male</option>
-                <option value="female" {{ old('desired_gender') === 'female' ? 'selected' : '' }}>Female</option>
-                <option value="other" {{ old('desired_gender') === 'other' ? 'selected' : '' }}>Other</option>
-            </select>
-        </div>
+                        @foreach ($genders as $gender)
+                            <label class="dropdown-item flex flex-row text-center items-center p-2">
+                                <input type="radio" name="genders[]" value="{{ $gender->id }}"
+                                    {{ in_array($gender->id, $user->genders->pluck('id')->toArray()) ? 'checked' : '' }}
+                                    class="mr-2">
+                                {{ $gender->name }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
 
-        <!-- Dating Goal -->
-        <div>
-            <label for="dating_goal">Dating Goal</label>
-            <select id="dating_goal" name="dating_goal" required>
-                <option value="love" {{ old('dating_goal') === 'love' ? 'selected' : '' }}>Love</option>
-                <option value="friend" {{ old('dating_goal') === 'friend' ? 'selected' : '' }}>Friend</option>
-                <option value="other" {{ old('dating_goal') === 'other' ? 'selected' : '' }}>Other</option>
-            </select>
-        </div>
+            <!-- Bio -->
+            <div class="flex flex-col col-span-2">
+                <label for="bio" class="font-bold mb-1 text-left">Bio</label>
+                <textarea id="bio" name="bio" class="p-2 border border-gray-300 rounded">{{ old('bio', Auth::user()->bio) }}</textarea>
+            </div>
 
-        <button type="submit">Update Profile</button>
-    </form>
+            <!-- Images -->
+            <div class="flex flex-col">
+                <label for="images" class="font-bold mb-1 text-left">Upload Images</label>
+                <input type="file" id="images" name="images[]" multiple
+                    class="p-2 border border-gray-300 rounded">
+            </div>
+
+            <!-- Interests -->
+            <div class="flex flex-col">
+                <label for="interests" class="font-bold mb-1 text-left">Interests</label>
+                <div class="relative" x-data="{ open: false }">
+                    <div @click="open = !open"
+                        class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">
+                        Select Interests
+                    </div>
+                    <div x-show="open" @click.away="open = false"
+                        class="dropdown-menu bg-white border border-gray-300 absolute w-auto max-h-48 overflow-y-auto mt-1 z-10">
+                        @foreach ($interests as $interest)
+                            <label class="dropdown-item flex flex-row text-center items-center p-2">
+                                <input type="checkbox" name="interests[]" value="{{ $interest->id }}"
+                                    {{ in_array($interest->id, $user->interests->pluck('id')->toArray()) ? 'checked' : '' }}
+                                    class="mr-2">
+                                {{ $interest->name }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Desired Gender -->
+            <div class="flex flex-col">
+                <label for="desired_gender" class="font-bold mb-1 text-left">My Desired Gender</label>
+                <div class="relative" x-data="{ open: false }">
+                    <div @click="open = !open"
+                        class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Desired Gender
+                    </div>
+                    <div x-show="open" @click.away="open = false"
+                        class="dropdown-menu bg-white border border-gray-300 absolute w-auto max-h-48 overflow-y-auto mt-1 z-10">
+
+
+                        @foreach ($desiredGenders as $desiredGender)
+                            <label class="dropdown-item flex flex-row text-center items-center p-2">
+                                <input type="radio" name="desiredGenders[]" value="{{ $desiredGender->id }}"
+                                    {{ in_array($desiredGender->id, $user->desiredGenders->pluck('id')->toArray()) ? 'checked' : '' }}
+                                    class="mr-2">
+                                {{ $desiredGender->name }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dating Goal -->
+            <div class="flex flex-col">
+                <label for="dating_goal" class="font-bold mb-1 text-left">My Dating Goal</label>
+                <div class="relative" x-data="{ open: false }">
+                    <div @click="open = !open"
+                        class="bg-white-100 border rounded border-gray-300 p-2 cursor-pointer text-left">Dating Goal
+                    </div>
+                    <div x-show="open" @click.away="open = false"
+                        class="dropup-menu bg-white border border-gray-300 absolute w-50 max-h-48 overflow-y-auto mt-1 z-10">
+
+                        @foreach ($datingGoals as $datingGoal)
+                            <label class="dropdown-item flex flex-row text-center items-center p-2">
+                                <input type="radio" name="datingGoals[]" value="{{ $datingGoal->id }}"
+                                    {{ in_array($datingGoal->id, $user->datingGoals->pluck('id')->toArray()) ? 'checked' : '' }}
+                                    class="mr-2">
+                                {{ $datingGoal->name }}
+                            </label>
+                        @endforeach
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="col-span-2 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg mt-4">Update Profile</button>
+        </form>
+    </div>
+    @livewireScripts
 </body>
+
+
+
 </html>

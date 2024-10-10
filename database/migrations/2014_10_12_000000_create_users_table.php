@@ -17,14 +17,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->tinyInteger('is_admin')->default(0);
 
-            $table->date('birth_date')->nullable();
-            $table->string('gender')->nullable();
-            $table->text('bio')->nullable();
-            $table->string('interests')->nullable();
-            $table->string('desired_gender')->nullable();
-            $table->string('dating_goal')->nullable();
-            $table->string('images')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->date('birth_date')->required();
+
+            $table->text('bio')->required();
+
+
+            $table->string('images')->required();
+            $table->boolean('is_fake')->default(false);
+            $table->timestamp('email_verified_at')->required();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
