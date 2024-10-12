@@ -49,7 +49,7 @@
 
             <!-- Swiper -->
             <div class="col-span-3">
-                <main class="flex-1 flex-col overflow-y-auto hidden md:flex">
+                <main class="flex-1 flex-col overflow-y-auto hidden md:flex h-full">
                     @livewire('home')
                 </main>
             </div>

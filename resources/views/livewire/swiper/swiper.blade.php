@@ -1,4 +1,4 @@
-<div id="tinder" class="m-auto md:p-10 w-full h-full relative flex">
+<div id="tinder" class="m-auto md:p-8 w-full h-full relative flex">
 
     <div class="flex flex-row mt-8">
         <form wire:submit.prevent="applyFilters"
@@ -43,7 +43,7 @@
         </form>
     </div>
 
-    <div class="relative h-full md:h-[600px] w-full md:w-96 m-auto flex items-center justify-center">
+    <div class="relative h-full w-full md:w-96 m-auto flex items-center justify-center" style="border: 2px solid blue;">
         @if ($users->isEmpty())
             <div class="col-span-full text-center ">
                 <p class="text-gray-500">Found no suitable match.</p>
@@ -615,11 +615,11 @@
                     </div>
 
                 </div>
-                {{-- End for --}}
             @endforeach
         @endif
     </div>
-    {{-- Match found. --}}
+
+    <!-- Match popup modal -->
     <div x-data="{ modalOpen: false }" @keydown.escape.window="modalOpen = false"
         @close-match-modal.window="modalOpen=false" @match-found.window="modalOpen=true"
         class="relative z-50 w-auto h-auto">
