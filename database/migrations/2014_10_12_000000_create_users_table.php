@@ -17,15 +17,17 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->tinyInteger('is_admin')->default(0);
 
-            $table->date('birth_date')->required();
+            $table->date('birth_date')->nullable();
 
-            $table->text('bio')->required();
+            $table->text('bio')->nullable();
 
-
-            $table->string('images')->required();
+            $table->string('images')->nullable();
             $table->boolean('is_fake')->default(false);
             $table->timestamp('email_verified_at')->required();
-            $table->string('password');
+            $table->string('password')->nullable();
+
+            $table->string('google_id')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });
@@ -36,6 +38,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('user_preferences');
+        Schema::dropIfExists('user_images');
         Schema::dropIfExists('users');
     }
 };

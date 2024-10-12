@@ -50,7 +50,6 @@ class User extends Authenticatable {
         return $this->is_fake;
     }
 
-
     public function languages(){
         return $this->belongsToMany(Language::class, 'language_users', 'user_id', 'language_id');
     }
