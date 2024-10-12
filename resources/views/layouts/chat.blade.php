@@ -25,14 +25,6 @@
     <body class="font-sans antialiased flex flex-col h-screen">
         <div class="min-h-screen bg-gray-100">
             <livewire:layout.navigation />
-            {{-- This is a Livewire component.
-            Livewire is a full-stack framework for Laravel that allows you to build
-            dynamic interfaces using Blade templates and PHP, without the need for JavaScript. --}}
-
-            {{-- <livewire:layout.navigation />: For including a dynamic, reactive Livewire component.
-            @include('livewire.layout.navigation'): For including a static Blade view file. --}}
-
-            {{-- @include('livewire.layout.navigation') --}}
 
             <!-- Page Heading -->
             @if (isset($header))
@@ -44,11 +36,11 @@
             @endif
 
             <div class="flex flex-1 ">
-                 {{-- Siderbar --}}
+                <!-- Sidebar -->
                 <aside class=" hidden md:flex flex-col  bg-gray-100 sm:w-[25rem] w-full">
                     <header class="bg-tinder py-5 flex items-center p-2.5 sticky top-0">
-                        {{-- Avatar --}}
-                        <x-avatar class="w-10 h-10" src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->name }}" />
+                        <!-- Avatar -->
+                        <x-avatar class="w-10 h-10" src="{{ auth()->user()->images }}" alt="{{ auth()->user()->name }}" />
                             <div class="ml-auto flex items-center gap-3">
                                 <span class="bg-black/40 p-2.5 rounded-full" >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-suitcase-lg-fill w-5 h-5 text-white" viewBox="0 0 16 16">
@@ -64,7 +56,7 @@
                             </div>
                     </header>
 
-                    {{-- Tab Section --}}
+                    <!-- Tabs -->
                     <livewire:components.tabs/>
                 </aside>
 

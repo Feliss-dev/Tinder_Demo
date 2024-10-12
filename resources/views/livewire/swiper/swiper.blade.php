@@ -1,6 +1,6 @@
-<div id="tinder" class="m-auto md:p-10 w-full h-full relative flex ">
+<div id="tinder" class="m-auto md:p-10 w-full h-full relative flex">
 
-    <div class="flex flex-row mt-12">
+    <div class="flex flex-row mt-8">
         <form wire:submit.prevent="applyFilters"
             class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center space-y-6 w-72">
             <!-- Search Input (Tìm kiếm tên người dùng) -->
@@ -42,13 +42,11 @@
             </div>
         </form>
     </div>
+
     <div class="relative h-full md:h-[600px] w-full md:w-96 m-auto flex items-center justify-center">
-
         @if ($users->isEmpty())
-            <!-- Nếu không có người dùng, hiển thị thông báo -->
-
             <div class="col-span-full text-center ">
-                <p class="text-gray-500">Không tìm thấy người dùng nào phù hợp.</p>
+                <p class="text-gray-500">Found no suitable match.</p>
             </div>
         @else
             @foreach ($users as $i => $user)
