@@ -1,4 +1,4 @@
-<div class="items-center grid">
+<div class="items-center h-full">
 
     <livewire:swiper.swiper/>
 

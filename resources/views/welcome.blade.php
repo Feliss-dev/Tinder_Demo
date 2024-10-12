@@ -19,6 +19,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
     </head>
+
     <body style="background-image: url(' {{asset('assets/TinderApp.webp')}}'); background-size:cover; background-attachment:fixed;" class="antialiased">
         <div class="relative min-h-screen bg-black/40 flex flex-col">
             <livewire:welcome.navigation />
@@ -56,7 +57,7 @@
                                 </x-nav-link>
                             </div>
 
-                            {{-- Action --}}
+                            <!-- Actions -->
                             <div class="ml-auto items-center gap-9 hidden lg:flex">
 
 
@@ -78,12 +79,8 @@
 
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-
-
                     <!-- Responsive Settings Options -->
                     <div class="mt-3 space-y-1 flex flex-col gap-5 p-2 pt-2 pb-3">
-
-
                         <x-nav-link class="text-xl font-bold text-white hover:text-white/95" :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                             {{ __('Products') }}
                         </x-nav-link>
@@ -106,7 +103,6 @@
             <center class="m-auto flex flex-col gap-y-10">
                 <h3 class="font-blod text-7xl sm:text-8xl text-white">
                     Swipe Right
-
                     <sup>
                         <span class="text-xl p-2 px-3 border-4 rounded-full border-orange-50">
                             R
@@ -121,9 +117,7 @@
 
         {{-- Testimonials --}}
         <main class="bg-white w-full px-8 lg:px-24 py-9 mx-auto">
-
             <section class="grid grid-cols-2 lg:grid-cols-3 gap-5">
-
                 @for ($i = 0; $i < 6; $i++)
                     <div class="border rounded-lg p-3 h-96 shadow overflow-hidden">
                         <div class="flex justify-between items-center">
@@ -136,11 +130,11 @@
 
                         <hr class="font-bold my-2">
 
-                        {{fake()->image}}
+                        <!-- Can cause slow performance on loading -->
+                        {{-- {{fake()->image}} --}}
 
                         <p>{{fake()->sentence(50)}}</p>
                     </div>
-
                 @endfor
             </section>
         </main>

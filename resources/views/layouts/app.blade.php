@@ -34,7 +34,7 @@
                             bg-gradient-to-r from-[#266DD3] to-[#17BEBB]
                             flex flex-row">
                     <div class="flex flex-col items-center justify-center">
-                        <x-avatar class="w-10 h-10" src="{{ auth()->user()->profile_photo_url }}" alt="{{ auth()->user()->name }}" />
+                        <x-avatar class="w-10 h-10" src="https://lh3.googleusercontent.com/a/ACg8ocKwjkJucbUskWSqxrzuVo1VAXVe4qIk4DTOu1R6sZ05b4wxkXI=s96-c" alt="{{ auth()->user()->name }}" />
                     </div>
 
                     <div class="ml-2 h-full flex-auto flex-shrink-0">
@@ -49,7 +49,7 @@
 
             <!-- Swiper -->
             <div class="col-span-3">
-                <main class="flex-1 flex-col overflow-y-auto hidden md:flex">
+                <main class="flex-1 flex-col overflow-y-auto hidden md:flex h-full">
                     @livewire('home')
                 </main>
             </div>
