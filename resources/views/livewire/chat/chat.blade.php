@@ -1,5 +1,6 @@
 <div
-x-data="{
+x-data="
+{
     height: 0,
     conversationElement:document.getElementById('conversation')
 }"
@@ -13,7 +14,8 @@ Echo.private('users.{{auth()->id()}}')
         if (notification['type']=='App\\Notifications\\MessageSentNotification' && notification['conversation_id']=={{ $conversation->id }}){
             $wire.listenBroadcastedMessage(notification);
         }
-    });
+    }
+);
 "
 
 @scroll-bottom.window="
@@ -22,7 +24,6 @@ $nextTick(() => {
     conversationElement.scrollTop = conversationElement.scrollHeight;
     conversationElement.style.overflowY = 'auto';
 });
-
 "
 class="flex h-screen overflow-hidden">
     <main class="w-full grow border flex flex-col relative">
@@ -153,9 +154,9 @@ class="flex h-screen overflow-hidden">
         </footer>
     </main>
 
-    {{-- Profile --}}
+    <!-- Profile -->
     <aside class="w-[50%] hidden sm:flex border">
-        {{-- Profile Card --}}
+        <!-- Profile Card -->
         <div style="contain: content"
             class=" inset-0 overflow-y-auto overflow-hidden overscroll-contain w-full  bg-white space-y-4">
 
@@ -167,16 +168,17 @@ class="flex h-screen overflow-hidden">
                 ];
                 $user= App\Models\User::first();
             @endphp
-            {{-- Carousel section --}}
+
+            <!-- Image Carousel -->
             <section class="relative h-96" x-data="{ activeSlide: 1, slides: @js($slides) }">
 
-                {{-- Sliders --}}
+                <!-- Sliders -->
                 <template x-for="(image, index) in slides" :key="index">
                     <img x-show="activeSlide === index+1" :src="image" alt=""
                         class="absolute inset-0 pointer-events-none w-full h-full object-cover">
                 </template>
 
-                {{-- Pagination --}}
+                <!-- Pagination -->
                 <div draggable="true" :class="{ 'hidden': slides.length === 1 }"
                     class="absolute top-1 inset-x-0 z-10 w-full flex items-center justify-center">
 
@@ -187,7 +189,7 @@ class="flex h-screen overflow-hidden">
                     </template>
                 </div>
 
-                {{-- Prev Button --}}
+                <!-- Prev Button -->
                 <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
                     @click="activeSlide = activeSlide === 1 ? slides.length : activeSlide - 1"
                     class="absolute left-2 top-1/2 my-auto">
@@ -196,11 +198,9 @@ class="flex h-screen overflow-hidden">
                         stroke="currentColor" class="size-9 text-white text-bold">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                     </svg>
-
-
                 </button>
 
-                {{-- Next Button --}}
+                <!-- Next Button -->
                 <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
                     @click="activeSlide = activeSlide === slides.length ? 1 : activeSlide + 1"
                     class="absolute right-2 top-1/2 my-auto">
@@ -209,40 +209,34 @@ class="flex h-screen overflow-hidden">
                         stroke="currentColor" class="size-9 text-white text-bold">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
-
-
-
                 </button>
-
-
-
             </section>
 
-            {{-- Profile Info --}}
+            <!-- Profile Info -->
             <section class="grid gap-4 p-3">
                 <div class="flex items-center text-3xl gap-3 text-wrap">
-                    <h3 class="font-bold">{{ $user->name }}</h3>
+                    <h3 class="font-bold">{{ $receiver->name }}</h3>
                     <span class="font-semibold text-gray-800">
-                        {{ $user->age }}
+                        {{ $receiver->age }}
                     </span>
                 </div>
 
                 {{-- About --}}
                 <ul>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ $user->birth_date }}
+                        {{ $receiver->birth_date }}
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ $user->gender }}
+                        {{ $receiver->genders()->first() }}
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ $user->interests }}
+                        {{ $receiver->interests }}
                     </li>
                 </ul>
                 <hr class="-mx-2.5">
 
                 {{-- Bio --}}
-                <p class="text-gray-600">{{ $user->bio }}</p>
+                <p class="text-gray-600">{{ $receiver->bio }}</p>
 
                 {{-- Relationships Goals --}}
                 <div class="rounded-xl bg-green-200 h-24 px-4 py-2 max-w-fit flex gap-4 items-center">
@@ -250,8 +244,7 @@ class="flex h-screen overflow-hidden">
                     <div class="grid w-4/5">
 
                         <span class="font-bold text-sm text-green-800">Looking for</span>
-                        <span class="text-lg text-green-800 capitalize">
-                            {{ $user->dating_goal }}👋</span>
+                        <span class="text-lg text-green-800 capitalize">{{ $receiver->dating_goal }}</span>
                     </div>
                 </div>
                 {{-- More information --}}
