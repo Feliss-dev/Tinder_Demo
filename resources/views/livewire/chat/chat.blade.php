@@ -91,29 +91,23 @@ class="flex h-screen overflow-hidden">
             $el.scrollTop = newHeight - oldHeight;
             height = newHeight;
 
-            })
-        "
+        })"
         id="conversation"
             class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
 
             @foreach ($loadedMessages as $message )
-
-
                 @php
                     $belongsToAuth = $message->sender_id == auth()->id();
                 @endphp
 
-                <div
-                wire:ignore
+                <div wire:ignore
                 @class([
                     'max-w-[85%] md:max-w-[78%] flex w-auto gap-2 relative mt-2',
                     'ml-auto' => $belongsToAuth,
                 ])>
-
                     {{-- Avatar --}}
                     <div @class(['shrink-0 mt-auto', 'invisible' => $belongsToAuth])>
                         <x-avatar class="w-7 h-7" src="https://picsum.photos/seed/' . rand() . '/300/300" />
-
                     </div>
 
                     {{-- Message --}}
@@ -121,12 +115,11 @@ class="flex h-screen overflow-hidden">
                         'flex flex-wrap text-[15px] border-gray-200/40 rounded-xl p-2.5 flex flex-col bg-[#f6f6f8fb]',
                         'bg-blue-500 text-white' => $belongsToAuth,
                     ])>
-                        <p class="whitespace-normal text-sm md:text-base tracking-wide lg:tracking-normal">
-                            {{$message->body}}</p>
+                        <p class="whitespace-normal text-sm md:text-base tracking-wide lg:tracking-normal">{{$message->body}}</p>
                     </div>
                 </div>
 
-                @endforeach
+            @endforeach
         </section>
 
         {{-- Footer --}}
@@ -160,6 +153,7 @@ class="flex h-screen overflow-hidden">
         <div style="contain: content"
             class=" inset-0 overflow-y-auto overflow-hidden overscroll-contain w-full  bg-white space-y-4">
 
+            <!-- TODO: Retrieve user's images instead of randomly generate -->
             @php
                 $slides = [
                     'https://picsum.photos/seed/' . rand() . '/500/300',
