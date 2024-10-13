@@ -10,10 +10,11 @@ $nextTick(() => conversationElement.scrollTop=height);
 
 Echo.private('users.{{auth()->id()}}')
     .notification((notification) => {
+
         if (notification['type']=='App\\Notifications\\MessageSentNotification' && notification['conversation_id']=={{ $conversation->id }}){
             $wire.listenBroadcastedMessage(notification);
         }
-    });
+    })
 "
 
 @scroll-bottom.window="
@@ -38,7 +39,17 @@ class="flex h-screen overflow-hidden">
                     </svg>
                 </span>
             </a>
-            <x-avatar src="https://picsum.photos/seed/' . rand() . '/300/300" />
+            {{-- <x-avatar src="https://picsum.photos/seed/' . rand() . '/300/300" /> --}}
+            {{-- Hiển thị avatar của người vừa được match --}}
+    <span>
+        @if ($receiver && $receiver->activeAvatar)
+            <img src="{{ asset('storage/' .$receiver->activeAvatar->path) }}" alt="Matched User Avatar"
+                 class="rounded-full h-10 w-10 ring ring-pink-500/40">
+        @else
+        <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
+
+        @endif
+    </span>
 
             <h5 class="font-bold text-gray-500 truncate">
                 {{ $receiver->name }}
@@ -221,28 +232,28 @@ class="flex h-screen overflow-hidden">
             {{-- Profile Info --}}
             <section class="grid gap-4 p-3">
                 <div class="flex items-center text-3xl gap-3 text-wrap">
-                    <h3 class="font-bold">{{ $user->name }}</h3>
+                    <h3 class="font-bold">{{ $receiver->name }}</h3>
                     <span class="font-semibold text-gray-800">
-                        {{ $user->age }}
+                        {{ $receiver->age }}
                     </span>
                 </div>
 
                 {{-- About --}}
                 <ul>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ $user->birth_date }}
+                        {{ $receiver->birth_date }}
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ $user->gender }}
+                        {{ $receiver->gender }}
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ $user->interests }}
+                        {{ $receiver->interests }}
                     </li>
                 </ul>
                 <hr class="-mx-2.5">
 
                 {{-- Bio --}}
-                <p class="text-gray-600">{{ $user->bio }}</p>
+                <p class="text-gray-600">{{ $receiver->bio }}</p>
 
                 {{-- Relationships Goals --}}
                 <div class="rounded-xl bg-green-200 h-24 px-4 py-2 max-w-fit flex gap-4 items-center">
@@ -251,7 +262,7 @@ class="flex h-screen overflow-hidden">
 
                         <span class="font-bold text-sm text-green-800">Looking for</span>
                         <span class="text-lg text-green-800 capitalize">
-                            {{ $user->dating_goal }}👋</span>
+                            {{ $receiver->dating_goal }}👋</span>
                     </div>
                 </div>
                 {{-- More information --}}

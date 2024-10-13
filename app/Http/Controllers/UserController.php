@@ -106,4 +106,22 @@ class UserController extends Controller
         return redirect()->route('dashboard')->with('success', 'Profile updated successfully!');
     }
 
+    public function deleteImage(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $images = json_decode($user->images, true);
+
+        $imageToDelete = $request->input('image');
+        $updatedImages = array_filter($images, fn($img) => $img !== $imageToDelete);
+
+        $user->images = json_encode(array_values($updatedImages)); // Re-index the array
+        $user->save();
+
+        if (Storage::disk('public')->exists($imageToDelete)) {
+            Storage::disk('public')->delete($imageToDelete);
+        }
+
+        return response()->json(['message' => 'Image deleted successfully.']);
+    }
+
 }

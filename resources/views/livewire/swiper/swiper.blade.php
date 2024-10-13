@@ -671,15 +671,27 @@
                             </h5>
                         </div>
                         <div class="flex items-center justify-center gap-4 mx-">
-                            <span>
-                                <img src="https://picsum.photos/seed/' . rand() . '/300/300" alt=""
-                                    class="rounded-full h-32 w-32 ring ring-rose-500">
-                            </span>
+                              {{-- Hiển thị avatar của người dùng hiện tại --}}
+    <span>
+        @if ($currentUser && $currentUser->activeAvatar)
+            <img src="{{ asset('storage/' . $currentUser->activeAvatar->path) }}" alt="Current User Avatar"
+                 class="rounded-full h-32 w-32 ring ring-rose-500">
+        @else
 
-                            <span>
-                                <img src="https://picsum.photos/seed/' . rand() . '/300/300" alt=""
-                                    class="rounded-full h-32 w-32 ring ring-pink-500/40">
-                            </span>
+                 >
+                 <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User"class="rounded-full h-32 w-32 ring ring-rose-500">
+        @endif
+    </span>
+                             {{-- Hiển thị avatar của người vừa được match --}}
+    <span>
+        @if ($matchedUser && $matchedUser->activeAvatar)
+            <img src="{{ asset('storage/' . $matchedUser->activeAvatar->path) }}" alt="Matched User Avatar"
+                 class="rounded-full h-32 w-32 ring ring-pink-500/40">
+        @else
+        <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-32 w-32 ring ring-pink-500/40">
+
+        @endif
+    </span>
                         </div>
 
                         {{-- Action --}}

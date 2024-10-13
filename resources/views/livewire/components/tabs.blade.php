@@ -86,7 +86,15 @@
                                                       </svg>
                                                 </span>
 
-                                            <x-avatar class="w-14 h-14" src="https://picsum.photos/seed/' . rand() . '/300/300"/>
+                                                <span>
+                                                    @if ($conversation->getReceiver()->activeAvatar)
+                                                        <img src="{{ asset('storage/' .$receiver->activeAvatar->path) }}" alt="Matched User Avatar"
+                                                             class="rounded-full h-10 w-10 ring ring-pink-500/40">
+                                                    @else
+                                                    <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
+
+                                                    @endif
+                                                </span>
                                         </div>
 
                                         <div class="overflow-hidden">
