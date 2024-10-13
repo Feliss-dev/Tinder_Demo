@@ -43,7 +43,7 @@
         </form>
     </div>
 
-    <div class="relative h-full w-full md:w-96 m-auto flex items-center justify-center" style="border: 2px solid blue;">
+    <div class="relative h-full w-full md:w-96 m-auto flex items-center justify-center">
         @if ($users->isEmpty())
             <div class="col-span-full text-center ">
                 <p class="text-gray-500">Found no suitable match.</p>
