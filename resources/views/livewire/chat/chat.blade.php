@@ -157,8 +157,8 @@ class="flex h-screen overflow-hidden">
                     </span>
                     <input x-model="body" type="text" autocomplete="off" autofocus
                         placeholder="Write your message here" maxlength="1700"
-                        class="col-span-9 bg-gray-100 border-0 outline-0 focus:ring-0 hover:ring-0 rounded-lg focus:outline-none">
-                    <button x-bind@disabled="!body?.trim()" type="submit" class="col-span-2">Send</button>
+                        class="col-span-9 bg-gray-100 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none placeholder-gray-500 mr-2">
+                    <button x-bind@disabled="!body?.trim()" type="submit" class="col-span-2n p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-300">Send</button>
                 </div>
             </form>
         </footer>
@@ -229,8 +229,8 @@ class="flex h-screen overflow-hidden">
 
             </section>
 
-            {{-- Profile Info --}}
-            <section class="grid gap-4 p-3">
+             {{-- Profile Info --}}
+             <section class="grid gap-4 p-3">
                 <div class="flex items-center text-3xl gap-3 text-wrap">
                     <h3 class="font-bold">{{ $receiver->name }}</h3>
                     <span class="font-semibold text-gray-800">
@@ -244,10 +244,34 @@ class="flex h-screen overflow-hidden">
                         {{ $receiver->birth_date }}
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ $receiver->gender }}
+                        <p class="mb-2 mr-4"><strong>Gender:</strong>
+                            @if ($receiver->genders->isNotEmpty())
+                            <div class="flex flex-wrap gap-2">
+                                @foreach ($receiver->genders as $gender)
+
+                                    {{ $gender->name }}
+
+                                @endforeach
+                            </div>
+                            @else
+                            Chưa có dữ liệu
+                            @endif
+                        </p>
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ $receiver->interests }}
+                        <p class="mb-2 mr-4"><strong>Interests:</strong>
+                            @if ($receiver->interests->isNotEmpty())
+                            <div class="flex flex-wrap gap-2">
+                                @foreach ($receiver->interests as $interest)
+                                <span class="inline-block bg-green-100 text-green-700 border border-green-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                    {{ $interest->name }}
+                                </span>
+                                @endforeach
+                            </div>
+                            @else
+                            Chưa có dữ liệu
+                            @endif
+                        </p>
                     </li>
                 </ul>
                 <hr class="-mx-2.5">
@@ -256,54 +280,78 @@ class="flex h-screen overflow-hidden">
                 <p class="text-gray-600">{{ $receiver->bio }}</p>
 
                 {{-- Relationships Goals --}}
-                <div class="rounded-xl bg-green-200 h-24 px-4 py-2 max-w-fit flex gap-4 items-center">
-                    <div class="text-3xl"></div>
-                    <div class="grid w-4/5">
+                <div
+                    class="rounded-lg bg-green-100 h-auto px-6 py-4 max-w-md flex gap-6 items-center shadow-lg">
+                    <div class="text-4xl text-green-700">
+                        <!-- Thêm icon hoặc biểu tượng ở đây nếu cần -->
+                        🌟
+                    </div>
+                    <div class="grid w-full">
+                        <span class="font-semibold text-sm text-green-600 uppercase">Looking for</span>
+                        <p class="mb-2 mr-4"><strong>Dating Goal:</strong>
 
-                        <span class="font-bold text-sm text-green-800">Looking for</span>
-                        <span class="text-lg text-green-800 capitalize">
-                            {{ $receiver->dating_goal }}👋</span>
+                            @if ($receiver->datingGoals->isNotEmpty())
+                            <div class="flex flex-wrap gap-2">
+                                @foreach ($receiver->datingGoals as $datingGoal)
+                                <span class="text-xl text-green-700 font-medium capitalize">
+                                    {{ $datingGoal->name }} 👋
+                                </span>
+                                @endforeach
+                            </div>
+                            @else
+                            Chưa có dữ liệu
+                            @endif
+                    </p>
                     </div>
                 </div>
+
                 {{-- More information --}}
-                {{-- @if ($user->languages) --}}
-                <section class="divide-y space-y-2">
-                    <div class="space-y-3 py-2">
 
-                        <h3 class="font-bold text-xl">Languages I know</h3>
-                        <ul class="flex flex-wrap gap-3">
-                            {{-- @foreach ($user->languages as $language)
-                                <li
-                                    class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5 capitalize">
-                                    {{ $language->name }}</li>
-                            @endforeach --}}
-                        </ul>
-                    </div>
-                    {{-- @endif --}}
+                    <section class="divide-y space-y-2">
+                        <div class="space-y-3 py-2">
 
-                    {{-- @if ($user->basics) --}}
-                    <div class="space-y-3 py-2">
+                            <h3 class="font-bold text-xl">Languages i know</h3>
+                            <ul class="flex flex-wrap gap-3">
 
-                        <h3 class="font-bold text-xl">Basics</h3>
-                        <ul class="flex flex-wrap gap-3">
-                            {{-- @foreach ($user->basics as $basic)
-                            <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">
-                                {{ $basic->name }}</li>
-                        @endforeach --}}
+                                @if ($receiver->languages->isNotEmpty())
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach ($receiver->languages as $language)
+                                    <span class="inline-block bg-purple-100 text-purple-700 border border-purple-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                        {{ $language->name }}
+                                    </span>
+                                    @endforeach
+                                </div>
+                                @else
+                                Chưa có dữ liệu
+                                @endif
 
-                        </ul>
-                    </div>
-                    {{-- @endif --}}
-                </section>
 
-                <button wire:confirm="Are you sure" wire:click="deleteMatch" class="py-6 border-y flex-col flex gap-2 text-gray-500 justify-center items-center">
-                    <span class="font-bold">
-                        Unmatch
-                    </span>
-                    <span>
-                        No longer interested?, remove them from your matches
-                    </span>
-                </button>
+                            </ul>
+                        </div>
+
+
+
+                <div class="space-y-3 py-2">
+
+                    <h3 class="font-bold text-xl">Basics</h3>
+                    <ul class="flex flex-wrap gap-3">
+                        <p class="mb-2 mr-4"><strong>Desired Gender:</strong>
+                            @if ($receiver->desiredGenders->isNotEmpty())
+                            <div class="flex flex-wrap gap-2">
+                                @foreach ($receiver->desiredGenders as $desiredGender)
+                                <span class="inline-block bg-pink-100 text-pink-700 border border-pink-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                    {{ $desiredGender->name }}
+                                </span>
+                                @endforeach
+                            </div>
+                            @else
+                            Chưa có dữ liệu
+                            @endif
+                        </p>
+
+                    </ul>
+                </div>
+
             </section>
         </div>
     </aside>

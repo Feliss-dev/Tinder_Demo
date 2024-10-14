@@ -1,47 +1,129 @@
 <div id="tinder" class="m-auto md:p-8 w-full h-full relative flex">
 
-    <div class="flex flex-row mt-8">
+    <div class="flex justify-center mb-11">
         <form wire:submit.prevent="applyFilters"
-            class="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center space-y-6 w-72">
-            <!-- Search Input (Tìm kiếm tên người dùng) -->
-            <div class="w-full">
-                <label for="searchTerm">Search Name</label>
-                <input type="text" id="searchTerm" wire:model="searchTerm" placeholder="Enter name..."
-                    class="w-full border p-2 rounded-md">
+            class="bg-white p-8 rounded-3xl shadow-xl space-y-8 w-full max-w-4xl border-t-4 border-pink-500">
+
+            <h2 class="text-xl font-bold text-gray-800 text-center mb-6">Find Your Match</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Cột 1 -->
+                <div class="space-y-6">
+                    <div class="relative w-full">
+                        <label for="searchTerm" class="block text-sm font-semibold text-gray-600">Search Name</label>
+                        <input type="text" id="searchTerm" wire:model="searchTerm" placeholder="Enter name..."
+                            class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
+                        <svg class="absolute right-3 top-12 h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M12.9 14.32a8 8 0 111.42-1.42l4.18 4.17a1 1 0 01-1.42 1.42l-4.17-4.17zM8 14A6 6 0 108 2a6 6 0 000 12z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+
+                    <div class="w-full">
+                        <label for="ageFrom" class="block text-sm font-semibold text-gray-600">Age From</label>
+                        <input type="number" id="ageFrom" min="0" max="120" wire:model="ageFrom"
+                            class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
+                    </div>
+
+                    <div class="w-full">
+                        <label for="ageTo" class="block text-sm font-semibold text-gray-600">Age To</label>
+                        <input type="number" id="ageTo" min="0" max="120" wire:model="ageTo"
+                            class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
+                    </div>
+
+                    <div class="w-full">
+                        <label for="gender" class="block text-sm font-semibold text-gray-600">Gender</label>
+                        <select id="gender" wire:model="gender"
+                            class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
+                            <option value="">Any</option>
+                            @foreach ($genders as $gender)
+                                <option value="{{ $gender->id }}">{{ $gender->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Cột 2 -->
+                <div class="space-y-6 mt-20">
+                    <!-- Interests Filter in Dropdown -->
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" type="button"
+                            class="w-full p-3 bg-gray-100 border rounded-lg focus:ring-2 focus:ring-pink-400">
+                            Select Interests
+                        </button>
+                        <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-2 bg-white border rounded-lg shadow-xl w-full">
+                            <div class="p-3 grid grid-cols-2 gap-2">
+                                @foreach ($interests as $interest)
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" value="{{ $interest->id }}" wire:model="selectedInterests"
+                                            class="text-pink-500 focus:ring-pink-400 rounded">
+                                        <span>{{ $interest->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Languages Filter in Dropdown -->
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" type="button"
+                            class="w-full p-3 bg-gray-100 border rounded-lg focus:ring-2 focus:ring-pink-400">
+                            Select Languages
+                        </button>
+                        <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-2 bg-white border rounded-lg shadow-xl w-full">
+                            <div class="p-3 grid grid-cols-2 gap-2">
+                                @foreach ($languages as $language)
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" value="{{ $language->id }}" wire:model="selectedLanguages"
+                                            class="text-pink-500 focus:ring-pink-400 rounded">
+                                        <span>{{ $language->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dating Goals Filter in Dropdown -->
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" type="button"
+                            class="w-full p-3 bg-gray-100 border rounded-lg focus:ring-2 focus:ring-pink-400">
+                            Select Dating Goals
+                        </button>
+                        <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-2 bg-white border rounded-lg shadow-xl w-full">
+                            <div class="p-3 grid grid-cols-2 gap-2">
+                                @foreach ($datingGoals as $goal)
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" value="{{ $goal->id }}" wire:model="selectedDatingGoals"
+                                            class="text-pink-500 focus:ring-pink-400 rounded">
+                                        <span>{{ $goal->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Age From -->
-            <div class="w-full">
-                <label for="ageFrom">Age From</label>
-                <input type="number" id="ageFrom" min="0" max="120" wire:model="ageFrom"
-                    placeholder="Min Age" class="w-full border p-2 rounded-md">
-            </div>
-
-            <!-- Age To -->
-            <div class="w-full">
-                <label for="ageTo">Age To</label>
-                <input type="number" id="ageTo" min="0" max="120" wire:model="ageTo"
-                    placeholder="Max Age" class="w-full border p-2 rounded-md">
-            </div>
-
-            <!-- Gender Filter -->
-            <div class="w-full">
-                <label for="gender">Gender</label>
-                <select id="gender" wire:model="gender" class="w-full border p-2 rounded-md">
-                    <option value="">Any</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="w-full">
+            <div class="flex justify-center mt-8">
                 <button type="submit"
-                    class="w-full bg-tinder text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">Filter</button>
+                    class="w-full md:w-1/2 py-3 bg-pink-500 text-white font-semibold rounded-lg hover:bg-pink-600 transition-all duration-200">
+                    <span class="flex items-center justify-center">
+                        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                        Apply Filters
+                    </span>
+                </button>
             </div>
         </form>
     </div>
+
+
+
+
 
     <div class="relative h-full w-full md:w-96 m-auto flex items-center justify-center" style="border: 2px solid blue;">
         @if ($users->isEmpty())
@@ -490,10 +572,33 @@
                                     {{ $user->birth_date }}
                                 </li>
                                 <li class="items-center text-gray-6000 text-lg">
-                                    {{ $user->gender }}
+                                    <p class="mb-2 mr-4"><strong>Gender:</strong>
+                                        @if ($user->genders->isNotEmpty())
+                                            <div class="flex flex-wrap gap-2">
+                                                @foreach ($user->genders as $gender)
+                                                    {{ $gender->name }}
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            Chưa có dữ liệu
+                                        @endif
+                                    </p>
                                 </li>
                                 <li class="items-center text-gray-6000 text-lg">
-                                    {{ $user->interests }}
+                                    <p class="mb-2 mr-4"><strong>Interests:</strong>
+                                        @if ($user->interests->isNotEmpty())
+                                            <div class="flex flex-wrap gap-2">
+                                                @foreach ($user->interests as $interest)
+                                                    <span
+                                                        class="inline-block bg-green-100 text-green-700 border border-green-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                                        {{ $interest->name }}
+                                                    </span>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            Chưa có dữ liệu
+                                        @endif
+                                    </p>
                                 </li>
                             </ul>
                             <hr class="-mx-2.5">
@@ -510,46 +615,73 @@
                                 </div>
                                 <div class="grid w-full">
                                     <span class="font-semibold text-sm text-green-600 uppercase">Looking for</span>
-                                    <span class="text-xl text-green-700 font-medium capitalize">
-                                        {{ $user->dating_goal }} 👋
-                                    </span>
+                                    <p class="mb-2 mr-4"><strong>Dating Goal:</strong>
+
+                                        @if ($user->datingGoals->isNotEmpty())
+                                            <div class="flex flex-wrap gap-2">
+                                                @foreach ($user->datingGoals as $datingGoal)
+                                                    <span class="text-xl text-green-700 font-medium capitalize">
+                                                        {{ $datingGoal->name }} 👋
+                                                    </span>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            Chưa có dữ liệu
+                                        @endif
+                                    </p>
                                 </div>
                             </div>
 
                             {{-- More information --}}
-                            @if ($user->languages->isNotEmpty())
-                                <section class="divide-y space-y-2">
-                                    <div class="space-y-3 py-2">
 
-                                        <h3 class="font-bold text-xl">Languages i know</h3>
-                                        <ul class="flex flex-wrap gap-3">
+                            <section class="divide-y space-y-2">
+                                <div class="space-y-3 py-2">
 
-                                            @foreach ($user->languages as $language)
-                                                <li
-                                                    class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5 capitalize">
-                                                    {{ $language->name }}
-                                                </li>
-                                            @endforeach
+                                    <h3 class="font-bold text-xl">Languages i know</h3>
+                                    <ul class="flex flex-wrap gap-3">
+
+                                        @if ($user->languages->isNotEmpty())
+                                            <div class="flex flex-wrap gap-2">
+                                                @foreach ($user->languages as $language)
+                                                    <span
+                                                        class="inline-block bg-purple-100 text-purple-700 border border-purple-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                                        {{ $language->name }}
+                                                    </span>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            Chưa có dữ liệu
+                                        @endif
 
 
-                                        </ul>
-                                    </div>
-                            @endif
+                                    </ul>
+                                </div>
 
-                            {{-- @if ($user->basics) --}}
-                            <div class="space-y-3 py-2">
 
-                                <h3 class="font-bold text-xl">Basics</h3>
-                                <ul class="flex flex-wrap gap-3">
-                                    {{-- @foreach ($user->basics as $basic)
-                                        <li class="border border-gray-500 rounded-2xl text-sm px-2.5 p-1.5">
-                                            {{ $basic->name }}</li>
-                                    @endforeach --}}
 
-                                </ul>
-                            </div>
-                            {{-- @endif --}}
-                        </section>
+                                <div class="space-y-3 py-2">
+
+                                    <h3 class="font-bold text-xl">Basics</h3>
+                                    <ul class="flex flex-wrap gap-3">
+                                        <p class="mb-2 mr-4"><strong>Desired Gender:</strong>
+                                            @if ($user->desiredGenders->isNotEmpty())
+                                                <div class="flex flex-wrap gap-2">
+                                                    @foreach ($user->desiredGenders as $desiredGender)
+                                                        <span
+                                                            class="inline-block bg-pink-100 text-pink-700 border border-pink-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                                            {{ $desiredGender->name }}
+                                                        </span>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                Chưa có dữ liệu
+                                            @endif
+                                        </p>
+
+                                    </ul>
+                                </div>
+
+                            </section>
 
 
                         </section>
@@ -671,27 +803,28 @@
                             </h5>
                         </div>
                         <div class="flex items-center justify-center gap-4 mx-">
-                              {{-- Hiển thị avatar của người dùng hiện tại --}}
-    <span>
-        @if ($currentUser && $currentUser->activeAvatar)
-            <img src="{{ asset('storage/' . $currentUser->activeAvatar->path) }}" alt="Current User Avatar"
-                 class="rounded-full h-32 w-32 ring ring-rose-500">
-        @else
-
-                 >
-                 <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User"class="rounded-full h-32 w-32 ring ring-rose-500">
-        @endif
-    </span>
-                             {{-- Hiển thị avatar của người vừa được match --}}
-    <span>
-        @if ($matchedUser && $matchedUser->activeAvatar)
-            <img src="{{ asset('storage/' . $matchedUser->activeAvatar->path) }}" alt="Matched User Avatar"
-                 class="rounded-full h-32 w-32 ring ring-pink-500/40">
-        @else
-        <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-32 w-32 ring ring-pink-500/40">
-
-        @endif
-    </span>
+                            {{-- Hiển thị avatar của người dùng hiện tại --}}
+                            <span>
+                                @if ($currentUser && $currentUser->activeAvatar)
+                                    <img src="{{ asset('storage/' . $currentUser->activeAvatar->path) }}"
+                                        alt="Current User Avatar" class="rounded-full h-32 w-32 ring ring-rose-500">
+                                @else
+                                    >
+                                    <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg"
+                                        alt="Random User"class="rounded-full h-32 w-32 ring ring-rose-500">
+                                @endif
+                            </span>
+                            {{-- Hiển thị avatar của người vừa được match --}}
+                            <span>
+                                @if ($matchedUser && $matchedUser->activeAvatar)
+                                    <img src="{{ asset('storage/' . $matchedUser->activeAvatar->path) }}"
+                                        alt="Matched User Avatar"
+                                        class="rounded-full h-32 w-32 ring ring-pink-500/40">
+                                @else
+                                    <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg"
+                                        alt="Random User" class="rounded-full h-32 w-32 ring ring-pink-500/40">
+                                @endif
+                            </span>
                         </div>
 
                         {{-- Action --}}

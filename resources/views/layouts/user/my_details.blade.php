@@ -25,7 +25,6 @@
 
 
 
-
 </head>
 
 <body>
@@ -172,8 +171,8 @@
                             @if ($user->datingGoals->isNotEmpty())
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($user->datingGoals as $datingGoal)
-                                <span class="inline-block bg-yellow-100 text-yellow-700 border border-yellow-300 rounded-full px-3 py-1 text-sm font-semibold">
-                                    {{ $datingGoal->name }}
+                                <span class="text-xl text-green-700 font-medium capitalize">
+                                    {{ $datingGoal->name }} 👋
                                 </span>
                                 @endforeach
                             </div>
@@ -187,7 +186,7 @@
                     <!-- Languages -->
                     <div class="flex flex-row">
 
-                        <p class="mb-2 mr-4"><strong>Languages:</strong>
+                        <p class="mb-2 mr-4"><strong>Languages I know:</strong>
 
                         @if ($user->languages->isNotEmpty())
                         <div class="flex flex-wrap gap-2">
@@ -303,6 +302,7 @@
 
     @livewireScripts
 </body>
+
 <style>
     /* Basic styling adjustments for better user experience */
     * {
@@ -474,5 +474,4 @@
         background-color: #cc0000;
     }
 </style>
-
 </html>
