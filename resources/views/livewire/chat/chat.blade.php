@@ -1,6 +1,5 @@
 <div
-x-data="
-{
+x-data="{
     height: 0,
     conversationElement:document.getElementById('conversation')
 }"
@@ -11,11 +10,11 @@ $nextTick(() => conversationElement.scrollTop=height);
 
 Echo.private('users.{{auth()->id()}}')
     .notification((notification) => {
+
         if (notification['type']=='App\\Notifications\\MessageSentNotification' && notification['conversation_id']=={{ $conversation->id }}){
             $wire.listenBroadcastedMessage(notification);
         }
-    }
-);
+    })
 "
 
 @scroll-bottom.window="
@@ -24,6 +23,7 @@ $nextTick(() => {
     conversationElement.scrollTop = conversationElement.scrollHeight;
     conversationElement.style.overflowY = 'auto';
 });
+
 "
 class="flex h-screen overflow-hidden">
     <main class="w-full grow border flex flex-col relative">
@@ -39,7 +39,17 @@ class="flex h-screen overflow-hidden">
                     </svg>
                 </span>
             </a>
-            <x-avatar src="https://picsum.photos/seed/' . rand() . '/300/300" />
+            {{-- <x-avatar src="https://picsum.photos/seed/' . rand() . '/300/300" /> --}}
+            {{-- Hiển thị avatar của người vừa được match --}}
+    <span>
+        @if ($receiver && $receiver->activeAvatar)
+            <img src="{{ asset('storage/' .$receiver->activeAvatar->path) }}" alt="Matched User Avatar"
+                 class="rounded-full h-10 w-10 ring ring-pink-500/40">
+        @else
+        <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
+
+        @endif
+    </span>
 
             <h5 class="font-bold text-gray-500 truncate">
                 {{ $receiver->name }}
@@ -91,23 +101,29 @@ class="flex h-screen overflow-hidden">
             $el.scrollTop = newHeight - oldHeight;
             height = newHeight;
 
-        })"
+            })
+        "
         id="conversation"
             class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
 
             @foreach ($loadedMessages as $message )
+
+
                 @php
                     $belongsToAuth = $message->sender_id == auth()->id();
                 @endphp
 
-                <div wire:ignore
+                <div
+                wire:ignore
                 @class([
                     'max-w-[85%] md:max-w-[78%] flex w-auto gap-2 relative mt-2',
                     'ml-auto' => $belongsToAuth,
                 ])>
+
                     {{-- Avatar --}}
                     <div @class(['shrink-0 mt-auto', 'invisible' => $belongsToAuth])>
                         <x-avatar class="w-7 h-7" src="https://picsum.photos/seed/' . rand() . '/300/300" />
+
                     </div>
 
                     {{-- Message --}}
@@ -115,11 +131,12 @@ class="flex h-screen overflow-hidden">
                         'flex flex-wrap text-[15px] border-gray-200/40 rounded-xl p-2.5 flex flex-col bg-[#f6f6f8fb]',
                         'bg-blue-500 text-white' => $belongsToAuth,
                     ])>
-                        <p class="whitespace-normal text-sm md:text-base tracking-wide lg:tracking-normal">{{$message->body}}</p>
+                        <p class="whitespace-normal text-sm md:text-base tracking-wide lg:tracking-normal">
+                            {{$message->body}}</p>
                     </div>
                 </div>
 
-            @endforeach
+                @endforeach
         </section>
 
         {{-- Footer --}}
@@ -147,13 +164,12 @@ class="flex h-screen overflow-hidden">
         </footer>
     </main>
 
-    <!-- Profile -->
+    {{-- Profile --}}
     <aside class="w-[50%] hidden sm:flex border">
-        <!-- Profile Card -->
+        {{-- Profile Card --}}
         <div style="contain: content"
             class=" inset-0 overflow-y-auto overflow-hidden overscroll-contain w-full  bg-white space-y-4">
 
-            <!-- TODO: Retrieve user's images instead of randomly generate -->
             @php
                 $slides = [
                     'https://picsum.photos/seed/' . rand() . '/500/300',
@@ -162,17 +178,16 @@ class="flex h-screen overflow-hidden">
                 ];
                 $user= App\Models\User::first();
             @endphp
-
-            <!-- Image Carousel -->
+            {{-- Carousel section --}}
             <section class="relative h-96" x-data="{ activeSlide: 1, slides: @js($slides) }">
 
-                <!-- Sliders -->
+                {{-- Sliders --}}
                 <template x-for="(image, index) in slides" :key="index">
                     <img x-show="activeSlide === index+1" :src="image" alt=""
                         class="absolute inset-0 pointer-events-none w-full h-full object-cover">
                 </template>
 
-                <!-- Pagination -->
+                {{-- Pagination --}}
                 <div draggable="true" :class="{ 'hidden': slides.length === 1 }"
                     class="absolute top-1 inset-x-0 z-10 w-full flex items-center justify-center">
 
@@ -183,7 +198,7 @@ class="flex h-screen overflow-hidden">
                     </template>
                 </div>
 
-                <!-- Prev Button -->
+                {{-- Prev Button --}}
                 <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
                     @click="activeSlide = activeSlide === 1 ? slides.length : activeSlide - 1"
                     class="absolute left-2 top-1/2 my-auto">
@@ -192,9 +207,11 @@ class="flex h-screen overflow-hidden">
                         stroke="currentColor" class="size-9 text-white text-bold">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                     </svg>
+
+
                 </button>
 
-                <!-- Next Button -->
+                {{-- Next Button --}}
                 <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
                     @click="activeSlide = activeSlide === slides.length ? 1 : activeSlide + 1"
                     class="absolute right-2 top-1/2 my-auto">
@@ -203,10 +220,16 @@ class="flex h-screen overflow-hidden">
                         stroke="currentColor" class="size-9 text-white text-bold">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
+
+
+
                 </button>
+
+
+
             </section>
 
-            <!-- Profile Info -->
+            {{-- Profile Info --}}
             <section class="grid gap-4 p-3">
                 <div class="flex items-center text-3xl gap-3 text-wrap">
                     <h3 class="font-bold">{{ $receiver->name }}</h3>
@@ -221,7 +244,7 @@ class="flex h-screen overflow-hidden">
                         {{ $receiver->birth_date }}
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
-                        {{ $receiver->genders()->first() }}
+                        {{ $receiver->gender }}
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
                         {{ $receiver->interests }}
@@ -238,7 +261,8 @@ class="flex h-screen overflow-hidden">
                     <div class="grid w-4/5">
 
                         <span class="font-bold text-sm text-green-800">Looking for</span>
-                        <span class="text-lg text-green-800 capitalize">{{ $receiver->dating_goal }}</span>
+                        <span class="text-lg text-green-800 capitalize">
+                            {{ $receiver->dating_goal }}👋</span>
                     </div>
                 </div>
                 {{-- More information --}}

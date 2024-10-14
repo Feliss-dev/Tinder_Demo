@@ -43,16 +43,18 @@ class UserTable extends Component
     public function render()
     {
         // If searchTerm is empty, show all users
-        $users = User::query();
+       $query = User::query();
 
-        if (!empty($this->searchTerm)) {
-            $users = $users->where('name', 'like', '%' . $this->searchTerm . '%')
-                ->orWhere('email', 'like', '%' . $this->searchTerm . '%')
-                ->orWhere('id', 'like', '%' . $this->searchTerm . '%')
-                ->orWhere('birth_date', 'like', '%' . $this->searchTerm . '%');
-        }
+       if(!empty($this->searchTerm)) {
+           $query->where(function($q){
+            $q->where('name', 'like', '%' .$this->searchTerm. '%')
+            ->orWhere('email', 'like', '%' .$this->searchTerm. '%')
+            ->orWhere('id', 'like', '%' . $this->searchTerm . '%')
+            ->orWhere('birth_date', 'like', '%' . $this->searchTerm . '%');
+           });
+       }
 
-        $users = $users->paginate($this->perPage);
+        $users = $query->paginate($this->perPage);
 
         return view('livewire.admin.user-table', [
             'users' => $users,

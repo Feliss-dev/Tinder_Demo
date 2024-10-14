@@ -10,6 +10,7 @@ use App\Models\SwipeMatch;
 use Livewire\Attributes\On;
 use App\Models\Conversation;
 use Livewire\Attributes\Locked;
+use Illuminate\Support\Facades\Auth;
 
 class Swiper extends Component
 {
@@ -20,6 +21,7 @@ class Swiper extends Component
     public $gender;
     public $users;
     public $filtersApplied = false; // Theo dõi trạng thái bộ lọc có được áp dụng hay chưa
+    public $matchedUser;
 
     #[Locked]
     public $currentMatchId;
@@ -57,6 +59,11 @@ class Swiper extends Component
         $this->createSwipe($user, 'up');
     }
 
+    public function mount(){
+        $currentUser = auth()->user();
+
+        $this->matchedUser = $currentUser->matches()->latest()->first()?->swipedUser;
+    }
 
     protected function createSwipe($user, $type)
     {
@@ -163,6 +170,8 @@ class Swiper extends Component
                 ->get();
         }
 
-        return view('livewire.swiper.swiper', ['users' => $this->users]);
+        return view('livewire.swiper.swiper', ['users' => $this->users,
+        'currentUser' => Auth::user(),
+        'matchedUser' => $this->matchedUser,]);
     }
 }

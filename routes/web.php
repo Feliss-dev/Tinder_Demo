@@ -9,6 +9,7 @@ use App\Livewire\Actions\Logout;
 use App\Livewire\Forms\LoginForm;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\GoogleAuthController;
 
 /*
@@ -37,6 +38,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [UserController::class, 'userProfile'])->name('profile');
     Route::get('/info', [UserController::class, 'showProfileForm'])->name('info');
     Route::post('/info', [UserController::class, 'updateInfor'])->name('info.update');
+    Route::delete('/user/{id}/image', [UserController::class, 'deleteImage'])->name('user.image.delete');
+
+    Route::post('/avatar', [AvatarController::class, 'store'])->name('avatar.store');
+    Route::delete('/avatar/{avatar}', [AvatarController::class, 'destroy'])->name('avatar.destroy');
+    Route::get('/avatar/{avatar}/set-active', [AvatarController::class, 'setActive'])->name('avatar.setActive');
 
     // User dashboard
     Route::get('/dashboard', [UserController::class, 'userDashboard'])

@@ -10,9 +10,10 @@
 
 
         <form wire:submit.prevent="submitSearch">
-            <div class="form-input">
-                <input type="text" wire:model.debounce.500ms="searchTerm" placeholder="Search users...">
-                <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+            <div class="relative w-full">
+                <input type="text" wire:model.debounce.500ms="searchTerm" placeholder="Search users..."
+                class="w-full  px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-400 focus:border-transparent">
+                <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-500"><i class='bi bi-search text-2xl '></i></button>
             </div>
         </form>
 
