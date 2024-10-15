@@ -5,7 +5,11 @@ namespace App\Livewire\Swiper;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Swipe;
+use App\Models\Gender;
 use Livewire\Component;
+use App\Models\Interest;
+use App\Models\Language;
+use App\Models\DatingGoal;
 use App\Models\SwipeMatch;
 use Livewire\Attributes\On;
 use App\Models\Conversation;
@@ -130,9 +134,33 @@ class Swiper extends Component
         }
 
         // Lọc theo giới tính
-        if ($this->gender) {
-            $query->where('gender', $this->gender);
+        if(!empty($this->gender)){
+            $query->whereHas('gender', function($q){
+                $q->where('gender_id', $this->gender);
+            });
         }
+
+        //Loc theo so thích
+        if(!empty($this->selectedInterests)){
+            $query->whereHas('interests', function($q){
+                $q->whereIn('interest_id', $this->selectedInterests);
+            });
+        }
+
+         // Filter by Languages
+    if (!empty($this->selectedLanguages)) {
+        $query->whereHas('languages', function ($q) {
+            $q->whereIn('language_id', $this->selectedLanguages);
+        });
+    }
+
+    // Filter by Dating Goals
+    if (!empty($this->selectedDatingGoals)) {
+        $query->whereHas('datingGoals', function ($q) {
+            $q->whereIn('dating_goal_id', $this->selectedDatingGoals);
+        });
+    }
+
 
         // Tìm kiếm theo tên
         if ($this->searchTerm) {
@@ -172,6 +200,10 @@ class Swiper extends Component
 
         return view('livewire.swiper.swiper', ['users' => $this->users,
         'currentUser' => Auth::user(),
-        'matchedUser' => $this->matchedUser,]);
+        'matchedUser' => $this->matchedUser,
+        'genders' => Gender::all(),
+        'interests' => Interest::all(),
+        'languages' => Language::all(),
+        'datingGoals' => DatingGoal::all(),]);
     }
 }
