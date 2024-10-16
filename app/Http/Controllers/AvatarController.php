@@ -9,71 +9,65 @@ use Illuminate\Support\Facades\Storage;
 class AvatarController extends Controller
 {
     public function store(Request $request)
-{
-    $request->validate([
-        'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
-    ]);
+    {
+        $request->validate(['avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048']);
 
-    $user = auth()->user();
+        $user = auth()->user();
 
-    // Lưu ảnh vào folder đã chỉ định
-    $filePath = $request->file('avatar')->storeAs(
-        'avatar',  // Thư mục con 'avatar' trong 'public'
-        time() . '.' . $request->file('avatar')->getClientOriginalExtension(),  // Đặt tên cho ảnh
-        'public'  // Lưu vào disk 'public'
-    );
+        // Save avatar into directed directory in the following directory structure.
+        // public
+        // |--- avatar
 
-    // Tạo avatar mới
-    $avatar = $user->avatars()->create([
-        'path' => $filePath,
-        'is_active' => false,
-    ]);
+        $filePath = $request->file('avatar')->storeAs('avatar',
+            time() . '.' . $request->file('avatar')->getClientOriginalExtension(),  // Name the image.
+            'public'  // Save to 'public'
+        );
 
-    return redirect()->back()->with('success', 'Avatar uploaded successfully.');
-}
+        // Create new avatar
+        $avatar = $user->avatars()->create(['path' => $filePath, 'is_active' => false,]);
 
-public function destroy($avatarId)
-{
-    $user = auth()->user();
-    $avatar = $user->avatars()->find($avatarId);
-
-    if (!$avatar) {
-        return redirect()->back()->with('error', 'Avatar not found.');
+        return redirect()->back()->with('success', 'Avatar uploaded successfully.');
     }
 
-    // Kiểm tra xem avatar này có đang active không
-    if ($avatar->is_active) {
-        return redirect()->back()->with('error', 'Cannot delete active avatar.');
+    public function destroy($avatarId)
+    {
+        $user = auth()->user();
+        $avatar = $user->avatars()->find($avatarId);
+
+        if (!$avatar) {
+            return redirect()->back()->with('error', 'Avatar not found.');
+        }
+
+        // Prevent deleting currently active avatar
+        if ($avatar->is_active) {
+            return redirect()->back()->with('error', 'Cannot delete active avatar.');
+        }
+
+        // Delete avatar from system and database.
+        Storage::disk('public')->delete($avatar->path);
+        $avatar->delete();
+
+        return redirect()->back()->with('success', 'Avatar deleted successfully.');
     }
 
-    // Xóa file avatar khỏi hệ thống file
-    Storage::disk('public')->delete($avatar->path);
+    public function setActive($avatarId)
+    {
+        $user = auth()->user();
 
-    // Xóa avatar từ cơ sở dữ liệu
-    $avatar->delete();
+        // Search the avatar that user want to use as active avatar.
+        $avatar = $user->avatars()->find($avatarId);
 
-    return redirect()->back()->with('success', 'Avatar deleted successfully.');
-}
-public function setActive($avatarId)
-{
-    $user = auth()->user();
+        if (!$avatar) {
+            return redirect()->back()->with('error', 'Avatar not found.');
+        }
 
-    // Tìm avatar mà người dùng muốn đặt làm active
-    $avatar = $user->avatars()->find($avatarId);
+        // Update all avatar to non-active state.
+        $user->avatars()->update(['is_active' => false]);
 
-    if (!$avatar) {
-        return redirect()->back()->with('error', 'Avatar not found.');
+        // Mark chosen avatar as active.
+        $avatar->is_active = true;
+        $avatar->save();
+
+        return redirect()->back()->with('success', 'Avatar set as active successfully.');
     }
-
-    // Cập nhật tất cả các avatar khác của người dùng thành không active
-    $user->avatars()->update(['is_active' => false]);
-
-    // Đặt avatar được chọn làm active
-    $avatar->is_active = true;
-    $avatar->save();
-
-    return redirect()->back()->with('success', 'Avatar set as active successfully.');
-}
-
-
 }

@@ -125,7 +125,7 @@ class Swiper extends Component
             ->whereNotSwiped()
             ->where('id', '<>', auth()->id());
 
-        // Lọc theo tuổi
+        // Filter by age.
         if ($this->ageFrom) {
             $query->where('birth_date', '<=', now()->subYears($this->ageFrom));
         }
@@ -133,36 +133,35 @@ class Swiper extends Component
             $query->where('birth_date', '>=', now()->subYears($this->ageTo));
         }
 
-        // Lọc theo giới tính
+        // Filter by gender.
         if(!empty($this->gender)){
             $query->whereHas('gender', function($q){
                 $q->where('gender_id', $this->gender);
             });
         }
 
-        //Loc theo so thích
+        // Filter by interests
         if(!empty($this->selectedInterests)){
             $query->whereHas('interests', function($q){
                 $q->whereIn('interest_id', $this->selectedInterests);
             });
         }
 
-         // Filter by Languages
-    if (!empty($this->selectedLanguages)) {
-        $query->whereHas('languages', function ($q) {
-            $q->whereIn('language_id', $this->selectedLanguages);
-        });
-    }
+         // Filter by languages
+        if (!empty($this->selectedLanguages)) {
+            $query->whereHas('languages', function ($q) {
+                $q->whereIn('language_id', $this->selectedLanguages);
+            });
+        }
 
-    // Filter by Dating Goals
-    if (!empty($this->selectedDatingGoals)) {
-        $query->whereHas('datingGoals', function ($q) {
-            $q->whereIn('dating_goal_id', $this->selectedDatingGoals);
-        });
-    }
+        // Filter by Dating Goals
+        if (!empty($this->selectedDatingGoals)) {
+            $query->whereHas('datingGoals', function ($q) {
+                $q->whereIn('dating_goal_id', $this->selectedDatingGoals);
+            });
+        }
 
-
-        // Tìm kiếm theo tên
+        // Filter by name.
         if ($this->searchTerm) {
             $query->where('name', 'like', '%' . $this->searchTerm . '%');
         }
@@ -190,7 +189,7 @@ class Swiper extends Component
 
     public function render()
     {
-        // Nếu bộ lọc chưa được áp dụng, lấy danh sách người dùng mặc định
+        // Return all available users if the filters aren't applied.
         if (!$this->filtersApplied) {
             $this->users = User::limit(10)
                 ->whereNotSwiped()
@@ -199,11 +198,12 @@ class Swiper extends Component
         }
 
         return view('livewire.swiper.swiper', ['users' => $this->users,
-        'currentUser' => Auth::user(),
-        'matchedUser' => $this->matchedUser,
-        'genders' => Gender::all(),
-        'interests' => Interest::all(),
-        'languages' => Language::all(),
-        'datingGoals' => DatingGoal::all(),]);
+            'currentUser' => Auth::user(),
+            'matchedUser' => $this->matchedUser,
+            'genders' => Gender::all(),
+            'interests' => Interest::all(),
+            'languages' => Language::all(),
+            'datingGoals' => DatingGoal::all(),
+        ]);
     }
 }
