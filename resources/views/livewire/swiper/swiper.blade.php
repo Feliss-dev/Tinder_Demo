@@ -128,7 +128,7 @@
                 <p class="text-gray-500">Found no suitable match.</p>
             </div>
         @else
-            @foreach ($users as $i => $user)
+            @foreach ($users as $user)
                 <div wire:key="swipe-{{ $user->id }}" x-data="{
                         profile: false,
                         isSwiping: false,
@@ -336,15 +336,10 @@
                         </div>
 
                         <!-- Information and Actions -->
-
-                        <section
-                            class="absolute inset-x-0 bottom-0 inset-y-1/2 py-2 bg-gradient-to-t from-black to-black/0 pointer-events-none">
-
-
+                        <section class="absolute inset-x-0 bottom-0 inset-y-1/2 py-2 bg-gradient-to-t from-black to-black/0 pointer-events-none">
                             <div class="flex flex-col h-full gap-2.5 mt-auto p-5 text-white">
                                 <!-- Personal Details -->
                                 <div class="grid grid-cols-12 items-center">
-
                                     <div class="col-span-10">
                                         <h4 class="font-bold text-3xl">
                                             {{ $user->name }} {{ $user->age }}
@@ -355,13 +350,11 @@
                                     </div>
                                     <!-- Open profile -->
                                     <div class="col-span-2 justify-end flex pointer-events-auto">
-
                                         <button @click="profile =!profile " draggable="true">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-info-circle-fill text-white w-5 h-5"
                                                 viewBox="0 0 16 16">
-                                                <path
-                                                    d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2" />
+                                                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2" />
                                             </svg>
                                         </button>
                                     </div>
@@ -389,8 +382,7 @@
                                             class="rounded-full border-2 pointer-events-auto group border-red-600 p-3 shrink-0 max-w-fit flex items-center text-red-600">
 
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                stroke-width="3"
+                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"
                                                 class="w-9 h-9 shrink-0 m-auto group:hover-scale-10 stroke-current transition-transform stroke-2">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M6 18 18 6M6 6l12 12" />

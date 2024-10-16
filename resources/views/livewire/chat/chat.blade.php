@@ -39,33 +39,31 @@ class="flex h-screen overflow-hidden">
                     </svg>
                 </span>
             </a>
-            <!-- <x-avatar src="https://picsum.photos/seed/' . rand() . '/300/300" /> -->
-            <!-- Hiển thị avatar của người vừa được match -->
-    <span>
-        @if ($receiver && $receiver->activeAvatar)
-            <img src="{{ asset('storage/' .$receiver->activeAvatar->path) }}" alt="Matched User Avatar"
-                 class="rounded-full h-10 w-10 ring ring-pink-500/40">
-        @else
-        <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
 
-        @endif
-    </span>
+            <!-- <x-avatar src="https://picsum.photos/seed/' . rand() . '/300/300" /> -->
+            <!-- Show avatar of user who just got matched. -->
+            <span>
+                @if ($receiver && $receiver->activeAvatar)
+                    <img src="{{ asset('storage/' .$receiver->activeAvatar->path) }}" alt="Matched User Avatar"
+                         class="rounded-full h-10 w-10 ring ring-pink-500/40">
+                @else
+                <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
+
+                @endif
+            </span>
 
             <h5 class="font-bold text-gray-500 truncate">
                 {{ $receiver->name }}
             </h5>
 
             <div class="ml-auto flex items-center gap-2  px-2">
-
                 <!-- Dots -->
                 <span>
-
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-three-dots text-gray-500 w-7 h-7" viewBox="0 0 16 16">
                         <path
                             d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
                     </svg>
-
                 </span>
 
                 <!-- Cancel button -->
@@ -73,10 +71,8 @@ class="flex h-screen overflow-hidden">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-x-octagon text-gray-500 w-7 h-7" viewBox="0 0 16 16">
-                            <path
-                                d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
-                            <path
-                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                            <path d="M4.54.146A.5.5 0 0 1 4.893 0h6.214a.5.5 0 0 1 .353.146l4.394 4.394a.5.5 0 0 1 .146.353v6.214a.5.5 0 0 1-.146.353l-4.394 4.394a.5.5 0 0 1-.353.146H4.893a.5.5 0 0 1-.353-.146L.146 11.46A.5.5 0 0 1 0 11.107V4.893a.5.5 0 0 1 .146-.353zM5.1 1 1 5.1v5.8L5.1 15h5.8l4.1-4.1V5.1L10.9 1z" />
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                         </svg>
                     </span>
                 </a>
@@ -113,17 +109,15 @@ class="flex h-screen overflow-hidden">
                     $belongsToAuth = $message->sender_id == auth()->id();
                 @endphp
 
-                <div
-                wire:ignore
-                @class([
-                    'max-w-[85%] md:max-w-[78%] flex w-auto gap-2 relative mt-2',
-                    'ml-auto' => $belongsToAuth,
-                ])>
+                <div wire:ignore
+                    @class([
+                        'max-w-[85%] md:max-w-[78%] flex w-auto gap-2 relative mt-2',
+                        'ml-auto' => $belongsToAuth,
+                    ])>
 
                     <!-- Avatar -->
                     <div @class(['shrink-0 mt-auto', 'invisible' => $belongsToAuth])>
                         <x-avatar class="w-7 h-7" src="https://picsum.photos/seed/' . rand() . '/300/300" />
-
                     </div>
 
                     <!-- Message -->
@@ -132,7 +126,8 @@ class="flex h-screen overflow-hidden">
                         'bg-blue-500 text-white' => $belongsToAuth,
                     ])>
                         <p class="whitespace-normal text-sm md:text-base tracking-wide lg:tracking-normal">
-                            {{$message->body}}</p>
+                            {{$message->body}}
+                        </p>
                     </div>
                 </div>
 
@@ -143,7 +138,7 @@ class="flex h-screen overflow-hidden">
         <footer class="sticky bottom py-2 inset-x-0 p-2">
             <form action="" x-data="{ body: @entangle('body') }" @submit.prevent="$wire.sendMessage()" autocomplete="off">
                 @csrf
-                <!-- Hiddin input -->
+                <!-- Hiding input -->
                 <input type="hidden" autocomplete="false" style="display: none">
 
                 <div class="grid grid-cols-12 items-center">
@@ -167,9 +162,7 @@ class="flex h-screen overflow-hidden">
     <!-- Profile -->
     <aside class="w-[50%] hidden sm:flex border">
         <!-- Profile Card -->
-        <div style="contain: content"
-            class=" inset-0 overflow-y-auto overflow-hidden overscroll-contain w-full  bg-white space-y-4">
-
+        <div style="contain: content" class=" inset-0 overflow-y-auto overflow-hidden overscroll-contain w-full  bg-white space-y-4">
             @php
                 $slides = [
                     'https://picsum.photos/seed/' . rand() . '/500/300',
@@ -178,59 +171,53 @@ class="flex h-screen overflow-hidden">
                 ];
                 $user= App\Models\User::first();
             @endphp
+
             <!-- Carousel section -->
+
             <section class="relative h-96" x-data="{ activeSlide: 1, slides: @js($slides) }">
 
                 <!-- Sliders -->
                 <template x-for="(image, index) in slides" :key="index">
                     <img x-show="activeSlide === index+1" :src="image" alt=""
-                        class="absolute inset-0 pointer-events-none w-full h-full object-cover">
+                         class="absolute inset-0 pointer-events-none w-full h-full object-cover">
                 </template>
 
                 <!-- Pagination -->
                 <div draggable="true" :class="{ 'hidden': slides.length === 1 }"
-                    class="absolute top-1 inset-x-0 z-10 w-full flex items-center justify-center">
+                     class="absolute top-1 inset-x-0 z-10 w-full flex items-center justify-center">
 
                     <template x-for="(image, index) in slides" :key="index">
                         <button @click="activeSlide = index+1"
-                            :class="{ 'bg-white': activeSlide === index + 1, 'bg-gray-500': activeSlide !== index + 1 }"
-                            class="flex-1 w-4 h-2 mx-1 rounded-full overflow-hidden"></button>
+                                :class="{ 'bg-white': activeSlide === index + 1, 'bg-gray-500': activeSlide !== index + 1 }"
+                                class="flex-1 w-4 h-2 mx-1 rounded-full overflow-hidden"></button>
                     </template>
                 </div>
 
                 <!-- Prev Button -->
                 <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
-                    @click="activeSlide = activeSlide === 1 ? slides.length : activeSlide - 1"
-                    class="absolute left-2 top-1/2 my-auto">
+                        @click="activeSlide = activeSlide === 1 ? slides.length : activeSlide - 1"
+                        class="absolute left-2 top-1/2 my-auto">
 
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="size-9 text-white text-bold">
+                         stroke="currentColor" class="size-9 text-white text-bold">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                     </svg>
-
-
                 </button>
 
                 <!-- Next Button -->
                 <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
-                    @click="activeSlide = activeSlide === slides.length ? 1 : activeSlide + 1"
-                    class="absolute right-2 top-1/2 my-auto">
+                        @click="activeSlide = activeSlide === slides.length ? 1 : activeSlide + 1"
+                        class="absolute right-2 top-1/2 my-auto">
 
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="size-9 text-white text-bold">
+                         stroke="currentColor" class="size-9 text-white text-bold">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
-
-
-
                 </button>
-
-
-
             </section>
 
-             <!-- Profile Info -->
-             <section class="grid gap-4 p-3">
+            <!-- Profile Info -->
+            <section class="grid gap-4 p-3">
                 <div class="flex items-center text-3xl gap-3 text-wrap">
                     <h3 class="font-bold">{{ $receiver->name }}</h3>
                     <span class="font-semibold text-gray-800">
@@ -245,7 +232,7 @@ class="flex h-screen overflow-hidden">
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
                         <p class="mb-2 mr-4"><strong>Gender:</strong>
-                            @if ($receiver->genders->isNotEmpty())
+                        @if ($receiver->genders->isNotEmpty())
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($receiver->genders as $gender)
 
@@ -253,27 +240,28 @@ class="flex h-screen overflow-hidden">
 
                                 @endforeach
                             </div>
-                            @else
+                        @else
                             No data available
                             @endif
-                        </p>
+                            </p>
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
                         <p class="mb-2 mr-4"><strong>Interests:</strong>
-                            @if ($receiver->interests->isNotEmpty())
+                        @if ($receiver->interests->isNotEmpty())
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($receiver->interests as $interest)
-                                <span class="inline-block bg-green-100 text-green-700 border border-green-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                    <span class="inline-block bg-green-100 text-green-700 border border-green-300 rounded-full px-3 py-1 text-sm font-semibold">
                                     {{ $interest->name }}
                                 </span>
                                 @endforeach
                             </div>
-                            @else
+                        @else
                             No data available
                             @endif
-                        </p>
+                            </p>
                     </li>
                 </ul>
+
                 <hr class="-mx-2.5">
 
                 <!-- Bio -->
@@ -290,68 +278,63 @@ class="flex h-screen overflow-hidden">
                         <span class="font-semibold text-sm text-green-600 uppercase">Looking for</span>
                         <p class="mb-2 mr-4"><strong>Dating Goal:</strong>
 
-                            @if ($receiver->datingGoals->isNotEmpty())
+                        @if ($receiver->datingGoals->isNotEmpty())
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($receiver->datingGoals as $datingGoal)
-                                <span class="text-xl text-green-700 font-medium capitalize">
+                                    <span class="text-xl text-green-700 font-medium capitalize">
                                     {{ $datingGoal->name }} 👋
                                 </span>
                                 @endforeach
                             </div>
-                            @else
+                        @else
                             No data available
                             @endif
-                    </p>
+                            </p>
                     </div>
                 </div>
 
                 <!-- More information -->
 
-                    <section class="divide-y space-y-2">
-                        <div class="space-y-3 py-2">
+                <section class="divide-y space-y-2">
+                    <div class="space-y-3 py-2">
 
-                            <h3 class="font-bold text-xl">Languages i know</h3>
-                            <ul class="flex flex-wrap gap-3">
+                        <h3 class="font-bold text-xl">Languages i know</h3>
+                        <ul class="flex flex-wrap gap-3">
 
-                                @if ($receiver->languages->isNotEmpty())
+                            @if ($receiver->languages->isNotEmpty())
                                 <div class="flex flex-wrap gap-2">
                                     @foreach ($receiver->languages as $language)
-                                    <span class="inline-block bg-purple-100 text-purple-700 border border-purple-300 rounded-full px-3 py-1 text-sm font-semibold">
-                                        {{ $language->name }}
+                                        <span class="inline-block bg-purple-100 text-purple-700 border border-purple-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                    {{ $language->name }}
+                                </span>
+                                    @endforeach
+                                </div>
+                            @else
+                                No data available
+                            @endif
+                        </ul>
+                    </div>
+
+                    <div class="space-y-3 py-2">
+
+                        <h3 class="font-bold text-xl">Basics</h3>
+                        <ul class="flex flex-wrap gap-3">
+                            <p class="mb-2 mr-4"><strong>Desired Gender:</strong>
+                            @if ($receiver->desiredGenders->isNotEmpty())
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach ($receiver->desiredGenders as $desiredGender)
+                                        <span class="inline-block bg-pink-100 text-pink-700 border border-pink-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                        {{ $desiredGender->name }}
                                     </span>
                                     @endforeach
                                 </div>
-                                @else
+                            @else
                                 No data available
                                 @endif
-
-
-                            </ul>
-                        </div>
-
-
-
-                <div class="space-y-3 py-2">
-
-                    <h3 class="font-bold text-xl">Basics</h3>
-                    <ul class="flex flex-wrap gap-3">
-                        <p class="mb-2 mr-4"><strong>Desired Gender:</strong>
-                            @if ($receiver->desiredGenders->isNotEmpty())
-                            <div class="flex flex-wrap gap-2">
-                                @foreach ($receiver->desiredGenders as $desiredGender)
-                                <span class="inline-block bg-pink-100 text-pink-700 border border-pink-300 rounded-full px-3 py-1 text-sm font-semibold">
-                                    {{ $desiredGender->name }}
-                                </span>
-                                @endforeach
-                            </div>
-                            @else
-                            No data available
-                            @endif
-                        </p>
-
-                    </ul>
-                </div>
-
+                                </p>
+                        </ul>
+                    </div>
+                </section>
             </section>
         </div>
     </aside>

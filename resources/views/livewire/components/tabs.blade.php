@@ -1,4 +1,4 @@
-<div class="h-full ">
+<div class="h-full">
     <section
         x-data="{ tab: {{request()->routeIs('chat.index') || request()->routeIs('chat') ? '"messages"' : '"matches"'}}}"
         @match-found.window="$wire.$refresh()"
@@ -11,7 +11,7 @@
         class="mb-auto h-full overflow-x-hidden relative">
 
         <!-- Tab -->
-        <div class="flex flex-col h-full">
+        <div class="flex flex-col h-full bg-white">
             <div class="flex-1 flex flex-col">
                 <!-- Tab Buttons -->
                 <header class="flex-grow-0 flex-shrink-0 basis-0 flex items-center gap-5 mb-2 p-4 sticky top-0 bg-white z-10">
@@ -72,29 +72,28 @@
                                         <!-- make it change the sympathized when clicked -->
 
                                         <div class="relative">
+                                            <span class="inset-y-0 my-auto absolute -right-7">
+                                                <svg
+                                                    @class([
+                                                        'w-14 h-14 stroke-[0.3px] stroke-white',
+                                                        'hidden'=> $i != 3,
+                                                        'text-red-500' => true
+                                                    ])
 
-                                                <span class="inset-y-0 my-auto absolute -right-7">
-                                                    <svg
-                                                        @class([
-                                                            'w-14 h-14 stroke-[0.3px] stroke-white',
-                                                            'hidden'=> $i != 3,
-                                                            'text-red-500' => true
-                                                        ])
+                                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot text-red-500 w-12 h-12" viewBox="0 0 16 16">
+                                                    <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                                                  </svg>
+                                            </span>
 
-                                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot text-red-500 w-12 h-12" viewBox="0 0 16 16">
-                                                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
-                                                      </svg>
-                                                </span>
+                                            <span>
+                                                @if ($conversation->getReceiver()->activeAvatar)
+                                                    <img src="{{ asset('storage/' .$receiver->activeAvatar->path) }}" alt="Matched User Avatar"
+                                                         class="rounded-full h-10 w-10 ring ring-pink-500/40">
+                                                @else
+                                                <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
 
-                                                <span>
-                                                    @if ($conversation->getReceiver()->activeAvatar)
-                                                        <img src="{{ asset('storage/' .$receiver->activeAvatar->path) }}" alt="Matched User Avatar"
-                                                             class="rounded-full h-10 w-10 ring ring-pink-500/40">
-                                                    @else
-                                                    <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
-
-                                                    @endif
-                                                </span>
+                                                @endif
+                                            </span>
                                         </div>
 
                                         <div class="overflow-hidden">
