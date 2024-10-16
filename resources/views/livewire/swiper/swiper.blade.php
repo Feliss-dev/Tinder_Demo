@@ -1,4 +1,5 @@
 <div id="tinder" class="m-auto md:p-8 w-full h-full relative flex overflow-hidden">
+    <!-- Filtering Panel -->
     <div class="mt-4">
         <form wire:submit.prevent="applyFilters"
               class="bg-white p-8 rounded-3xl shadow-xl space-y-8 w-full max-w-4xl border-t-4 border-pink-500 h-auto">
@@ -120,6 +121,7 @@
         </form>
     </div>
 
+    <!-- Swiper -->
     <div class="relative h-full w-full md:w-96 m-auto flex items-center justify-center">
         @if ($users->isEmpty())
             <div class="col-span-full text-center ">
@@ -127,8 +129,7 @@
             </div>
         @else
             @foreach ($users as $i => $user)
-                <div @swipedright.window="console.log('right')" @swipedleft.window="console.log('left')"
-                    @swipedup.window="console.log('up')" wire:key="swipe-{{ $user->id }}" x-data="{
+                <div wire:key="swipe-{{ $user->id }}" x-data="{
                         profile: false,
                         isSwiping: false,
                         swipingLeft: false,
@@ -141,8 +142,6 @@
                             setTimeout(() => {
                                 $el.remove();
                             }, 300);
-
-                            $dispatch('swipedright', { user: '{{ $user->id }}' });
                         },
                         swipeLeft: function() {
                             moveOutWidth = document.body.clientWidth * 1.5;
@@ -151,19 +150,14 @@
                             setTimeout(() => {
                                 $el.remove();
                             }, 300);
-
-                            $dispatch('swipedleft', { user: '{{ $user->id }}' });
                         },
                         swipeUp: function() {
                             moveOutWidth = document.body.clientWidth * 1.5;
                             $el.style.transform = 'translate(0px, ' + -moveOutWidth + 'px) rotate(-30deg)';
 
                             setTimeout(() => {
-
                                 $el.remove();
                             }, 300);
-
-                            $dispatch('swipedup', { user: '{{ $user->id }}' });
                         }
                     }"
                     x-init="element = $el;
@@ -247,13 +241,10 @@
 
                             if (event.deltaX > 20) {
                                 event.target.style.transform = 'translate(' + moveOutWidth + 'px, 10px)';
-                                $dispatch('swipedright', { user: '{{ $user->id }}' });
                             } else if (event.deltaX < -20) {
                                 event.target.style.transform = 'translate(' + -moveOutWidth + 'px, 10px)';
-                                $dispatch('swipedleft', { user: '{{ $user->id }}' });
                             } else if (event.deltaY < -50 && Math.abs(event.deltaX) < 20) {
                                 event.target.style.transform = 'translate(0px, ' + -moveOutHeight + 'px)';
-                                $dispatch('swipedup', { user: '{{ $user->id }}' });
                             }
 
                             event.target.remove();
