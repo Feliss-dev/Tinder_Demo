@@ -254,7 +254,7 @@ class="flex h-screen overflow-hidden">
                                 @endforeach
                             </div>
                             @else
-                            Chưa có dữ liệu
+                            No data available
                             @endif
                         </p>
                     </li>
@@ -269,7 +269,7 @@ class="flex h-screen overflow-hidden">
                                 @endforeach
                             </div>
                             @else
-                            Chưa có dữ liệu
+                            No data available
                             @endif
                         </p>
                     </li>
@@ -299,7 +299,7 @@ class="flex h-screen overflow-hidden">
                                 @endforeach
                             </div>
                             @else
-                            Chưa có dữ liệu
+                            No data available
                             @endif
                     </p>
                     </div>
@@ -322,7 +322,7 @@ class="flex h-screen overflow-hidden">
                                     @endforeach
                                 </div>
                                 @else
-                                Chưa có dữ liệu
+                                No data available
                                 @endif
 
 
@@ -345,7 +345,7 @@ class="flex h-screen overflow-hidden">
                                 @endforeach
                             </div>
                             @else
-                            Chưa có dữ liệu
+                            No data available
                             @endif
                         </p>
 

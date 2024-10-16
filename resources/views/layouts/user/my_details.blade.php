@@ -22,9 +22,6 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-
-
-
 </head>
 
 <body>
@@ -94,13 +91,10 @@
                 </div>
             </div>
 
-
             <div class="profile">
                 <header class="mt-2">
                      Profile
                 </header>
-
-
 
                 <div class="main-info bg-gray-50 p-4 rounded-lg shadow-md">
                     <p class="mb-2"><strong>Email:</strong> {{ $user->email }}</p>
@@ -117,11 +111,10 @@
                                 @endforeach
                             </div>
                             @else
-                            Chưa có dữ liệu
+                            No data available
                             @endif
                         </p>
                     </div>
-
 
                     <p class="mb-2"><strong>Bio:</strong> {{ $user->bio }}</p>
 
@@ -129,15 +122,15 @@
                     <div class="flex flex-row">
                         <p class="mb-2 mr-4"><strong>Interests:</strong>
                             @if ($user->interests->isNotEmpty())
-                            <div class="flex flex-wrap gap-2">
-                                @foreach ($user->interests as $interest)
-                                <span class="inline-block bg-green-100 text-green-700 border border-green-300 rounded-full px-3 py-1 text-sm font-semibold">
-                                    {{ $interest->name }}
-                                </span>
-                                @endforeach
-                            </div>
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach ($user->interests as $interest)
+                                    <span class="inline-block bg-green-100 text-green-700 border border-green-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                        {{ $interest->name }}
+                                    </span>
+                                    @endforeach
+                                </div>
                             @else
-                            Chưa có dữ liệu
+                                No data available
                             @endif
                         </p>
                     </div>
@@ -147,15 +140,15 @@
                     <div class="flex flex-row">
                         <p class="mb-2 mr-4"><strong>Desired Gender:</strong>
                             @if ($user->desiredGenders->isNotEmpty())
-                            <div class="flex flex-wrap gap-2">
-                                @foreach ($user->desiredGenders as $desiredGender)
-                                <span class="inline-block bg-pink-100 text-pink-700 border border-pink-300 rounded-full px-3 py-1 text-sm font-semibold">
-                                    {{ $desiredGender->name }}
-                                </span>
-                                @endforeach
-                            </div>
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach ($user->desiredGenders as $desiredGender)
+                                    <span class="inline-block bg-pink-100 text-pink-700 border border-pink-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                        {{ $desiredGender->name }}
+                                    </span>
+                                    @endforeach
+                                </div>
                             @else
-                            Chưa có dữ liệu
+                                No data available
                             @endif
                         </p>
                     </div>
@@ -169,15 +162,15 @@
                         <p class="mb-2 mr-4"><strong>Dating Goal:</strong>
 
                             @if ($user->datingGoals->isNotEmpty())
-                            <div class="flex flex-wrap gap-2">
-                                @foreach ($user->datingGoals as $datingGoal)
-                                <span class="text-xl text-green-700 font-medium capitalize">
-                                    {{ $datingGoal->name }} 👋
-                                </span>
-                                @endforeach
-                            </div>
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach ($user->datingGoals as $datingGoal)
+                                    <span class="text-xl text-green-700 font-medium capitalize">
+                                        {{ $datingGoal->name }} 👋
+                                    </span>
+                                    @endforeach
+                                </div>
                             @else
-                            Chưa có dữ liệu
+                                No data available
                             @endif
                     </p>
                     </div>
@@ -189,15 +182,15 @@
                         <p class="mb-2 mr-4"><strong>Languages I know:</strong>
 
                         @if ($user->languages->isNotEmpty())
-                        <div class="flex flex-wrap gap-2">
-                            @foreach ($user->languages as $language)
-                            <span class="inline-block bg-purple-100 text-purple-700 border border-purple-300 rounded-full px-3 py-1 text-sm font-semibold">
-                                {{ $language->name }}
-                            </span>
-                            @endforeach
-                        </div>
+                            <div class="flex flex-wrap gap-2">
+                                @foreach ($user->languages as $language)
+                                <span class="inline-block bg-purple-100 text-purple-700 border border-purple-300 rounded-full px-3 py-1 text-sm font-semibold">
+                                    {{ $language->name }}
+                                </span>
+                                @endforeach
+                            </div>
                         @else
-                        Chưa có dữ liệu
+                            No data available
                         @endif
                     </p>
                     </div>
@@ -256,7 +249,7 @@
                     }
                 }">
                     <template x-if="images.length === 0">
-                        <p class="text-center text-gray-500 mt-4">Chưa có dữ liệu</p>
+                        <p class="text-center text-gray-500 mt-4">No data available</p>
                     </template>
 
                     <div class="image">

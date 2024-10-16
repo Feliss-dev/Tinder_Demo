@@ -1,8 +1,7 @@
 <div id="tinder" class="m-auto md:p-8 w-full h-full relative flex">
-
-    <div class="flex justify-center mb-11">
+    <div class="flex justify-center h-auto">
         <form wire:submit.prevent="applyFilters"
-            class="bg-white p-8 rounded-3xl shadow-xl space-y-8 w-full max-w-4xl border-t-4 border-pink-500">
+            class="bg-white p-8 rounded-3xl shadow-xl space-y-8 w-full max-w-4xl border-t-4 border-pink-500 h-auto">
 
             <h2 class="text-xl font-bold text-gray-800 text-center mb-6">Find Your Match</h2>
 
@@ -120,10 +119,6 @@
             </div>
         </form>
     </div>
-
-
-
-
 
     <div class="relative h-full w-full md:w-96 m-auto flex items-center justify-center">
         @if ($users->isEmpty())
@@ -580,7 +575,7 @@
                                                 @endforeach
                                             </div>
                                         @else
-                                            Chưa có dữ liệu
+                                            No data available
                                         @endif
                                     </p>
                                 </li>
@@ -596,7 +591,7 @@
                                                 @endforeach
                                             </div>
                                         @else
-                                            Chưa có dữ liệu
+                                            No data available
                                         @endif
                                     </p>
                                 </li>
@@ -626,7 +621,7 @@
                                                 @endforeach
                                             </div>
                                         @else
-                                            Chưa có dữ liệu
+                                            No data available
                                         @endif
                                     </p>
                                 </div>
@@ -650,7 +645,7 @@
                                                 @endforeach
                                             </div>
                                         @else
-                                            Chưa có dữ liệu
+                                            No data available
                                         @endif
 
 
@@ -674,7 +669,7 @@
                                                     @endforeach
                                                 </div>
                                             @else
-                                                Chưa có dữ liệu
+                                                No data available
                                             @endif
                                         </p>
 
@@ -845,5 +840,4 @@
             </div>
         </template>
     </div>
-
 </div>
