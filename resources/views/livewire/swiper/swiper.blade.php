@@ -1,7 +1,7 @@
-<div id="tinder" class="m-auto md:p-8 w-full h-full relative flex">
-    <div class="flex justify-center h-auto">
+<div id="tinder" class="m-auto md:p-8 w-full h-full relative flex overflow-hidden">
+    <div class="mt-4">
         <form wire:submit.prevent="applyFilters"
-            class="bg-white p-8 rounded-3xl shadow-xl space-y-8 w-full max-w-4xl border-t-4 border-pink-500 h-auto">
+              class="bg-white p-8 rounded-3xl shadow-xl space-y-8 w-full max-w-4xl border-t-4 border-pink-500 h-auto">
 
             <h2 class="text-xl font-bold text-gray-800 text-center mb-6">Find Your Match</h2>
 
@@ -9,26 +9,25 @@
                 <!-- Cột 1 -->
                 <div class="space-y-6">
                     <div class="relative w-full">
-                        <label for="searchTerm" class="block text-sm font-semibold text-gray-600">Search Name</label>
+                        <label for="searchTerm" class="block text-sm font-semibold text-gray-600">Name</label>
                         <input type="text" id="searchTerm" wire:model="searchTerm" placeholder="Enter name..."
                             class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
-                        <svg class="absolute right-3 top-12 h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M12.9 14.32a8 8 0 111.42-1.42l4.18 4.17a1 1 0 01-1.42 1.42l-4.17-4.17zM8 14A6 6 0 108 2a6 6 0 000 12z"
-                                clip-rule="evenodd" />
-                        </svg>
                     </div>
 
                     <div class="w-full">
-                        <label for="ageFrom" class="block text-sm font-semibold text-gray-600">Age From</label>
+                        <label class="block font-semibold text-gray-600 text-sm mb-2">Age</label>
+
+                        <label for="ageFrom" class="block font-semibold text-gray-600 text-xs">From</label>
                         <input type="number" id="ageFrom" min="0" max="120" wire:model="ageFrom"
                             class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
+
+                        <label for="ageTo" class="block font-semibold text-gray-600 text-xs">To</label>
+                        <input type="number" id="ageTo" min="0" max="120" wire:model="ageTo"
+                               class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
                     </div>
 
                     <div class="w-full">
-                        <label for="ageTo" class="block text-sm font-semibold text-gray-600">Age To</label>
-                        <input type="number" id="ageTo" min="0" max="120" wire:model="ageTo"
-                            class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
+
                     </div>
 
                     <div class="w-full">
@@ -51,8 +50,9 @@
                             class="w-full p-3 bg-gray-100 border rounded-lg focus:ring-2 focus:ring-pink-400">
                             Select Interests
                         </button>
-                        <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-2 bg-white border rounded-lg shadow-xl w-full">
-                            <div class="p-3 grid grid-cols-2 gap-2">
+
+                        <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-1 bg-white border rounded-lg shadow-xl w-auto">
+                            <div class="p-3 grid grid-cols-[auto_auto] gap-2">
                                 @foreach ($interests as $interest)
                                     <label class="flex items-center space-x-2">
                                         <input type="checkbox" value="{{ $interest->id }}" wire:model="selectedInterests"
@@ -70,8 +70,8 @@
                             class="w-full p-3 bg-gray-100 border rounded-lg focus:ring-2 focus:ring-pink-400">
                             Select Languages
                         </button>
-                        <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-2 bg-white border rounded-lg shadow-xl w-full">
-                            <div class="p-3 grid grid-cols-2 gap-2">
+                        <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-2 bg-white border rounded-lg shadow-xl w-auto">
+                            <div class="p-3 grid grid-cols-[auto_auto] gap-2">
                                 @foreach ($languages as $language)
                                     <label class="flex items-center space-x-2">
                                         <input type="checkbox" value="{{ $language->id }}" wire:model="selectedLanguages"
@@ -89,8 +89,8 @@
                             class="w-full p-3 bg-gray-100 border rounded-lg focus:ring-2 focus:ring-pink-400">
                             Select Dating Goals
                         </button>
-                        <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-2 bg-white border rounded-lg shadow-xl w-full">
-                            <div class="p-3 grid grid-cols-2 gap-2">
+                        <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-2 bg-white border rounded-lg shadow-xl w-auto">
+                            <div class="p-3 grid grid-cols-[auto_auto] gap-2">
                                 @foreach ($datingGoals as $goal)
                                     <label class="flex items-center space-x-2">
                                         <input type="checkbox" value="{{ $goal->id }}" wire:model="selectedDatingGoals"
