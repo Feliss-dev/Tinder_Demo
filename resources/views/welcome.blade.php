@@ -115,7 +115,7 @@
             </center>
         </div>
 
-        {{-- Testimonials --}}
+        <!-- Testimonials -->
         <main class="bg-white w-full px-8 lg:px-24 py-9 mx-auto">
             <section class="grid grid-cols-2 lg:grid-cols-3 gap-5">
                 @for ($i = 0; $i < 6; $i++)
@@ -131,7 +131,7 @@
                         <hr class="font-bold my-2">
 
                         <!-- Can cause slow performance on loading -->
-                        {{-- {{fake()->image}} --}}
+                        <!-- {{fake()->image}} -->
 
                         <p>{{fake()->sentence(50)}}</p>
                     </div>

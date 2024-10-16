@@ -1,4 +1,4 @@
-{{-- resources/views/components/avatar.blade.php --}}
+<!-- resources/views/components/avatar.blade.php -->
 @props(['src' => null, 'alt' => 'User Avatar'])
 
 <div {{ $attributes->merge(['class' => "shrink-0 inline-flex items-center justify-center h-8 w-8 rounded-full overflow-hidden"]) }}>

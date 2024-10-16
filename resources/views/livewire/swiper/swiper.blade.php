@@ -125,7 +125,7 @@
 
 
 
-    <div class="relative h-full w-full md:w-96 m-auto flex items-center justify-center" style="border: 2px solid blue;">
+    <div class="relative h-full w-full md:w-96 m-auto flex items-center justify-center">
         @if ($users->isEmpty())
             <div class="col-span-full text-center ">
                 <p class="text-gray-500">Found no suitable match.</p>
@@ -267,7 +267,7 @@
                     });" :class="{ 'transform-none cursor-grab': isSwiping }"
                     class="absolute inset-0 m-auto transform ease-in-out duration-300 rounded-xl cursor-pointer z-50">
 
-                    {{-- Swipe Card --}}
+                    <!-- Swipe Card -->
                     <div x-show="!profile" x-transition.duration.150ms.origin.bottom
                         class="relative overflow-hidden w-full h-full rounded-xl bg-cover bg-white">
 
@@ -283,10 +283,10 @@
                                     'https://randomuser.me/api/portraits/women/' . rand(0, 99) . '.jpg',
                                 ];
                         @endphp
-                        {{-- Carousel section --}}
+                        <!-- Carousel section -->
                         <section x-data="{ activeSlide: 1, slides: @js($slides) }">
 
-                            {{-- Sliders --}}
+                            <!-- Sliders -->
                             <template x-for="(image, index) in slides" :key="index">
                                 <img :src="(image.startsWith('http') ? image : '/storage/' + image)" alt="User Image"
                                     class="absolute inset-0 pointer-events-none w-full h-full object-cover"
@@ -297,7 +297,7 @@
                                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" />
                             </template>
 
-                            {{-- Pagination --}}
+                            <!-- Pagination -->
                             <div :class="{ 'hidden': slides.length === 1 }"
                                 class="absolute top-1 inset-x-0 z-10 w-full flex items-center justify-center">
                                 <template x-for="(image, index) in slides" :key="index">
@@ -307,7 +307,7 @@
                                 </template>
                             </div>
 
-                            {{-- Prev Button --}}
+                            <!-- Prev Button -->
                             <button :class="{ 'hidden': slides.length === 1 }"
                                 @click="activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1"
                                 class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 p-2 rounded-full">
@@ -318,7 +318,7 @@
                                 </svg>
                             </button>
 
-                            {{-- Next Button --}}
+                            <!-- Next Button -->
                             <button :class="{ 'hidden': slides.length === 1 }"
                                 @click="activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1"
                                 class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 p-2 rounded-full">
@@ -331,7 +331,7 @@
 
                         </section>
 
-                        {{-- Swiper indicators --}}
+                        <!-- Swiper indicators -->
                         <div class="pointer-events-none">
                             <span x-cloak :class="{ 'invisible': !swipingRight }"
                                 class="border-2 rounded-md p-1 px-2 border-green-500 text-green-500 text-4xl -rotate-12 capitalize font-extrabold top-10 left-5 absolute z-5">
@@ -349,14 +349,14 @@
                             </span>
                         </div>
 
-                        {{-- Information and Actions --}}
+                        <!-- Information and Actions -->
 
                         <section
                             class="absolute inset-x-0 bottom-0 inset-y-1/2 py-2 bg-gradient-to-t from-black to-black/0 pointer-events-none">
 
 
                             <div class="flex flex-col h-full gap-2.5 mt-auto p-5 text-white">
-                                {{-- Personal Details --}}
+                                <!-- Personal Details -->
                                 <div class="grid grid-cols-12 items-center">
 
                                     <div class="col-span-10">
@@ -367,7 +367,7 @@
                                             {{ $user->bio }}
                                         </p>
                                     </div>
-                                    {{-- Open profile --}}
+                                    <!-- Open profile -->
                                     <div class="col-span-2 justify-end flex pointer-events-auto">
 
                                         <button @click="profile =!profile " draggable="true">
@@ -381,10 +381,10 @@
                                     </div>
                                 </div>
 
-                                {{-- Action --}}
+                                <!-- Action -->
                                 <div class="grid grid-cols-5 gap-2 items-center mt-auto">
 
-                                    {{-- Rewind --}}
+                                    <!-- Rewind -->
                                     <div>
                                         <button draggable="true"
                                             class="rounded-full border-2 pointer-events-auto group border-yellow-600 p-3 shrink-0 max-w-fit flex items-center text-yellow-600">
@@ -399,7 +399,7 @@
                                         </button>
                                     </div>
 
-                                    {{-- Swipe Left --}}
+                                    <!-- Swipe Left -->
                                     <div>
                                         <button draggable="true" @click="swipeLeft()"
                                             class="rounded-full border-2 pointer-events-auto group border-red-600 p-3 shrink-0 max-w-fit flex items-center text-red-600">
@@ -416,7 +416,7 @@
                                         </button>
                                     </div>
 
-                                    {{-- Super Like --}}
+                                    <!-- Super Like -->
                                     <div>
                                         <button draggable="true" @click="swipeUp()"
                                             class="rounded-full border-2 pointer-events-auto group border-blue-600 p-3 shrink-0 max-w-fit flex items-center text-blue-600 scale-95">
@@ -434,7 +434,7 @@
                                         </button>
                                     </div>
 
-                                    {{-- Swipe Right --}}
+                                    <!-- Swipe Right -->
                                     <div>
                                         <button draggable="false" @click="swipeRight()"
                                             class="rounded-full border-2 pointer-events-auto group border-green-600 p-3 shrink-0 max-w-fit flex items-center text-green-600">
@@ -451,7 +451,7 @@
                                         </button>
                                     </div>
 
-                                    {{-- Thunder Bolt --}}
+                                    <!-- Thunder Bolt -->
                                     <div>
                                         <button draggable="false"
                                             class="rounded-full border-2 pointer-events-auto group border-purple-600 p-3 shrink-0 max-w-fit flex items-center text-purple-600">
@@ -479,7 +479,7 @@
 
                     </div>
 
-                    {{-- Profile Card --}}
+                    <!-- Profile Card -->
                     <div x-cloak x-show="profile" x-transition.duration.150ms.orgin.top draggable="true"
                         style="contain: content"
                         class="absolute inset-0 overflow-y-auto overflow-hidden overscroll-contain border rounded-xl bg-white space-y-4">
@@ -495,10 +495,10 @@
                                     'https://picsum.photos/seed/' . rand() . '/500/300',
                                 ];
                         @endphp
-                        {{-- Carousel section --}}
+                        <!-- Carousel section -->
                         <section class="relative h-96" x-data="{ activeSlide: 1, slides: @js($slides) }">
 
-                            {{-- Sliders --}}
+                            <!-- Sliders -->
                             <template x-for="(image, index) in slides" :key="index">
                                 <img :src="(image.startsWith('http') ? image : '/storage/' + image)" alt="User Image"
                                     class="absolute inset-0 pointer-events-none w-full h-full object-cover"
@@ -510,7 +510,7 @@
 
                             </template>
 
-                            {{-- Pagination --}}
+                            <!-- Pagination -->
                             <div :class="{ 'hidden': slides.length === 1 }"
                                 class="absolute top-1 inset-x-0 z-10 w-full flex items-center justify-center">
                                 <template x-for="(image, index) in slides" :key="index">
@@ -520,7 +520,7 @@
                                 </template>
                             </div>
 
-                            {{-- Prev Button --}}
+                            <!-- Prev Button -->
                             <button :class="{ 'hidden': slides.length === 1 }"
                                 @click="activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1"
                                 class="absolute left-2 top-1/2 transform -translate-y-1/2">
@@ -531,7 +531,7 @@
                                 </svg>
                             </button>
 
-                            {{-- Next Button --}}
+                            <!-- Next Button -->
                             <button :class="{ 'hidden': slides.length === 1 }"
                                 @click="activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1"
                                 class="absolute right-2 top-1/2 transform -translate-y-1/2">
@@ -542,7 +542,7 @@
                                 </svg>
                             </button>
 
-                            {{-- Close Profile Button --}}
+                            <!-- Close Profile Button -->
                             <button @click="profile=false"
                                 class="absolute -bottom-4 right-3 bg-tinder p-3 hover:scale-110 transition-transform rounded-full max-w-fit max-h-fit text-white ">
 
@@ -557,7 +557,7 @@
 
                         </section>
 
-                        {{-- Profile Info --}}
+                        <!-- Profile Info -->
                         <section class="grid gap-4 p-3">
                             <div class="flex items-center text-3xl gap-3 text-wrap">
                                 <h3 class="font-bold">{{ $user->name }}</h3>
@@ -566,7 +566,7 @@
                                 </span>
                             </div>
 
-                            {{-- About --}}
+                            <!-- About -->
                             <ul>
                                 <li class="items-center text-gray-6000 text-lg">
                                     {{ $user->birth_date }}
@@ -603,10 +603,10 @@
                             </ul>
                             <hr class="-mx-2.5">
 
-                            {{-- Bio --}}
+                            <!-- Bio -->
                             <p class="text-gray-600">{{ $user->bio }}</p>
 
-                            {{-- Relationships Goals --}}
+                            <!-- Relationships Goals -->
                             <div
                                 class="rounded-lg bg-green-100 h-auto px-6 py-4 max-w-md flex gap-6 items-center shadow-lg">
                                 <div class="text-4xl text-green-700">
@@ -632,7 +632,7 @@
                                 </div>
                             </div>
 
-                            {{-- More information --}}
+                            <!-- More information -->
 
                             <section class="divide-y space-y-2">
                                 <div class="space-y-3 py-2">
@@ -686,13 +686,13 @@
 
                         </section>
 
-                        {{-- Action --}}
+                        <!-- Action -->
 
                         <section
                             class="sticky bg-gradient-to-b from-white/50 to-white bottom-0 py-2 flex items-center justify-center gap-4 inset-x-0 mx-auto">
 
-                            {{-- Match of Info Section --}}
-                            {{-- Swipe Left --}}
+                            <!-- Match of Info Section -->
+                            <!-- Swipe Left -->
                             <div>
                                 <button draggable="true" @click="swipeLeft()"
                                     class="bg-white rounded-full border-2 pointer-events-auto group border-red-600 p-3 shrink-0 max-w-fit flex items-center text-red-600">
@@ -708,7 +708,7 @@
                                 </button>
                             </div>
 
-                            {{-- Super Like --}}
+                            <!-- Super Like -->
                             <div>
                                 <button draggable="true" @click="swipeUp()"
                                     class="bg-white  rounded-full border-2 pointer-events-auto group border-blue-600 p-3 shrink-0 max-w-fit flex items-center text-blue-600 scale-95">
@@ -726,7 +726,7 @@
                                 </button>
                             </div>
 
-                            {{-- Swipe Right --}}
+                            <!-- Swipe Right -->
                             <div>
                                 <button draggable="false" @click="swipeRight()"
                                     class="bg-white rounded-full border-2 pointer-events-auto group border-green-600 p-3 shrink-0 max-w-fit flex items-center text-green-600">
@@ -772,7 +772,7 @@
                     x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     class="relative w-full py-6 bg-white h-full sm:h-[550px] px-7 sm:max-w-lg sm:rounded-lg border-2 border-rose-500">
 
-                    {{-- Close Button --}}
+                    <!-- Close Button -->
                     <div class=" items-center justify-between p-2 py-3 block ">
 
                         <button @click="modalOpen=false"
@@ -784,10 +784,10 @@
                         </button>
                     </div>
 
-                    {{-- Main --}}
+                    <!-- Main -->
                     <main class="relative w-auto flex flex-col gap-y-9">
                         <div class="mx-auto flex flex-col gap-2 items-center justify-center">
-                            {{-- Tinder logo --}}
+                            <!-- Tinder logo -->
                             <div class="mx-auto">
                                 <svg class="ml-5" fill="#000000" width="50px" height="50px"
                                     viewBox="0 0 24 24" id="tinder" data-name="Flat Color"
@@ -803,7 +803,7 @@
                             </h5>
                         </div>
                         <div class="flex items-center justify-center gap-4 mx-">
-                            {{-- Hiển thị avatar của người dùng hiện tại --}}
+                            <!-- Show the activating avatar of the user -->
                             <span>
                                 @if ($currentUser && $currentUser->activeAvatar)
                                     <img src="{{ asset('storage/' . $currentUser->activeAvatar->path) }}"
@@ -811,10 +811,11 @@
                                 @else
                                     >
                                     <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg"
-                                        alt="Random User"class="rounded-full h-32 w-32 ring ring-rose-500">
+                                        alt="Random User" class="rounded-full h-32 w-32 ring ring-rose-500">
                                 @endif
                             </span>
-                            {{-- Hiển thị avatar của người vừa được match --}}
+
+                            <!-- Show the activating avatar of the matched user -->
                             <span>
                                 @if ($matchedUser && $matchedUser->activeAvatar)
                                     <img src="{{ asset('storage/' . $matchedUser->activeAvatar->path) }}"
@@ -827,7 +828,7 @@
                             </span>
                         </div>
 
-                        {{-- Action --}}
+                        <!-- Action -->
                         <div class="mx-auto flex flex-col gap-5">
                             <button wire:click="createConversation"
                                 class="bg-tinder text-white font-bold items-center px-3 py-2 rounded-full">

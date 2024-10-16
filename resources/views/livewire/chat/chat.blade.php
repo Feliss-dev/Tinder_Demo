@@ -27,7 +27,7 @@ $nextTick(() => {
 "
 class="flex h-screen overflow-hidden">
     <main class="w-full grow border flex flex-col relative">
-        {{-- Header --}}
+        <!-- Header -->
         <header class="flex items-center gap-2.5 p-2 border">
 
             <a class="sm:hidden" wire:navigate href="{{ route('chat.index') }}">
@@ -39,8 +39,8 @@ class="flex h-screen overflow-hidden">
                     </svg>
                 </span>
             </a>
-            {{-- <x-avatar src="https://picsum.photos/seed/' . rand() . '/300/300" /> --}}
-            {{-- Hiển thị avatar của người vừa được match --}}
+            <!-- <x-avatar src="https://picsum.photos/seed/' . rand() . '/300/300" /> -->
+            <!-- Hiển thị avatar của người vừa được match -->
     <span>
         @if ($receiver && $receiver->activeAvatar)
             <img src="{{ asset('storage/' .$receiver->activeAvatar->path) }}" alt="Matched User Avatar"
@@ -57,7 +57,7 @@ class="flex h-screen overflow-hidden">
 
             <div class="ml-auto flex items-center gap-2  px-2">
 
-                {{-- Dots --}}
+                <!-- Dots -->
                 <span>
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -68,7 +68,7 @@ class="flex h-screen overflow-hidden">
 
                 </span>
 
-                {{-- Cancel button --}}
+                <!-- Cancel button -->
                 <a href="{{ route('dashboard') }}">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -83,7 +83,7 @@ class="flex h-screen overflow-hidden">
             </div>
         </header>
 
-        {{-- Body --}}
+        <!-- Body -->
         <section
 
         @scroll="
@@ -120,13 +120,13 @@ class="flex h-screen overflow-hidden">
                     'ml-auto' => $belongsToAuth,
                 ])>
 
-                    {{-- Avatar --}}
+                    <!-- Avatar -->
                     <div @class(['shrink-0 mt-auto', 'invisible' => $belongsToAuth])>
                         <x-avatar class="w-7 h-7" src="https://picsum.photos/seed/' . rand() . '/300/300" />
 
                     </div>
 
-                    {{-- Message --}}
+                    <!-- Message -->
                     <div @class([
                         'flex flex-wrap text-[15px] border-gray-200/40 rounded-xl p-2.5 flex flex-col bg-[#f6f6f8fb]',
                         'bg-blue-500 text-white' => $belongsToAuth,
@@ -139,15 +139,15 @@ class="flex h-screen overflow-hidden">
                 @endforeach
         </section>
 
-        {{-- Footer --}}
+        <!-- Footer -->
         <footer class="sticky bottom py-2 inset-x-0 p-2">
             <form action="" x-data="{ body: @entangle('body') }" @submit.prevent="$wire.sendMessage()" autocomplete="off">
                 @csrf
-                {{-- Hiddin input --}}
+                <!-- Hiddin input -->
                 <input type="hidden" autocomplete="false" style="display: none">
 
                 <div class="grid grid-cols-12 items-center">
-                    {{-- Spotify --}}
+                    <!-- Spotify -->
                     <span class="col-span-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-spotify w-8 h-8 text-gray-500" viewBox="0 0 16 16">
@@ -164,9 +164,9 @@ class="flex h-screen overflow-hidden">
         </footer>
     </main>
 
-    {{-- Profile --}}
+    <!-- Profile -->
     <aside class="w-[50%] hidden sm:flex border">
-        {{-- Profile Card --}}
+        <!-- Profile Card -->
         <div style="contain: content"
             class=" inset-0 overflow-y-auto overflow-hidden overscroll-contain w-full  bg-white space-y-4">
 
@@ -178,16 +178,16 @@ class="flex h-screen overflow-hidden">
                 ];
                 $user= App\Models\User::first();
             @endphp
-            {{-- Carousel section --}}
+            <!-- Carousel section -->
             <section class="relative h-96" x-data="{ activeSlide: 1, slides: @js($slides) }">
 
-                {{-- Sliders --}}
+                <!-- Sliders -->
                 <template x-for="(image, index) in slides" :key="index">
                     <img x-show="activeSlide === index+1" :src="image" alt=""
                         class="absolute inset-0 pointer-events-none w-full h-full object-cover">
                 </template>
 
-                {{-- Pagination --}}
+                <!-- Pagination -->
                 <div draggable="true" :class="{ 'hidden': slides.length === 1 }"
                     class="absolute top-1 inset-x-0 z-10 w-full flex items-center justify-center">
 
@@ -198,7 +198,7 @@ class="flex h-screen overflow-hidden">
                     </template>
                 </div>
 
-                {{-- Prev Button --}}
+                <!-- Prev Button -->
                 <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
                     @click="activeSlide = activeSlide === 1 ? slides.length : activeSlide - 1"
                     class="absolute left-2 top-1/2 my-auto">
@@ -211,7 +211,7 @@ class="flex h-screen overflow-hidden">
 
                 </button>
 
-                {{-- Next Button --}}
+                <!-- Next Button -->
                 <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
                     @click="activeSlide = activeSlide === slides.length ? 1 : activeSlide + 1"
                     class="absolute right-2 top-1/2 my-auto">
@@ -229,7 +229,7 @@ class="flex h-screen overflow-hidden">
 
             </section>
 
-             {{-- Profile Info --}}
+             <!-- Profile Info -->
              <section class="grid gap-4 p-3">
                 <div class="flex items-center text-3xl gap-3 text-wrap">
                     <h3 class="font-bold">{{ $receiver->name }}</h3>
@@ -238,7 +238,7 @@ class="flex h-screen overflow-hidden">
                     </span>
                 </div>
 
-                {{-- About --}}
+                <!-- About -->
                 <ul>
                     <li class="items-center text-gray-6000 text-lg">
                         {{ $receiver->birth_date }}
@@ -276,10 +276,10 @@ class="flex h-screen overflow-hidden">
                 </ul>
                 <hr class="-mx-2.5">
 
-                {{-- Bio --}}
+                <!-- Bio -->
                 <p class="text-gray-600">{{ $receiver->bio }}</p>
 
-                {{-- Relationships Goals --}}
+                <!-- Relationships Goals -->
                 <div
                     class="rounded-lg bg-green-100 h-auto px-6 py-4 max-w-md flex gap-6 items-center shadow-lg">
                     <div class="text-4xl text-green-700">
@@ -305,7 +305,7 @@ class="flex h-screen overflow-hidden">
                     </div>
                 </div>
 
-                {{-- More information --}}
+                <!-- More information -->
 
                     <section class="divide-y space-y-2">
                         <div class="space-y-3 py-2">
