@@ -131,7 +131,7 @@
                         <hr class="font-bold my-2">
 
                         <!-- Can cause slow performance on loading -->
-                        <!-- {{fake()->image}} -->
+                        {{-- {{fake()->image}} --}}
 
                         <p>{{fake()->sentence(50)}}</p>
                     </div>

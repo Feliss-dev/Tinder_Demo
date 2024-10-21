@@ -28,8 +28,8 @@
 
 </head>
 
-<body class="bg-pink-100 h-screen flex items-center justify-center ">
-    <div class="bg-white p-8 rounded-lg shadow-lg max-w-3xl w-1200 h-auto text-center mt-20 overflow-y-scroll ">
+<body class="bg-pink-100 h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-3xl w-[1200px] h-auto text-center mt-12 mb-12">
         <h2 class="text-2xl font-bold italic mb-5">Account Information</h2>
         <form action="{{ route('info.update') }}" method="POST" enctype="multipart/form-data"
             class="grid grid-cols-2 gap-6">

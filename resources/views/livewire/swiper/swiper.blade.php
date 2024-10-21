@@ -171,16 +171,16 @@
                     element = $el;
 
                     // Initialize hammer.js
-                    var hammertime = new Hammer(element);
+                    var hammer = new Hammer(element);
 
                     // Let pan support all directions
-                    hammertime.get('pan').set({
+                    hammer.get('pan').set({
                         direction: Hammer.DIRECTION_ALL,
                         touchAction: 'pan'
                     });
 
                     // On Pan
-                    hammertime.on('pan', function(event) {
+                    hammer.on('pan', function(event) {
                         isSwiping = true;
 
                         if (event.deltaX === 0) return;
@@ -212,7 +212,7 @@
                         event.target.style.transform = 'translate(' + event.deltaX + 'px,' + event.deltaY + 'px) rotate(' + rotate + 'deg)';
                     });
 
-                    hammertime.on('panend', function(event) {
+                    hammer.on('panend', function(event) {
                         // Reset State
                         isSwiping = false;
                         swipingLeft = false;
@@ -651,7 +651,7 @@
                                     class="bg-white rounded-full border-2 pointer-events-auto group border-red-600 p-3 shrink-0 max-w-fit flex items-center text-red-600">
 
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" stroke-width="3"
+                                        stroke-width="1.5" stroke="currentColor"
                                         class="w-9 h-9 shrink-0 m-auto group:hover-scale-10 stroke-current transition-transform stroke-2">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M6 18 18 6M6 6l12 12" />
@@ -751,7 +751,6 @@
                                     <img src="{{ asset('storage/' . $currentUser->activeAvatar->path) }}"
                                         alt="Current User Avatar" class="rounded-full h-32 w-32 ring ring-rose-500">
                                 @else
-                                    >
                                     <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg"
                                         alt="Random User" class="rounded-full h-32 w-32 ring ring-rose-500">
                                 @endif

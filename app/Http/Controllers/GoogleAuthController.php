@@ -16,11 +16,20 @@ class GoogleAuthController extends Controller
 
     public function callback() {
         $google_user = Socialite::driver('google')->stateless()->user();
-        $user = User::where('google_id', $google_user->getId())->first();
 
-        if (!$user) {
-            $user = User::create(['name' => $google_user->getName(), 'email' => $google_user->getEmail(), 'google_id' => $google_user->getId(),]);
-        }
+        $user = User::updateOrCreate([
+            'google_id' => $google_user->getId(),
+        ], [
+            'name' => $google_user->getName(),
+            'email' => $google_user->getEmail(),
+            'google_id' => $google_user->getId(),
+        ]);
+
+//        $user = User::where('google_id', $google_user->getId())->first();
+//
+//        if (!$user) {
+//            $user = User::create(['name' => $google_user->getName(), 'email' => $google_user->getEmail(), 'google_id' => $google_user->getId(),]);
+//        }
 
         Auth::login($user);
 
