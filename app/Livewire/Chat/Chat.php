@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Chat;
 
+use App\Models\User;
 use Log;
 use App\Models\Swipe;
 use App\Models\Message;
@@ -21,7 +22,7 @@ class Chat extends Component
 
     public $body;
     public $loadedMessages;
-    public $paginate_var =10;
+    public int $paginate_var = 10;
 
     function listenBroadcastedMessage($event){
         $this->dispatch('scroll-bottom');
@@ -36,7 +37,6 @@ class Chat extends Component
         $newMessage->save();
 
         #refresh chatlist
-
         $this->dispatch('new-message-created');
     }
 
@@ -71,8 +71,6 @@ class Chat extends Component
 
         #broadcast out message
         $this->receiver->notify(new MessageSentNotification(auth()->user(), $createdMessage, $this->conversation));
-
-
     }
 
     #[On('loadMore')]

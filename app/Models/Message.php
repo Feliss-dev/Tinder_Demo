@@ -13,7 +13,7 @@ class Message extends Model
 
     protected $date = ['read_at'];
 
-    public function conversation(){
+    public function conversation() {
         return $this->belongsTo(Conversation::class);
     }
 

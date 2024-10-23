@@ -40,7 +40,6 @@ class="flex h-screen overflow-hidden">
                 </span>
             </a>
 
-            <!-- <x-avatar src="https://picsum.photos/seed/' . rand() . '/300/300" /> -->
             <!-- Show avatar of user who just got matched. -->
             <span>
                 @if ($receiver && $receiver->activeAvatar)
@@ -102,9 +101,7 @@ class="flex h-screen overflow-hidden">
         id="conversation"
             class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
 
-            @foreach ($loadedMessages as $message )
-
-
+            @foreach ($loadedMessages as $message)
                 @php
                     $belongsToAuth = $message->sender_id == auth()->id();
                 @endphp
@@ -140,20 +137,21 @@ class="flex h-screen overflow-hidden">
                 @csrf
                 <!-- Hiding input -->
                 <input type="hidden" autocomplete="false" style="display: none">
+                <input type="file" id="upload-file-btn" autocomplete="false" style="display: none" aria-hidden="true">
 
                 <div class="grid grid-cols-12 items-center">
-                    <!-- Spotify -->
-                    <span class="col-span-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-spotify w-8 h-8 text-gray-500" viewBox="0 0 16 16">
-                            <path
-                                d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.669 11.538a.5.5 0 0 1-.686.165c-1.879-1.147-4.243-1.407-7.028-.77a.499.499 0 0 1-.222-.973c3.048-.696 5.662-.397 7.77.892a.5.5 0 0 1 .166.686m.979-2.178a.624.624 0 0 1-.858.205c-2.15-1.321-5.428-1.704-7.972-.932a.625.625 0 0 1-.362-1.194c2.905-.881 6.517-.454 8.986 1.063a.624.624 0 0 1 .206.858m.084-2.268C10.154 5.56 5.9 5.419 3.438 6.166a.748.748 0 1 1-.434-1.432c2.825-.857 7.523-.692 10.492 1.07a.747.747 0 1 1-.764 1.288" />
+                    <!-- Attachment -->
+                    <button type="button" class="btn col-span-1" onclick="document.getElementById('upload-file-btn').click()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z"/>
                         </svg>
-                    </span>
+                    </button>
+
                     <input x-model="body" type="text" autocomplete="off" autofocus
                         placeholder="Write your message here" maxlength="1700"
                         class="col-span-9 bg-gray-100 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none placeholder-gray-500 mr-2">
-                    <button x-bind@disabled="!body?.trim()" type="submit" class="col-span-2n p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-300">Send</button>
+
+                    <button type="submit" x-bind:disabled="!body?.trim()" class="col-span-2 p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-300">Send</button>
                 </div>
             </form>
         </footer>

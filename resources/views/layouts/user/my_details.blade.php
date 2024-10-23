@@ -30,7 +30,7 @@
     <div class="wrapper">
         <div class="container">
             <div class="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
-                <!-- Hiển thị avatar hiện tại -->
+                <!-- Display current avatar -->
                 <div class="flex flex-col items-center">
                     <div class="w-32 h-32 relative">
                         @if (auth()->user()->activeAvatar)
@@ -56,7 +56,7 @@
                     </form>
                 </div>
 
-                <!-- Hiển thị danh sách avatar -->
+                <!-- Display avatar list -->
                 <div class="mt-8">
                     <h3 class="text-xl font-semibold text-gray-700 mb-4">Your Avatars</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -65,7 +65,7 @@
                                 <img class="w-full h-32 object-cover rounded-lg border-2 @if($avatar->is_active) border-red-500 @else border-gray-300 @endif"
                                      src="{{ asset('storage/' . $avatar->path) }}" alt="Avatar">
 
-                                <!-- Chọn avatar hoặc xóa -->
+                                <!-- Choose or delete avatar -->
                                 <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex justify-center items-center space-x-2">
                                     @if (!$avatar->is_active)
                                     <div class="flex items-center flex-col space-x-2">
