@@ -11,26 +11,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\DownloadStatisticController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-// Route for homepage
+// Route for homepage.
 Route::view('/', 'welcome')->name('home');
-// Route đăng xuất
-
+// Route for logging out.
 
 // Routes for user who has login and authenticated.
 Route::middleware('auth')->group(function () {
-
     // User details
     Route::get('view_my_details', [UserController::class, 'viewMyDetails'])->name('view_my_details');
 
@@ -58,7 +46,8 @@ Route::middleware('auth')->group(function () {
 
     // Routes for admins
     Route::middleware('isAdmin')->group(function () {
-        Route::get('admin/dashboard', [UserController::class, 'admin_dashboard'])->name('admin.dashboard');
+        Route::get('admin/dashboard', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
+        Route::get('admin/download-statistic', [DownloadStatisticController::class, 'generatePdf'])->name('name.downloadStatistic');
     });
 });
 

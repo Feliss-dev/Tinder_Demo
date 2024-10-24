@@ -16,9 +16,12 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function admin_dashboard()
-    {
+    public function adminDashboard() {
         return view('layouts.admin.dashboard');
+    }
+
+    public function downloadStatistic() {
+
     }
 
     public function showProfileForm()

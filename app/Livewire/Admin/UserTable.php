@@ -25,19 +25,30 @@ class UserTable extends Component
         $this->resetPage(); // Reset pagination to the first page when new search term is applied
     }
 
+    public function sendNotification($userId) {
+        $user = User::find($userId);
+
+        if ($user) {
+            // Send notification like message.
+
+        } else {
+            session()->flash('error', 'User not found.');
+        }
+    }
+
     public function deleteUser($userId)
     {
         // First, delete all swipes associated with the user
-    FacadesDB::table('swipes')->where('user_id', $userId)->delete();
+        FacadesDB::table('swipes')->where('user_id', $userId)->delete();
 
-    // Then, delete the user
-    $user = User::find($userId);
-    if ($user) {
-        $user->delete();
-        session()->flash('message', 'User ' . $user->name . ' has been deleted.');
-    } else {
-        session()->flash('error', 'User not found.');
-    }
+        // Then, delete the user
+        $user = User::find($userId);
+        if ($user) {
+            $user->delete();
+            session()->flash('message', 'User ' . $user->name . ' has been deleted.');
+        } else {
+            session()->flash('error', 'User not found.');
+        }
     }
 
     public function render()

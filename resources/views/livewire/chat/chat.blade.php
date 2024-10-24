@@ -40,7 +40,6 @@ class="flex h-screen overflow-hidden">
                 </span>
             </a>
 
-            <!-- <x-avatar src="https://picsum.photos/seed/' . rand() . '/300/300" /> -->
             <!-- Show avatar of user who just got matched. -->
             <span>
                 @if ($receiver && $receiver->activeAvatar)
@@ -56,7 +55,7 @@ class="flex h-screen overflow-hidden">
                 {{ $receiver->name }}
             </h5>
 
-            <div class="ml-auto flex items-center gap-2  px-2">
+            <div class="ml-auto flex items-center gap-2 px-2">
                 <!-- Dots -->
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -103,8 +102,6 @@ class="flex h-screen overflow-hidden">
             class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
 
             @foreach ($loadedMessages as $message )
-
-
                 @php
                     $belongsToAuth = $message->sender_id == auth()->id();
                 @endphp

@@ -19,7 +19,7 @@ class Chat extends Component
     public $conversation;
     public $receiver;
 
-    public $body;
+    public string $body;
     public $loadedMessages;
     public $paginate_var =10;
 

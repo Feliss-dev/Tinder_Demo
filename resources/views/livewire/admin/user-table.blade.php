@@ -1,6 +1,5 @@
 <div class="table-data">
     <div class="order p-6 bg-white shadow-md rounded-lg">
-
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-semibold text-gray-700">List of users</h3>
             <div class="flex space-x-2">
@@ -8,7 +7,8 @@
                 <i class='bx bx-filter text-gray-500 cursor-pointer'></i>
             </div>
         </div>
-<div class="overflow-x-auto">
+
+    <div class="overflow-x-auto">
         <table class="min-w-full table-auto border-collapse">
             <thead>
                 <tr class="bg-gray-100 text-left text-sm uppercase text-gray-600 w-full">
@@ -41,15 +41,14 @@
                 @endforeach
             </tbody>
         </table>
-</div>
-
-        <!-- Pagination links -->
-<!-- Pagination links -->
-<div class="mt-4">
-    <div class="flex justify-center">
-        {{ $users->onEachSide(1)->links('vendor.pagination.tailwind') }}
     </div>
-</div>
+
+    <!-- Pagination links -->
+    <div class="mt-4">
+        <div class="flex justify-center">
+            {{ $users->onEachSide(1)->links('vendor.pagination.tailwind') }}
+        </div>
+    </div>
 
     </div>
     <div class="todo mt-10">
