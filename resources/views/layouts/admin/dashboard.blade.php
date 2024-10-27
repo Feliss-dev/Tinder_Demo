@@ -29,7 +29,7 @@
     <div class="w-full flex-auto overflow-hidden grid grid-cols-5" x-data="{ 'selectedTab': 'management_users' }" style="background-size: 40px 40px; background: white radial-gradient(lightgray 2px, transparent 0) -19px -19px;">
         <livewire:admin.admin-sidebar />
 
-        <div class="col-span-4">
+        <div class="col-span-4 overflow-hidden">
             <livewire:admin.admin-tab-panel />
         </div>
     </div>
