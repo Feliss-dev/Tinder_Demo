@@ -1,4 +1,4 @@
-<div class="w-full h-full overflow-y-scroll">
+<div class="w-full h-full overflow-y-auto">
     <div class="p-3 overflow-y-hidden">
         <div x-show="selectedTab === 'management_users'">
             <h1 class="font-bold text-3xl">User Management</h1>
@@ -18,27 +18,7 @@
                 </div>
             </div>
 
-            <table class="mt-2 w-full">
-                <thead class="border border-slate-500">
-                    <tr>
-                        <th class="text-center w-[3rem] border border-slate-500 p-2">ID</th>
-                        <th class="text-left border border-slate-500 p-2">Username</th>
-                        <th class="text-left w-auto border border-slate-500 p-2">Role</th>
-                        <th class="text-left w-auto border border-slate-500 p-2">Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @for($i = 0; $i < 13; $i++)
-                        <tr>
-                            <td class="p-2 text-center border border-slate-500">{{ $i }}</td>
-                            <td class="p-2 border border-slate-500">A</td>
-                            <td class="p-2 border border-slate-500">B</td>
-                            <td class="p-2 border border-slate-500">C</td>
-                        </tr>
-                    @endfor
-                </tbody>
-            </table>
+            <livewire:admin.user-table />
         </div>
 
         <div x-show="selectedTab === 'management_conversations'">
