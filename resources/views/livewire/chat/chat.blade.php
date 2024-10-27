@@ -47,8 +47,7 @@ class="flex h-screen overflow-hidden">
                     <img src="{{ asset('storage/' .$receiver->activeAvatar->path) }}" alt="Matched User Avatar"
                          class="rounded-full h-10 w-10 ring ring-pink-500/40">
                 @else
-                <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
-
+                    <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
                 @endif
             </span>
 
@@ -102,9 +101,7 @@ class="flex h-screen overflow-hidden">
         id="conversation"
             class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
 
-            @foreach ($loadedMessages as $message )
-
-
+            @foreach ($loadedMessages as $message)
                 @php
                     $belongsToAuth = $message->sender_id == auth()->id();
                 @endphp

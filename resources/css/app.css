@@ -21,4 +21,8 @@
     .tab-btn-selected {
         @apply font-bold border-b-2;
     }
+
+    .admin-sidebar-tab-btn {
+        @apply hover:bg-gray-200 active:bg-gray-300 flex justify-start items-center h-14 p-3
+    }
 }
