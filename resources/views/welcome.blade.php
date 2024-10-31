@@ -101,7 +101,7 @@
                 </div>
             </nav>
 
-            <center class="m-auto flex flex-col gap-y-10">
+            <div class="m-auto flex flex-col gap-y-10" style="text-align: center;">
                 <h3 class="font-blod text-7xl sm:text-8xl text-white">
                     Swipe Right
                     <sup>
@@ -113,7 +113,7 @@
                 <a class="rounded-3xl bg-gradient-to-r from-pink-500 via-orange-500 to-rose-500 text-white text-xl font-bold px-8 py-2.5 max-w-fit mx-auto" href="{{route('register')}}">
                     Create an account
                 </a>
-            </center>
+            </div>
         </div>
 
         <!-- Testimonials -->
