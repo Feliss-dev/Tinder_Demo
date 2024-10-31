@@ -14,11 +14,18 @@ class DashboardInfo extends Component
     public $matches;
     public $images;
 
+    protected $listeners = ['userDeleted' => 'refreshDashboardInfo'];
+
+
     public function mount(){
+        $this->refreshDashboardInfo();
+    }
+
+    public function refreshDashboardInfo()
+    {
         $this->users = User::count();
         $this->matches = SwipeMatch::count();
         $this->images = count(Storage::files('public/user_images'));
-
     }
     public function render()
     {

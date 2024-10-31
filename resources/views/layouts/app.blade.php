@@ -25,6 +25,7 @@
     <body class="font-sans antialiased flex flex-col w-full h-screen overflow-hidden bg-[#e5e5e5]">
         <livewire:layout.navigation />
 
+
         <!-- Main Layout -->
         <div class="w-full flex-auto overflow-hidden grid grid-cols-4">
             <!-- Sidebar -->
