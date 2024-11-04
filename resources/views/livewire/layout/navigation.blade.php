@@ -30,9 +30,21 @@ new class extends Component {
                             {{ __('View My Profile') }}
                         </x-nav-link>
 
-                         <!-- Notification Dropdown Component -->
+
+                        {{-- <livewire:notification-dropdown /> --}}
+
+                            <!-- Notification Dropdown Component -->
                 <div class="flex justify-center h-screen">
-                    <div x-data="{ dropdownOpen: false }" class="relative my-4">
+                    <div x-data="{ dropdownOpen: false }" class="relative my-4"
+                     x-init="
+                        Echo.private(`users.${{ auth()->id() }}`)
+                            .listen('NewNotification', (e) => {
+                                notifications.unshift(e.notification); // Add new notification to the top of the list
+                                dropdownOpen = true; // Open the dropdown automatically
+                            });
+                    ">
+
+
                         <!-- Bell Icon to Trigger the Dropdown -->
                         <button @click="dropdownOpen = !dropdownOpen"
                             class="relative z-10 block rounded-md bg-white p-2 focus:outline-none">
@@ -75,6 +87,7 @@ new class extends Component {
                         </div>
                     </div>
                 </div>
+
 
                     </div>
 

@@ -405,7 +405,7 @@
 
     button {
         padding: 10px 20px;
-        margin-top: 20px;
+       
         background-color: #007bff;
         border: none;
         border-radius: 4px;

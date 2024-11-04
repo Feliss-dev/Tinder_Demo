@@ -58,10 +58,10 @@ class UserTable extends Component
        // Send notification to user
 
         // Gửi thông báo đến người dùng
-        FacadesNotification::send($user, new AdminMessageNotification($this->message));
+        FacadesNotification::send($user, new AdminMessageNotification($this->message, $userId));
 
         // Phát trực tiếp thông báo qua Laravel Echo
-        broadcast(new \App\Events\NewNotification($user, $this->message))->toOthers();
+        broadcast(new \App\Events\NewNotification($this->message))->toOthers();
 
         session()->flash('success', 'Notification sent successfully!');
 

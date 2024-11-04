@@ -17,9 +17,11 @@ class AdminMessageNotification extends Notification implements ShouldQueue
      * Create a new notification instance.
      */
     protected $adminMessage;
-    public function __construct($message)
+    protected $userId;
+    public function __construct($message, $userId)
     {
         $this->adminMessage = $message;
+        $this->userId = $userId;
     }
     /**
      * Get the notification's delivery channels.
@@ -28,7 +30,7 @@ class AdminMessageNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        event(new NewNotification($this->adminMessage));
+
         return ['database', 'broadcast'];
     }
 
@@ -53,6 +55,7 @@ class AdminMessageNotification extends Notification implements ShouldQueue
         return [
             'message' => $this->adminMessage,
             'sender_name' => 'Admin',
+            'user_id' => $this->userId,
         ];
     }
 
@@ -61,6 +64,7 @@ class AdminMessageNotification extends Notification implements ShouldQueue
         return new BroadcastMessage([
             'message' => $this->adminMessage,
             'sender_name' => 'Admin',
+            'user_id' => $this->userId,
         ]);
     }
 

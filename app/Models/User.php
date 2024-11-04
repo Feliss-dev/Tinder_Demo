@@ -14,13 +14,14 @@ use App\Models\UserPreference;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\RelationshipGoalsEnum;
 
-use Illuminate\Notifications\Notifiable;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -108,10 +109,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $today->diff($birthDate)->y;
     }
 
-    protected static function booted()
-    {
-
-    }
+    protected static function booted() {}
 
     //Swipe models relationshop
     /* user has many swipes */

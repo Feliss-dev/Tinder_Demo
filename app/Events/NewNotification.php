@@ -11,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class NewNotification
+class NewNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,7 +21,8 @@ class NewNotification
      */
       public function __construct($notification)
     {
-        $this->notification = $notification;
+        // Nếu `$notification` là chuỗi, chuyển đổi nó thành mảng hoặc thêm `user_id`
+    $this->notification = is_array($notification) ? $notification : ['message' => $notification, 'user_id' => auth()->id()];
     }
     /**
      * Get the channels the event should broadcast on.
@@ -30,7 +31,7 @@ class NewNotification
      */
     public function broadcastOn()
     {
-        return new Channel('notifications');
+        return new PrivateChannel('users.' .$this->notification['user_id']);
     }
 
     public function broadcastAs()
@@ -39,8 +40,6 @@ class NewNotification
     }
     public function broadcastWith()
 {
-    return [
-        
-    ];
+    return $this->notification;
 }
 }
