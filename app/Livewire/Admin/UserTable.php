@@ -4,7 +4,10 @@ namespace App\Livewire\Admin;
 
 use DB;
 use App\Models\User;
+use App\Notifications\AdminMessageNotification;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\DB as FacadesDB;
+use Illuminate\Support\Facades\Notification as FacadesNotification;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,6 +17,7 @@ class UserTable extends Component
 
     public $perPage = 10; // Default items per page
     public $searchTerm = '';
+    public $message;
 
     protected $listeners = [
         'searchUsers' => 'updateSearchTerm'
@@ -35,9 +39,32 @@ class UserTable extends Component
     if ($user) {
         $user->delete();
         session()->flash('message', 'User ' . $user->name . ' has been deleted.');
+        $this->dispatch('userDeleted');
     } else {
         session()->flash('error', 'User not found.');
     }
+    }
+
+    public function sendNotification($userId){
+
+        $this->dispatch('notification-sent');
+        $user = User::find($userId);
+
+        if(!$user){
+            session()->flash('error', 'User not found.');
+            return;
+        }
+
+       // Send notification to user
+
+        // Gửi thông báo đến người dùng
+        FacadesNotification::send($user, new AdminMessageNotification($this->message, $userId));
+
+        // Phát trực tiếp thông báo qua Laravel Echo
+        broadcast(new \App\Events\NewNotification($this->message))->toOthers();
+
+        session()->flash('success', 'Notification sent successfully!');
+
     }
 
     public function render()

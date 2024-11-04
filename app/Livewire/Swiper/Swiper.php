@@ -26,6 +26,9 @@ class Swiper extends Component
     public $users;
     public $filtersApplied = false; // Theo dõi trạng thái bộ lọc có được áp dụng hay chưa
     public $matchedUser;
+    public $selectedLanguages = [];
+    public $selectedInterests =[];
+    public $selectedDatingGoals = [];
 
     #[Locked]
     public $currentMatchId;
@@ -119,55 +122,57 @@ class Swiper extends Component
     }
 
     public function applyFilters()
-    {
-        $this->filtersApplied = true; // Đánh dấu rằng bộ lọc đã được áp dụng
-        $query = User::query()
-            ->whereNotSwiped()
-            ->where('id', '<>', auth()->id());
+{
+    $this->filtersApplied = true; // Đánh dấu rằng bộ lọc đã được áp dụng
+    $query = User::query()
+        ->whereNotSwiped() // Điều kiện tùy chỉnh
+        ->where('id', '<>', auth()->id()); // Loại bỏ người dùng hiện tại
 
-        // Filter by age.
-        if ($this->ageFrom) {
-            $query->where('birth_date', '<=', now()->subYears($this->ageFrom));
-        }
-        if ($this->ageTo) {
-            $query->where('birth_date', '>=', now()->subYears($this->ageTo));
-        }
-
-        // Filter by gender.
-        if(!empty($this->gender)){
-            $query->whereHas('gender', function($q){
-                $q->where('gender_id', $this->gender);
-            });
-        }
-
-        // Filter by interests
-        if(!empty($this->selectedInterests)){
-            $query->whereHas('interests', function($q){
-                $q->whereIn('interest_id', $this->selectedInterests);
-            });
-        }
-
-         // Filter by languages
-        if (!empty($this->selectedLanguages)) {
-            $query->whereHas('languages', function ($q) {
-                $q->whereIn('language_id', $this->selectedLanguages);
-            });
-        }
-
-        // Filter by Dating Goals
-        if (!empty($this->selectedDatingGoals)) {
-            $query->whereHas('datingGoals', function ($q) {
-                $q->whereIn('dating_goal_id', $this->selectedDatingGoals);
-            });
-        }
-
-        // Filter by name.
-        if ($this->searchTerm) {
-            $query->where('name', 'like', '%' . $this->searchTerm . '%');
-        }
-
-        $this->users = $query->limit(10)->get();
+    // Lọc theo độ tuổi
+    if ($this->ageFrom) {
+        $query->where('birth_date', '<=', now()->subYears($this->ageFrom));
     }
+    if ($this->ageTo) {
+        $query->where('birth_date', '>=', now()->subYears($this->ageTo));
+    }
+
+    // Lọc theo giới tính
+    if (!empty($this->gender)) {
+        $query->whereHas('genders', function ($q) {
+            $q->where('gender_id', $this->gender);
+        });
+    }
+
+    // Lọc theo sở thích
+    if (!empty($this->selectedInterests)) {
+        $query->whereHas('interests', function ($q) {
+            $q->whereIn('interest_id', $this->selectedInterests);
+        });
+    }
+
+    // Lọc theo ngôn ngữ
+    if (!empty($this->selectedLanguages)) {
+        $query->whereHas('languages', function ($q) {
+            $q->whereIn('language_id', $this->selectedLanguages);
+        });
+    }
+
+    // Lọc theo mục tiêu hẹn hò
+    if (!empty($this->selectedDatingGoals)) {
+        $query->whereHas('datingGoals', function ($q) {
+            $q->whereIn('dating_goal_id', $this->selectedDatingGoals);
+        });
+    }
+
+    // Lọc theo tên người dùng
+    if ($this->searchTerm) {
+        $query->where('name', 'like', '%' . $this->searchTerm . '%');
+    }
+
+    // Lấy danh sách người dùng theo các tiêu chí lọc
+    $this->users = $query->limit(10)->get();
+}
+
 
     public function createConversation()
     {

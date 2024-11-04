@@ -11,16 +11,19 @@ use App\Models\UserImage;
 use App\Models\SwipeMatch;
 use App\Enums\BasicGroupEnum;
 use App\Models\UserPreference;
-use Illuminate\Database\Eloquent\Builder;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\RelationshipGoalsEnum;
-use Illuminate\Notifications\Notifiable;
+
+
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -106,10 +109,7 @@ class User extends Authenticatable
         return $today->diff($birthDate)->y;
     }
 
-    protected static function boot()
-    {
-        parent::boot();
-    }
+    protected static function booted() {}
 
     //Swipe models relationshop
     /* user has many swipes */
