@@ -40,7 +40,6 @@ class="flex h-screen overflow-hidden">
                 </span>
             </a>
 
-            <!-- <x-avatar src="https://picsum.photos/seed/' . rand() . '/300/300" /> -->
             <!-- Show avatar of user who just got matched. -->
             <span>
                 @if ($receiver && $receiver->activeAvatar)
