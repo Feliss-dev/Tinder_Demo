@@ -14,6 +14,7 @@ new class extends Component {
         $this->redirect('/', navigate: true);
     }
 }; ?>
+
 <div x-data="{ notificationSent: false }" @notification-sent.window="notificationSent = true; setTimeout(() => window.location.reload(), 3000)">
     <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
         <!-- Primary Navigation Menu -->
@@ -33,60 +34,81 @@ new class extends Component {
 
                         {{-- <livewire:notification-dropdown /> --}}
 
-                            <!-- Notification Dropdown Component -->
-                <div class="flex justify-center h-screen">
-                    <div x-data="{ dropdownOpen: false }" class="relative my-4"
-                     x-init="
-                        Echo.private(`users.${{ auth()->id() }}`)
-                            .listen('NewNotification', (e) => {
-                                notifications.unshift(e.notification); // Add new notification to the top of the list
-                                dropdownOpen = true; // Open the dropdown automatically
-                            });
-                    ">
+                        <!-- Notification Dropdown Component -->
+                        <div class="flex justify-center h-screen">
+                            <div x-data="{ dropdownOpen: false }" class="relative my-4"
+                                 x-init="
+                                    // TODO: Echo undefined
+                                    Echo.private(`notifications.{{ auth()->id() }}`)
+                                        .listen('.new-notification', (e) => {
+                                            // 'notifications' là clgt?
+
+                                            // notifications.unshift(e.notification); // Add new notification to the top of the list
+                                            // dropdownOpen = true; // Open the dropdown automatically
+                                        }).listen('.new-notification', (e) => {
+                                            console.log(e.message); // DEBUG
+                                        });
+                                    ">
+
+                                {{--
+
+                                 const userId = document.querySelector('meta[name="user-id"]').content;
+
+                                {{--window.Echo.private('notifications.{{$userId}}') .listen('.new-notification', (e) => {--}}
+                                {{--    console.log(e.message);--}}
+
+                                {{--    // const bellIcon = document.getElementById('notification-bell');--}}
+                                {{--    // let unreadCount = parseInt(bellIcon.getAttribute('data-count')) || 0;--}}
+                                {{--    //--}}
+                                {{--    // unreadCount += 1;--}}
+                                {{--    // bellIcon.setAttribute('data-count', unreadCount);--}}
+                                {{--    // bellIcon.classList.remove('hidden'); // Hiển thị biểu tượng đếm--}}
+                                {{--});
+                                --}}
 
 
-                        <!-- Bell Icon to Trigger the Dropdown -->
-                        <button @click="dropdownOpen = !dropdownOpen"
-                            class="relative z-10 block rounded-md bg-white p-2 focus:outline-none">
-                            <svg class="h-5 w-5 text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path
-                                    d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                            </svg>
-                        </button>
+                                <!-- Bell Icon to Trigger the Dropdown -->
+                                <button @click="dropdownOpen = !dropdownOpen"
+                                        class="relative z-10 block rounded-md bg-white p-2 focus:outline-none">
+                                    <svg class="h-5 w-5 text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                         fill="currentColor">
+                                        <path
+                                            d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                                    </svg>
+                                </button>
 
-                        <!-- Click Outside to Close the Dropdown -->
-                        <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 h-full w-full z-10">
-                        </div>
+                                <!-- Click Outside to Close the Dropdown -->
+                                <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 h-full w-full z-10">
+                                </div>
 
-                        <!-- Dropdown Content -->
-                        <div x-show="dropdownOpen"
-                            class="absolute right-0 mt-2 bg-white rounded-md shadow-lg overflow-hidden z-20"
-                            style="width: 20rem;">
-                            <div class="py-2 max-h-72 overflow-y-auto">
-                                @foreach (auth()->user()->notifications->take(5) as $notification)
-                                    <div class="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2">
-                                        <img class="h-8 w-8 rounded-full object-cover mx-1"
-                                            src="https://via.placeholder.com/40" alt="avatar">
-                                        <p class="text-gray-600 text-sm mx-2">
+                                <!-- Dropdown Content -->
+                                <div x-show="dropdownOpen"
+                                     class="absolute right-0 mt-2 bg-white rounded-md shadow-lg overflow-hidden z-20"
+                                     style="width: 20rem;">
+                                    <div class="py-2 max-h-72 overflow-y-auto">
+                                        @foreach (auth()->user()->notifications->take(5) as $notification)
+                                            <div class="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2">
+                                                <img class="h-8 w-8 rounded-full object-cover mx-1"
+                                                     src="https://via.placeholder.com/40" alt="avatar">
+                                                <p class="text-gray-600 text-sm mx-2">
                                             <span
                                                 class="font-bold">{{ $notification->data['sender_name'] ?? 'Admin' }}</span>
-                                            {{ $notification->data['message'] }}
-                                            <small
-                                                class="block text-gray-500">{{ $notification->created_at->diffForHumans() }}</small>
-                                        </p>
+                                                    {{ $notification->data['message'] }}
+                                                    <small
+                                                        class="block text-gray-500">{{ $notification->created_at->diffForHumans() }}</small>
+                                                </p>
+                                            </div>
+                                        @endforeach
                                     </div>
-                                @endforeach
-                            </div>
 
-                            <!-- See All Notifications Button -->
-                            <a href="#"
-                                class="block bg-gray-800 text-white text-center font-bold py-2">
-                                See all notifications
-                            </a>
+                                    <!-- See All Notifications Button -->
+                                    <a href="#"
+                                       class="block bg-gray-800 text-white text-center font-bold py-2">
+                                        See all notifications
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
 
                     </div>
@@ -103,14 +125,14 @@ new class extends Component {
                             <button
                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                 <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
-                                    x-on:profile-updated.window="name = $event.detail.name"></div>
+                                     x-on:profile-updated.window="name = $event.detail.name"></div>
 
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
+                                         viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
+                                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                              clip-rule="evenodd" />
                                     </svg>
                                 </div>
                             </button>
@@ -145,13 +167,13 @@ new class extends Component {
                 <!-- Hamburger -->
                 <div class="-me-2 flex items-center sm:hidden">
                     <button @click="open = ! open"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                         <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
+                                  stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M4 6h16M4 12h16M4 18h16" />
                             <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                  stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -172,7 +194,7 @@ new class extends Component {
             <div class="pt-4 pb-1 border-t border-gray-200">
                 <div class="px-4">
                     <div class="font-medium text-base text-gray-800" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
-                        x-on:profile-updated.window="name = $event.detail.name"></div>
+                         x-on:profile-updated.window="name = $event.detail.name"></div>
                     <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
                 </div>
 
@@ -193,4 +215,3 @@ new class extends Component {
     </nav>
 
 </div>
-

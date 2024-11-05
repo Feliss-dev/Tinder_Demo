@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\GoogleAuthController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,10 +28,8 @@ use App\Http\Controllers\GoogleAuthController;
 Route::view('/', 'welcome')->name('home');
 // Route đăng xuất
 
-
 // Routes for user who has login and authenticated.
 Route::middleware('auth')->group(function () {
-
     // User details
     Route::get('view_my_details', [UserController::class, 'viewMyDetails'])->name('view_my_details');
 
@@ -60,6 +59,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('isAdmin')->group(function () {
         Route::get('admin/dashboard', [UserController::class, 'admin_dashboard'])->name('admin.dashboard');
     });
+
+    // Route::post('/broadcasting/auth', [PusherController::class, 'pusherAuth']);
 });
 
 Route::group(['middleware' => ['web']], function () {

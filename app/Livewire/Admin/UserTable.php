@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Events\NewNotification;
 use DB;
 use App\Models\User;
 use App\Notifications\AdminMessageNotification;
@@ -61,7 +62,9 @@ class UserTable extends Component
         FacadesNotification::send($user, new AdminMessageNotification($this->message, $userId));
 
         // Phát trực tiếp thông báo qua Laravel Echo
-        broadcast(new \App\Events\NewNotification($this->message))->toOthers();
+        broadcast(new NewNotification($this->message, $userId))->toOthers();
+
+        // NewNotification::broadcast($this->message, $userId)->toOthers();
 
         session()->flash('success', 'Notification sent successfully!');
 
