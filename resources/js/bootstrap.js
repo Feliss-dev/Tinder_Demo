@@ -32,8 +32,3 @@ window.Echo = new Echo({
     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
     enabledTransports: ["ws", "wss"],
 });
-window.Echo.private("users." + userId).listen(".new-notification", (e) => {
-    // Emit the notification data to Livewire
-    Livewire.emit("newNotification", e.notification);
-    console.log("New Notification:", notification);
-});
