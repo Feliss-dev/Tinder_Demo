@@ -6,6 +6,8 @@
 
         <title>Hinder</title>
 
+        <!-- LOLOL -->
+
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -31,11 +33,12 @@
                         <div class="flex">
 
                             <!-- Logo -->
-                            <div class=" flex w-4 flex-shrink-0">
+                            <div class=" flex w-4 flex-shrink-0 mr-6">
                                 <a href="{{ route('home') }}" wire:navigate>
-                                    <svg fill="#000000"  width="60px" height="60px" viewBox="0 0 24 24" id="tinder" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color"><path id="primary" d="M11.39,2.08a1,1,0,0,0-1,.14,1,1,0,0,0-.35,1c.72,3.62.41,6.08-1,7.46A7.57,7.57,0,0,1,8,7.85a1,1,0,0,0-.68-.8,1,1,0,0,0-1,.24C6.16,7.43,3,10.62,3,14c0,5,3.36,8,9,8,3.23,0,7-2.09,7-8A13.17,13.17,0,0,0,11.39,2.08Z" style="fill: rgb(237, 105, 129);"></path></svg>
+                                    <x-logo width="60px" height="60px" />
                                 </a>
                             </div>
+
                             <div class=" flex items-center text-white font-bold ml-9 text-5xl">Hinder</div>
 
                             <!-- Navigation Links -->
