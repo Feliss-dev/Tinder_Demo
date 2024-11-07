@@ -37,6 +37,26 @@
 {{--	<section id="content">--}}
 {{--        <livewire:admin.admin-navbar />--}}
 
+<<<<<<< HEAD
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+
+		<!-- NAVBAR -->
+        <livewire:admin.admin-navbar />
+
+		<!-- MAIN -->
+		<main>
+
+            {{-- Download PDF --}}
+            <livewire:admin.pdfdownload/>
+
+
+            <!-- Dashboard Info -->
+            <livewire:admin.dashboard-info />
+=======
 {{--		<!-- MAIN -->--}}
 {{--		<main>--}}
 {{--			<div class="head-title">--}}
@@ -59,14 +79,10 @@
 {{--			</div>--}}
 {{--            <!-- Dashboard Info -->--}}
 {{--            <livewire:admin.dashboard-info />--}}
+>>>>>>> mass-layout-refactor
 
 
-	<!-- CONTENT -->
-	<section id="content">
-		<!-- NAVBAR -->
 
-		<!-- NAVBAR -->
-        <livewire:admin.admin-navbar />
 
 {{--			<livewire:admin.user-table />--}}
 

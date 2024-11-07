@@ -92,8 +92,6 @@ class Swiper extends Component
 
         #before creating match we want to make sure auth user swiped Right or  Up
         if ($type == 'up' || $type == 'right') {
-            # code...
-
             #creating Match
             $authUserId = auth()->id();
             $this->swipedUserId = $user->id;
@@ -104,14 +102,12 @@ class Swiper extends Component
                 ->whereIn('type', ['up', 'right'])
                 ->first();
 
-
             #If true, create a SwipeMatch
             if ($matchingSwipe) {
                 $match = SwipeMatch::create([
                     'swipe_id_1' => $swipe->id,
                     'swipe_id_2' => $matchingSwipe->id,
                 ]);
-
 
                 //Show match found alert
                 $this->dispatch('match-found');

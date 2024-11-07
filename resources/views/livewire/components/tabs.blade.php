@@ -90,7 +90,7 @@
                                                     <img src="{{ asset('storage/' . $conversation->getReceiver()->activeAvatar->path) }}" alt="Matched User Avatar"
                                                          class="rounded-full h-10 w-10 ring ring-pink-500/40">
                                                 @else
-                                                <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
+                                                    <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
 
                                                 @endif
                                             </span>

@@ -11,6 +11,7 @@ class AdminSidebar extends Component
         auth()->logout();
         return redirect()->route('login');
     }
+
     public function render()
     {
         return view('livewire.admin.admin-sidebar');

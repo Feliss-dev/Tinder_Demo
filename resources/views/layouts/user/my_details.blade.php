@@ -30,7 +30,7 @@
     <div class="wrapper">
         <div class="container">
             <div class="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
-                <!-- Hiển thị avatar hiện tại -->
+                {{-- Display the current avatar --}}
                 <div class="flex flex-col items-center">
                     <div class="w-32 h-32 relative">
                         @if (auth()->user()->activeAvatar)
@@ -45,7 +45,7 @@
                     <h2 class="mt-4 text-2xl font-bold text-gray-800">{{ auth()->user()->name }}</h2>
                 </div>
 
-                <!-- Form upload avatar -->
+                {{-- Form upload avatar --}}
                 <div class="mt-6">
                     <form action="{{ route('avatar.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col items-center">
                         @csrf
@@ -56,7 +56,7 @@
                     </form>
                 </div>
 
-                <!-- Hiển thị danh sách avatar -->
+                {{-- Show avatar list --}}
                 <div class="mt-8">
                     <h3 class="text-xl font-semibold text-gray-700 mb-4">Your Avatars</h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -65,7 +65,7 @@
                                 <img class="w-full h-32 object-cover rounded-lg border-2 @if($avatar->is_active) border-red-500 @else border-gray-300 @endif"
                                      src="{{ asset('storage/' . $avatar->path) }}" alt="Avatar">
 
-                                <!-- Chọn avatar hoặc xóa -->
+                                <!-- Choose or delete avatar -->
                                 <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex justify-center items-center space-x-2">
                                     @if (!$avatar->is_active)
                                     <div class="flex items-center flex-col space-x-2">
@@ -281,57 +281,18 @@
                     </div>
                 </div>
 
-
                 <div class="button-control">
                     <button><a href="{{ route('info.update') }}">Edit Profile</a></button>
                     <button><a href="#">Delete Profile</a></button>
                 </div>
             </div>
         </div>
-
     </div>
-
-
 
     @livewireScripts
 </body>
 
 <style>
-    /* Basic styling adjustments for better user experience */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-    }
-
-    .wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background-color: #f0f0f0;
-    }
-
-    .container {
-        width: 80%;
-        max-width: 1200px;
-        background-color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        padding: 20px;
-    }
-
-    .profile {
-        display: grid;
-        grid-template-areas:
-            "header header"
-            "main-info image"
-            "button-control button-control";
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 20px;
-    }
-
     header {
         grid-area: header;
         font-size: 24px;
@@ -340,35 +301,9 @@
         text-align: center;
     }
 
-    .main-info {
-        grid-area: main-info;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        background-color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        padding: 30px;
-    }
-
     .main-info p {
         font-size: 16px;
         color: #666;
-    }
-
-    /* Image slider styling */
-    .image {
-        grid-area: image;
-        overflow: hidden;
-        position: relative;
-        height: 400px;
-        width: 100%;
-        border-radius: 8px;
-    }
-
-    .image-slider {
-        display: flex;
-        transition: transform 0.5s ease;
     }
 
     .image-slider img {
@@ -379,28 +314,12 @@
         cursor: pointer;
     }
 
-    .slider-controls {
-        position: absolute;
-        top: 50%;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        transform: translateY(-50%);
-    }
-
     .slider-controls button {
         background-color: rgba(0, 0, 0, 0.5);
         border: none;
         padding: 10px;
         color: white;
         cursor: pointer;
-    }
-
-    .button-control {
-        grid-area: button-control;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
     }
 
     button {
@@ -423,48 +342,10 @@
         text-decoration: none;
     }
 
-    /* Modal styling */
-    .modal {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.8);
-        z-index: 1000;
-        overflow: hidden;
-    }
-
-    .modal-content {
-        max-width: 90%;
-        max-height: 90%;
-        position: relative;
-    }
-
     .modal-content img {
         width: 400px;
         height: auto;
         object-fit: contain;
-    }
-
-    .close-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: #ff0000;
-        color: #fff;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-size: 18px;
-        border-radius: 5px;
-    }
-
-    .close-btn:hover {
-        background-color: #cc0000;
     }
 </style>
 </html>
