@@ -14,7 +14,7 @@ class DashboardInfo extends Component
     public $matches;
     public $images;
 
-    protected $listeners = ['userDeleted' => 'refreshDashboardInfo'];
+    protected $listeners = ['userDeleted' => 'refreshDashboardInfo', 'userRestored' => 'refreshDashboardInfo'];
 
 
     public function mount(){
@@ -25,7 +25,7 @@ class DashboardInfo extends Component
     {
         $this->users = User::count();
         $this->matches = SwipeMatch::count();
-        $this->images = count(Storage::files('public/user_images'));
+        $this->images = count(Storage::files('public/user_images') + Storage::files('public/avatars'));
     }
     public function render()
     {

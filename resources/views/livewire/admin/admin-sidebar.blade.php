@@ -1,5 +1,5 @@
- <div>
- <section id="sidebar">
+ <div class=" ">
+ <section id="sidebar" >
     <a href="#" class="brand">
         <i class='bx bxs-smile'></i>
         <span class="text">AdminHub</span>
