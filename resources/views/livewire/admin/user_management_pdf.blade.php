@@ -39,7 +39,5 @@
             </tr>
         </tbody>
     </table>
-
-    <p style="margin-top: 20px;">This document provides a summary of the system's key metrics.</p>
 </body>
 </html>

@@ -11,11 +11,12 @@ use Illuminate\Support\Facades\DB as FacadesDB;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Notification as FacadesNotification;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
 class UserTable extends Component
 {
-    use WithPagination;
+    use WithPagination, WithoutUrlPagination;
 
     public $perPage = 10; // Default items per page
     public $searchTerm = '';

@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Conversation;
+use App\Models\Message;
 use App\Models\SwipeMatch;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +26,14 @@ class AdminTabPanel extends Component
     }
 
     public function downloadConversationsPDF() {
+        $pdf = Pdf::loadView('livewire.admin.conversation_management_pdf', [
+            'conversation_count' => Conversation::count(),
+            'message_count' => Message::count(),
+        ]);
 
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'conversation_informations.pdf');
     }
 
     public function render(): View|Closure|string
