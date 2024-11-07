@@ -33,50 +33,5 @@
             <livewire:admin.admin-tab-panel />
         </div>
     </div>
-
-{{--	<section id="content">--}}
-{{--        <livewire:admin.admin-navbar />--}}
-
-{{--		<!-- MAIN -->--}}
-{{--		<main>--}}
-{{--			<div class="head-title">--}}
-{{--				<div class="left">--}}
-{{--					<h1>Dashboard</h1>--}}
-{{--					<ul class="breadcrumb">--}}
-{{--						<li>--}}
-{{--							<a href="#">Dashboard</a>--}}
-{{--						</li>--}}
-{{--						<li><i class='bx bx-chevron-right' ></i></li>--}}
-{{--						<li>--}}
-{{--							<a class="active" href="#">Home</a>--}}
-{{--						</li>--}}
-{{--					</ul>--}}
-{{--				</div>--}}
-{{--				<a href="#" class="btn-download">--}}
-{{--					<i class='bx bxs-cloud-download' ></i>--}}
-{{--					<span class="text">Download PDF</span>--}}
-{{--				</a>--}}
-{{--			</div>--}}
-{{--            <!-- Dashboard Info -->--}}
-{{--            <livewire:admin.dashboard-info />--}}
-
-
-	<!-- CONTENT -->
-	<section id="content">
-		<!-- NAVBAR -->
-
-		<!-- NAVBAR -->
-        <livewire:admin.admin-navbar />
-
-{{--			<livewire:admin.user-table />--}}
-
-
-{{--		</main>--}}
-{{--		<!-- MAIN -->--}}
-{{--	</section>--}}
-{{--	<!-- CONTENT -->--}}
-
-
-{{--	<script src="{{asset('adminhub/script.js')}}"></script>--}}
 </body>
 </html>

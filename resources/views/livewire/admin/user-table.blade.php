@@ -5,32 +5,23 @@
 <div class="table-data space-y-8">
     <!-- Alert Notifications -->
     @if (session()->has('success'))
-    <div x-data="{ show: false }" @notification-sent.window="show = true; setTimeout(() => show = false, 3000)">
-        <div x-show="show" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
-            Notification sent successfully!
+        <div x-data="{ show: false }" @notification-sent.window="show = true; setTimeout(() => show = false, 3000)">
+            <div x-show="show" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
+                Notification sent successfully!
+            </div>
         </div>
-    </div>
     @endif
 
     @if (session()->has('message'))
-    <div x-data="{ show: false }" @user-deleted.window="show = true; setTimeout(() => show = false, 3000)">
-        <div x-show="show" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
-            {{ session('message') }}
+        <div x-data="{ show: false }" @user-deleted.window="show = true; setTimeout(() => show = false, 3000)">
+            <div x-show="show" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
+                {{ session('message') }}
+            </div>
         </div>
-    </div>
     @endif
 
     <!-- User Table Section -->
-    <div class="order bg-white shadow-lg rounded-lg p-6 space-y-6">
-        <!-- Header -->
-        <div class="flex justify-between items-center">
-            <h3 class="text-2xl font-semibold text-gray-700">List of Users</h3>
-            <div class="flex space-x-4">
-                <i class="bx bx-search text-gray-500 cursor-pointer"></i>
-                <i class="bx bx-filter text-gray-500 cursor-pointer"></i>
-            </div>
-        </div>
-
+    <div class="order bg-white shadow-lg rounded-lg p-2 space-y-2">
         <!-- User Table -->
         <div class="overflow-x-auto">
             <table class="min-w-full table-auto border border-gray-200 rounded-lg">
@@ -90,53 +81,34 @@
     </div>
 
     <!-- Deleted Users Table -->
-<div class="order bg-white shadow-lg rounded-lg p-6 space-y-6">
-    <h3 class="text-xl font-semibold text-gray-700">Deleted Users</h3>
-    <table class="min-w-full table-auto border border-gray-200 rounded-lg">
-        <thead>
-            <tr class="bg-gray-100 text-left text-sm font-semibold text-gray-600">
-                <th class="px-6 py-3">Name</th>
-                <th class="px-6 py-3">Email</th>
-                <th class="px-6 py-3">Birth Date</th>
-                <th class="px-6 py-3">Deleted At</th>
-                <th class="px-6 py-3 text-center">Restore</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200">
-            @foreach($deletedUsers as $deletedUser)
-            <tr class="hover:bg-gray-50">
-                <td class="px-6 py-4 text-justify">{{ $deletedUser->name }}</td>
-                <td class="px-6 py-4">{{ $deletedUser->email }}</td>
-                <td class="px-6 py-4 text-left">{{ Carbon::parse($deletedUser->birth_date)->format('Y-m-d') }}</td>
-                <td class="px-6 py-4"> {{ Carbon::parse($deletedUser->deleted_at)->format('Y-m-d H:i') }}</td>
-                <td class="px-6 py-4 ">
-                    <button class="bg-green-500 text-white py-1 px-4 rounded hover:bg-green-600 focus:outline-none"
-                            @click="$wire.restoreUser({{ $deletedUser->id }})">
-                        Restore Account
-                    </button>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
-
-
-    <!-- Todo List -->
-    <div class="todo bg-white shadow-lg rounded-lg p-6">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-semibold text-gray-700">Todos</h3>
-            <div class="flex space-x-4">
-                <i class='bx bx-plus text-gray-500 cursor-pointer'></i>
-                <i class='bx bx-filter text-gray-500 cursor-pointer'></i>
-            </div>
-        </div>
-        <ul class="todo-list space-y-2">
-            <li class="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
-                <p>Todo List Item</p>
-                <i class='bx bx-dots-vertical-rounded text-gray-500'></i>
-            </li>
-            <!-- Repeat for other items -->
-        </ul>
+    <div class="order bg-white shadow-lg rounded-lg p-6 space-y-6">
+        <h3 class="text-xl font-semibold text-gray-700">Deleted Users</h3>
+        <table class="min-w-full table-auto border border-gray-200 rounded-lg">
+            <thead>
+                <tr class="bg-gray-100 text-left text-sm font-semibold text-gray-600">
+                    <th class="px-6 py-3">Name</th>
+                    <th class="px-6 py-3">Email</th>
+                    <th class="px-6 py-3">Birth Date</th>
+                    <th class="px-6 py-3">Deleted At</th>
+                    <th class="px-6 py-3 text-center">Restore</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @foreach($deletedUsers as $deletedUser)
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 text-justify">{{ $deletedUser->name }}</td>
+                    <td class="px-6 py-4">{{ $deletedUser->email }}</td>
+                    <td class="px-6 py-4 text-left">{{ Carbon::parse($deletedUser->birth_date)->format('Y-m-d') }}</td>
+                    <td class="px-6 py-4"> {{ Carbon::parse($deletedUser->deleted_at)->format('Y-m-d H:i') }}</td>
+                    <td class="px-6 py-4 ">
+                        <button class="bg-green-500 text-white py-1 px-4 rounded hover:bg-green-600 focus:outline-none"
+                                @click="$wire.restoreUser({{ $deletedUser->id }})">
+                            Restore Account
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </div>
