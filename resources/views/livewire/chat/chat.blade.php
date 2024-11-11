@@ -109,16 +109,21 @@
             class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
 
             @foreach ($loadedMessages as $message)
-                @php
-                    $belongsToAuth = $message->sender_id == auth()->id();
-                @endphp
-
                 @if ($message->sender_id == auth()->id())
                     <x-sender-message-bubble :message="$message" />
                 @else
                     <x-receiver-message-bubble :message="$message" />
                 @endif
             @endforeach
+
+            @if (count($loadedMessages) > 0)
+                @php
+                    $lastMessage = $loadedMessages[count($loadedMessages) - 1];
+                @endphp
+
+                {{-- TODO: Reformat time --}}
+                <p @class(['text-xs text-gray-500', 'ml-auto' => $lastMessage->sender_id == auth()->id()])>Sent at {{ $lastMessage->created_at  }}</p>
+            @endif
         </section>
 
         <!-- Footer -->
