@@ -1,7 +1,7 @@
 @php
-    use App\Models\Swipe
-    ;use App\Models\User;
-    ;use App\Models\SwipeMatch;
+    use App\Models\Swipe;
+    use App\Models\User;
+    use App\Models\SwipeMatch;
 @endphp
 
 <div>
