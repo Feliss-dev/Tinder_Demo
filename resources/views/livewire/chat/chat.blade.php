@@ -1,35 +1,31 @@
 <div
-x-data="{
-    height: 0,
-    conversationElement:document.getElementById('conversation')
-}"
+    x-data="
+    {
+        height: 0,
+        conversationElement:document.getElementById('conversation')
+    }"
 
-x-init="
-height = conversationElement.scrollHeight;
-$nextTick(() => conversationElement.scrollTop=height);
+    x-init="
+    height = conversationElement.scrollHeight;
+    $nextTick(() => conversationElement.scrollTop=height);
 
-Echo.private('users.{{auth()->id()}}')
-    .notification((notification) => {
-
+    Echo.private('users.{{auth()->id()}}').notification((notification) => {
         if (notification['type']=='App\\Notifications\\MessageSentNotification' && notification['conversation_id']=={{ $conversation->id }}){
             $wire.listenBroadcastedMessage(notification);
         }
-    })
-"
+    })"
 
-@scroll-bottom.window="
-$nextTick(() => {
-    conversationElement.style.overflowY = 'hidden';
-    conversationElement.scrollTop = conversationElement.scrollHeight;
-    conversationElement.style.overflowY = 'auto';
-});
+    @scroll-bottom.window="
+    $nextTick(() => {
+        conversationElement.style.overflowY = 'hidden';
+        conversationElement.scrollTop = conversationElement.scrollHeight;
+        conversationElement.style.overflowY = 'auto';
+    });"
+    class="flex h-screen overflow-hidden">
 
-"
-class="flex h-screen overflow-hidden">
     <main class="w-full grow border flex flex-col relative">
         <!-- Header -->
         <header class="flex items-center gap-2.5 p-2 border">
-
             <a class="sm:hidden" wire:navigate href="{{ route('chat.index') }}">
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -56,14 +52,25 @@ class="flex h-screen overflow-hidden">
             </h5>
 
             <div class="ml-auto flex items-center gap-2  px-2">
-                <!-- Dots -->
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-three-dots text-gray-500 w-7 h-7" viewBox="0 0 16 16">
-                        <path
-                            d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
-                    </svg>
-                </span>
+                {{-- Actions button --}}
+
+                <x-dropdown align="left">
+                    <x-slot name="trigger">
+                        <button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-three-dots text-gray-500 w-7 h-7" viewBox="0 0 16 16">
+                                <path
+                                    d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
+                            </svg>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content" class="w-48">
+                        <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-red-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
+                            Report
+                        </button>
+                    </x-slot>
+                </x-dropdown>
 
                 <!-- Cancel button -->
                 <a href="{{ route('dashboard') }}">
@@ -101,7 +108,7 @@ class="flex h-screen overflow-hidden">
         id="conversation"
             class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
 
-            @foreach ($loadedMessages as $message )
+            @foreach ($loadedMessages as $message)
                 @php
                     $belongsToAuth = $message->sender_id == auth()->id();
                 @endphp

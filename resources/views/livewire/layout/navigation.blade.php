@@ -45,7 +45,6 @@ new class extends Component {
                                         });
                                 ">
 
-
                                 <!-- Bell Icon to Trigger the Dropdown -->
                                 <button @click="dropdownOpen = !dropdownOpen"
                                     class="relative z-10 block rounded-md bg-white p-2 focus:outline-none">
@@ -57,8 +56,7 @@ new class extends Component {
                                 </button>
 
                                 <!-- Click Outside to Close the Dropdown -->
-                                <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 h-full w-full z-10">
-                                </div>
+                                <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 h-full w-full z-10"></div>
 
                                 <!-- Dropdown Content -->
                                 <div x-show="dropdownOpen"
@@ -93,7 +91,7 @@ new class extends Component {
 
                 <!-- Settings Dropdown -->
                 <div class="hidden sm:flex sm:items-center sm:ms-6">
-                    <x-dropdown align="right" width="48">
+                    <x-dropdown align="right">
                         <x-slot name="trigger">
                             <button
                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -111,7 +109,7 @@ new class extends Component {
                             </button>
                         </x-slot>
 
-                        <x-slot name="content">
+                        <x-slot name="content" class="w-48">
                             <x-dropdown-link :href="route('profile')" wire:navigate>
                                 {{ __('Profile') }}
                             </x-dropdown-link>
