@@ -285,10 +285,15 @@
                     </div>
                 </div>
 
-                <div class="button-control">
-                    <button><a href="{{ route('info.update') }}">Edit Profile</a></button>
-                    <button><a href="#">Delete Profile</a></button>
-                </div>
+                <div class="button-control flex justify-center gap-2 mt-4 col-span-2">
+                    <button class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition duration-300">
+                        <a href="{{ route('info.update') }}">Edit Profile</a>
+                    </button>
+                    <button class="px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition duration-300">
+                        <a href="#">Delete Profile</a>
+                    </button>
+                </div> 
+
             </div>
         </div>
     </div>
@@ -395,32 +400,11 @@
         cursor: pointer;
     }
 
-    .button-control {
-        grid-area: button-control;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
 
-    button {
-        padding: 10px 20px;
-        
-        background-color: #007bff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        color: white;
-        transition: background-color 0.3s ease;
-    }
 
-    button:hover {
-        background-color: #0056b3;
-    }
 
-    button a {
-        color: white;
-        text-decoration: none;
-    }
+
+
 
     /* Modal styling */
     .modal {
