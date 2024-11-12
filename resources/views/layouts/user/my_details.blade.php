@@ -28,10 +28,10 @@
 
 </head>
 
-<body>
+<body >
     <livewire:layout.navigation />
 
-    <div class="wrapper">
+    <div class="wrapper my-6 bg-white ">
         <div class="container">
             <div class="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
                 {{-- Display the current avatar --}}
@@ -292,7 +292,7 @@
                     <button class="px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition duration-300">
                         <a href="#">Delete Profile</a>
                     </button>
-                </div> 
+                </div>
 
             </div>
         </div>
