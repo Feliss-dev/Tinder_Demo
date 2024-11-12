@@ -9,7 +9,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Favicon -->
+    {{-- Favicon --}}
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -22,6 +22,10 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+
+
+
+
 </head>
 
 <body>
@@ -291,8 +295,42 @@
 
     @livewireScripts
 </body>
-
 <style>
+    /* Basic styling adjustments for better user experience */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    .wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f0f0f0;
+    }
+
+    .container {
+        width: 80%;
+        max-width: 1200px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .profile {
+        display: grid;
+        grid-template-areas:
+            "header header"
+            "main-info image"
+            "button-control button-control";
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
+    }
+
     header {
         grid-area: header;
         font-size: 24px;
@@ -301,9 +339,35 @@
         text-align: center;
     }
 
+    .main-info {
+        grid-area: main-info;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 30px;
+    }
+
     .main-info p {
         font-size: 16px;
         color: #666;
+    }
+
+    /* Image slider styling */
+    .image {
+        grid-area: image;
+        overflow: hidden;
+        position: relative;
+        height: 400px;
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .image-slider {
+        display: flex;
+        transition: transform 0.5s ease;
     }
 
     .image-slider img {
@@ -314,6 +378,15 @@
         cursor: pointer;
     }
 
+    .slider-controls {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+    }
+
     .slider-controls button {
         background-color: rgba(0, 0, 0, 0.5);
         border: none;
@@ -322,9 +395,16 @@
         cursor: pointer;
     }
 
+    .button-control {
+        grid-area: button-control;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
     button {
         padding: 10px 20px;
-       
+        
         background-color: #007bff;
         border: none;
         border-radius: 4px;
@@ -342,10 +422,42 @@
         text-decoration: none;
     }
 
+    /* Modal styling */
+    .modal {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .modal-content {
+        max-width: 90%;
+        max-height: 90%;
+        position: relative;
+    }
+
     .modal-content img {
         width: 400px;
         height: auto;
         object-fit: contain;
     }
-</style>
-</html>
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #ff0000;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 18px;
+        border-radius: 5px;
+    }

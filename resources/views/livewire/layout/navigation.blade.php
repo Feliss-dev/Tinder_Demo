@@ -35,7 +35,7 @@ new class extends Component {
                         {{-- <livewire:notification-dropdown /> --}}
 
                             <!-- Notification Dropdown Component -->
-                <div class="flex justify-center h-screen">
+                {{-- <div class="flex justify-center h-screen">
                     <div x-data="{ dropdownOpen: false }" class="relative my-4"
                      x-init="
                         Echo.private(`users.${{ auth()->id() }}`)
@@ -87,7 +87,7 @@ new class extends Component {
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
 
                     </div>
