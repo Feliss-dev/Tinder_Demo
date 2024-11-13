@@ -23,7 +23,7 @@ return new class extends Migration
 
             $table->string('images')->nullable();
             $table->boolean('is_fake')->default(false);
-            $table->timestamp('email_verified_at')->required();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
 
             $table->string('google_id')->nullable();

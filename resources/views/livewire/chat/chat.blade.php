@@ -327,6 +327,14 @@
                         </ul>
                     </div>
                 </section>
+                <button wire:confirm="Are you sure" wire:click="deleteMatch" class="py-6 border-y flex-col flex gap-2 text-gray-500 justify-center items-center">
+                    <span class="font-bold">
+                        Unmatch
+                    </span>
+                    <span>
+                        No longer interested?, remove them from your matches
+                    </span>
+                </button>
             </section>
         </div>
     </aside>
