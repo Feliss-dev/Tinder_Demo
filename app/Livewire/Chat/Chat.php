@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Chat;
 
+use App\Events\ConversationMessageSent;
 use Log;
 use App\Models\Swipe;
 use App\Models\Message;
@@ -23,10 +24,10 @@ class Chat extends Component
     public $loadedMessages;
     public $paginate_var =10;
 
-    function listenBroadcastedMessage($event){
+    function listenBroadcastedMessage(int $messageID){
         $this->dispatch('scroll-bottom');
 
-        $newMessage = Message::find($event['message_id']);
+        $newMessage = Message::find($messageID);
 
         #push messagge
         $this->loadedMessages->push($newMessage);
@@ -36,13 +37,11 @@ class Chat extends Component
         $newMessage->save();
 
         #refresh chatlist
-
         $this->dispatch('new-message-created');
     }
 
-    function sendMessage(){
+    function sendMessage() {
         #check auth
-
         abort_unless(auth()->check(),401);
         $this->validate(['body'=>'required|string']);
 
@@ -70,9 +69,9 @@ class Chat extends Component
         $this->dispatch('new-message-created');
 
         #broadcast out message
-        $this->receiver->notify(new MessageSentNotification(auth()->user(), $createdMessage, $this->conversation));
+        // $this->receiver->notify(new MessageSentNotification(auth()->user(), $createdMessage, $this->conversation));
 
-
+        broadcast(new ConversationMessageSent($createdMessage, $this->conversation->id))->toOthers();
     }
 
     #[On('loadMore')]
