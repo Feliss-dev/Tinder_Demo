@@ -21,17 +21,22 @@ new class extends Component
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 border-bottom-2 border-gray-600">
             <div class="flex justify-between">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center ml-9">
-                    <a href="{{ route('dashboard') }}" wire:navigate>
-                        <x-logo width="50px" height="50px"/>
-                    </a>
-                </div>
-
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <a class="my-auto" href="{{ route('home') }}">
+                        <x-logo width="48" height="48" />
+                    </a>
+
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" wire:navigate>
+                        {{ __('Admin Dashboard') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('view_my_details')" :active="request()->routeIs('view_my_details')" wire:navigate>
+                        {{ __('View My Profile') }}
                     </x-nav-link>
                 </div>
             </div>

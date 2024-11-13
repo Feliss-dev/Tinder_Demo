@@ -87,25 +87,22 @@
 
         <!-- Body -->
         <section
+            @scroll="
+            scrollTop = $el.scrollTop;
 
-        @scroll="
-        scrollTop = $el.scrollTop;
+            if (scrollTop <= 0){
+                @this.dispatch('loadMore');
+            }"
 
-        if(scrollTop <= 0){
-            @this.dispatch('loadMore');
-        }
-        "
-        @update-height.window="
-        $nextTick(()=>{
-            newHeight = $el.scrollHeight;
-            oldHeight = height;
+            @update-height.window="
+            $nextTick(()=>{
+                newHeight = $el.scrollHeight;
+                oldHeight = height;
 
-            $el.scrollTop = newHeight - oldHeight;
-            height = newHeight;
-
-            })
-        "
-        id="conversation"
+                $el.scrollTop = newHeight - oldHeight;
+                height = newHeight;
+            })"
+            id="conversation"
             class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-auto flex-grow overflow-x-hidden w-full my-auto">
 
             @foreach ($loadedMessages as $message)
@@ -224,18 +221,18 @@
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
                         <p class="mb-2 mr-4"><strong>Gender:</strong>
-                        @if ($receiver->genders->isNotEmpty())
-                            <div class="flex flex-wrap gap-2">
-                                @foreach ($receiver->genders as $gender)
+                            @if ($receiver->genders->isNotEmpty())
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach ($receiver->genders as $gender)
 
-                                    {{ $gender->name }}
+                                        {{ $gender->name }}
 
-                                @endforeach
-                            </div>
-                        @else
-                            No data available
+                                    @endforeach
+                                </div>
+                            @else
+                                No data available
                             @endif
-                            </p>
+                        </p>
                     </li>
                     <li class="items-center text-gray-6000 text-lg">
                         <p class="mb-2 mr-4"><strong>Interests:</strong>

@@ -29,7 +29,11 @@
 </head>
 
 <body >
-    <livewire:layout.navigation />
+    @if (auth()->user()->is_admin)
+        <livewire:layout.admin_navigation />
+    @else
+        <livewire:layout.navigation />
+    @endif
 
     <div class="wrapper my-6 bg-white ">
         <div class="container">
