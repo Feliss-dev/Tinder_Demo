@@ -74,20 +74,6 @@ class Chat extends Component
             return $this->loadedMessages;
     }
 
-    function deleteMatch() {
-        abort_unless(auth()->check(), 401);
-
-        //Make sure user belong to match
-        $belongsToMatch = auth()->user()->matches()->where('swipe_matches.id', $this->conversation->match_id)->exists();
-        abort_unless($belongsToMatch, 403);
-
-        // Delete match
-        SwipeMatch::where('id', $this->conversation->match_id)->delete();
-
-        //Redirect
-        $this->redirect(route("dashboard"), navigate: true);
-    }
-
     function mount($chat){
         //check auth
         abort_unless(auth()->check(),401);
