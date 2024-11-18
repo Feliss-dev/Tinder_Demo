@@ -17,9 +17,9 @@ $roundedClass = match ($sender) {
 }
 @endphp
 
-<div class="w-[85%] {{$alignmentClasses}}">
+<div class="max-w-[85%] {{$alignmentClasses}}">
     {{-- Message bubble --}}
-    <div class='rounded-2xl {{$colorClasses}} {{$roundedClass}}'>
+    <div class='rounded-2xl w-fit {{$colorClasses}} {{$roundedClass}} {{$alignmentClasses}}'>
         @if (!empty($message->body))
             <p @class(['p-2', 'text-white' => $sender == 'this', 'text-black' => $sender != 'this'])>{{$message->body}}</p>
         @endif
