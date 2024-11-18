@@ -24,6 +24,7 @@ return new class extends Migration
 
             $table->timestamp('read_at')->nullable();
             $table->text('body')->nullable();
+            $table->json('files')->nullable();
 
             $table->timestamps();
         });

@@ -11,10 +11,10 @@ class FileUploading extends Component
 
     public $files = [];
 
-    public function uploadFile($serializedFile) {
-        if (!TemporaryUploadedFile::canUnserialize($serializedFile)) return;
+    public function uploadFile($serializedFiles) {
+        if (!TemporaryUploadedFile::canUnserialize($serializedFiles)) return;
 
-        $this->files = array_merge($this->files, TemporaryUploadedFile::unserializeFromLivewireRequest($serializedFile));
+        $this->files = TemporaryUploadedFile::unserializeFromLivewireRequest($serializedFiles);
         $this->dispatch('refreshComponent');
     }
 
