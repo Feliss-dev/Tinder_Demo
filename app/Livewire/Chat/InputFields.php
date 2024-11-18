@@ -6,13 +6,20 @@ use App\Events\ConversationMessageSent;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 
 class InputFields extends Component
 {
+    use WithFileUploads;
+
     public $body;
     public Conversation $conversation;
     public User $receiver;
+
+    public $files;
 
     function sendMessage() {
         #check auth
@@ -39,6 +46,11 @@ class InputFields extends Component
 
         #broadcast out message
         broadcast(new ConversationMessageSent($createdMessage, $this->conversation->id))->toOthers();
+    }
+
+    public function updatedFiles() {
+        $serializedFile = TemporaryUploadedFile::serializeMultipleForLivewireResponse($this->files);
+        $this->dispatch('upload-file', $serializedFile);
     }
 
     public function render()

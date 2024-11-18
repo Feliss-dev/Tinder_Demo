@@ -3,8 +3,11 @@
     <form action="" x-data="{ body: @entangle('body') }" @submit.prevent="$wire.sendMessage()" autocomplete="off">
         @csrf
 
+        <livewire:chat.file-uploading />
+
         {{-- Hiding input --}}
         <input type="hidden" autocomplete="false" style="display: none">
+        <input type="file" id="file-upload" class="hidden" wire:model="files" multiple>
 
         <div class="grid grid-cols-12 items-center">
             {{-- File Uploading --}}
