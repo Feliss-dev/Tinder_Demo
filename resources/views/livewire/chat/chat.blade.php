@@ -130,28 +130,7 @@
 
         {{-- Footer --}}
         <footer class="sticky bottom inset-x-0 p-1">
-            {{-- File Display --}}
-            <form action="" x-data="{ body: @entangle('body') }" @submit.prevent="$wire.sendMessage()" autocomplete="off">
-                @csrf
-
-                {{-- Hiding input --}}
-                <input type="hidden" autocomplete="false" style="display: none">
-
-                <div class="grid grid-cols-12 items-center">
-                    {{-- File Uploading --}}
-                    <button type="button" class="p-4" onclick="document.getElementById('file-upload').click();">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="black" class="bi bi-paperclip" viewBox="0 0 16 16">
-                            <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z"/>
-                        </svg>
-                    </button>
-
-                    <input x-model="body" type="text" autocomplete="off" autofocus
-                        placeholder="Write your message here" maxlength="1700"
-                        class="col-span-9 bg-gray-100 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none placeholder-gray-500 mr-2">
-
-                    <button x-bind@disabled="!body?.trim()" type="submit" class="col-span-2n p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-300">Send</button>
-                </div>
-            </form>
+            <livewire:chat.input-fields :conversation="$conversation" :receiver="$receiver" />
         </footer>
     </main>
 
