@@ -29,7 +29,7 @@
     class="flex h-screen overflow-hidden">
 
     <main class="w-full grow border flex flex-col relative">
-        <!-- Header -->
+        {{-- Header --}}
         <header class="flex items-center gap-2.5 p-2 border">
             <a class="sm:hidden" wire:navigate href="{{ route('chat.index') }}">
                 <span>
@@ -77,7 +77,7 @@
                     </x-slot>
                 </x-dropdown>
 
-                <!-- Cancel button -->
+                {{-- Cancel button --}}
                 <a href="{{ route('dashboard') }}">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -90,7 +90,7 @@
             </div>
         </header>
 
-        <!-- Body -->
+        {{-- Body --}}
         <section
             @scroll="
             scrollTop = $el.scrollTop;
@@ -128,22 +128,22 @@
             @endif
         </section>
 
-        <!-- Footer -->
-        <footer class="sticky bottom py-2 inset-x-0 p-2">
+        {{-- Footer --}}
+        <footer class="sticky bottom inset-x-0 p-1">
+            {{-- File Display --}}
             <form action="" x-data="{ body: @entangle('body') }" @submit.prevent="$wire.sendMessage()" autocomplete="off">
                 @csrf
-                <!-- Hiding input -->
+
+                {{-- Hiding input --}}
                 <input type="hidden" autocomplete="false" style="display: none">
 
                 <div class="grid grid-cols-12 items-center">
-                    <!-- Spotify -->
-                    <span class="col-span-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-spotify w-8 h-8 text-gray-500" viewBox="0 0 16 16">
-                            <path
-                                d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.669 11.538a.5.5 0 0 1-.686.165c-1.879-1.147-4.243-1.407-7.028-.77a.499.499 0 0 1-.222-.973c3.048-.696 5.662-.397 7.77.892a.5.5 0 0 1 .166.686m.979-2.178a.624.624 0 0 1-.858.205c-2.15-1.321-5.428-1.704-7.972-.932a.625.625 0 0 1-.362-1.194c2.905-.881 6.517-.454 8.986 1.063a.624.624 0 0 1 .206.858m.084-2.268C10.154 5.56 5.9 5.419 3.438 6.166a.748.748 0 1 1-.434-1.432c2.825-.857 7.523-.692 10.492 1.07a.747.747 0 1 1-.764 1.288" />
+                    {{-- File Uploading --}}
+                    <button type="button" class="p-4" onclick="document.getElementById('file-upload').click();">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="black" class="bi bi-paperclip" viewBox="0 0 16 16">
+                            <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z"/>
                         </svg>
-                    </span>
+                    </button>
 
                     <input x-model="body" type="text" autocomplete="off" autofocus
                         placeholder="Write your message here" maxlength="1700"
@@ -155,9 +155,9 @@
         </footer>
     </main>
 
-    <!-- Profile -->
+    {{-- Profile --}}
     <aside class="w-[50%] hidden sm:flex border">
-        <!-- Profile Card -->
+        {{-- Profile Card --}}
         <div style="contain: content" class=" inset-0 overflow-y-auto overflow-hidden overscroll-contain w-full  bg-white space-y-4">
             @php
                 $slides = [
@@ -168,17 +168,17 @@
                 $user= App\Models\User::first();
             @endphp
 
-            <!-- Carousel section -->
+            {{-- Carousel section --}}
 
             <section class="relative h-96" x-data="{ activeSlide: 1, slides: @js($slides) }">
 
-                <!-- Sliders -->
+                {{-- Sliders --}}
                 <template x-for="(image, index) in slides" :key="index">
                     <img x-show="activeSlide === index+1" :src="image" alt=""
                          class="absolute inset-0 pointer-events-none w-full h-full object-cover">
                 </template>
 
-                <!-- Pagination -->
+                {{-- Pagination --}}
                 <div draggable="true" :class="{ 'hidden': slides.length === 1 }"
                      class="absolute top-1 inset-x-0 z-10 w-full flex items-center justify-center">
 
@@ -189,7 +189,7 @@
                     </template>
                 </div>
 
-                <!-- Prev Button -->
+                {{-- Prev Button --}}
                 <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
                         @click="activeSlide = activeSlide === 1 ? slides.length : activeSlide - 1"
                         class="absolute left-2 top-1/2 my-auto">
@@ -200,7 +200,7 @@
                     </svg>
                 </button>
 
-                <!-- Next Button -->
+                {{-- Next Button --}}
                 <button draggable="true" :class="{ 'hidden': slides.length === 1 }"
                         @click="activeSlide = activeSlide === slides.length ? 1 : activeSlide + 1"
                         class="absolute right-2 top-1/2 my-auto">
@@ -212,7 +212,7 @@
                 </button>
             </section>
 
-            <!-- Profile Info -->
+            {{-- Profile Info --}}
             <section class="grid gap-4 p-3">
                 <div class="flex items-center text-3xl gap-3 text-wrap">
                     <h3 class="font-bold">{{ $receiver->name }}</h3>
@@ -221,7 +221,7 @@
                     </span>
                 </div>
 
-                <!-- About -->
+                {{-- About --}}
                 <ul>
                     <li class="items-center text-gray-6000 text-lg">
                         {{ $receiver->birth_date }}
@@ -260,14 +260,14 @@
 
                 <hr class="-mx-2.5">
 
-                <!-- Bio -->
+                {{-- Bio --}}
                 <p class="text-gray-600">{{ $receiver->bio }}</p>
 
-                <!-- Relationships Goals -->
+                {{-- Relationships Goals --}}
                 <div
                     class="rounded-lg bg-green-100 h-auto px-6 py-4 max-w-md flex gap-6 items-center shadow-lg">
                     <div class="text-4xl text-green-700">
-                        <!-- Thêm icon hoặc biểu tượng ở đây nếu cần -->
+                        {{-- Thêm icon hoặc biểu tượng ở đây nếu cần --}}
                         🌟
                     </div>
                     <div class="grid w-full">
@@ -289,7 +289,7 @@
                     </div>
                 </div>
 
-                <!-- More information -->
+                {{-- More information --}}
 
                 <section class="divide-y space-y-2">
                     <div class="space-y-3 py-2">
@@ -312,7 +312,6 @@
                     </div>
 
                     <div class="space-y-3 py-2">
-
                         <h3 class="font-bold text-xl">Basics</h3>
                         <ul class="flex flex-wrap gap-3">
                             <p class="mb-2 mr-4"><strong>Desired Gender:</strong>
@@ -326,8 +325,8 @@
                                 </div>
                             @else
                                 No data available
-                                @endif
-                                </p>
+                            @endif
+                            </p>
                         </ul>
                     </div>
                 </section>

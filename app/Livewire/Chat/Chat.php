@@ -22,7 +22,7 @@ class Chat extends Component
 
     public $body;
     public $loadedMessages;
-    public $paginate_var =10;
+    public $paginate_var = 10;
 
     function listenBroadcastedMessage(int $messageID){
         $this->dispatch('scroll-bottom');
@@ -142,6 +142,6 @@ class Chat extends Component
 
     #[Layout('layouts.chat')]
     public function render() {
-        return view('livewire.chat.chat') ;
+        return view('livewire.chat.chat');
     }
 }
