@@ -11,6 +11,7 @@ use App\Models\UserImage;
 use App\Models\SwipeMatch;
 use App\Enums\BasicGroupEnum;
 use App\Models\UserPreference;
+use Illuminate\Support\Facades\Redis;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\RelationshipGoalsEnum;
 
