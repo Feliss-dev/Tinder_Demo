@@ -22,7 +22,7 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased flex flex-col w-full h-screen overflow-hidden bg-[#e5e5e5]">
+<body class="font-sans antialiased flex flex-col w-full h-screen overflow-scroll mb-1 bg-[#e5e5e5]">
     @if (auth()->user()->is_admin)
         <livewire:layout.admin_navigation />
     @else
@@ -30,12 +30,12 @@
     @endif
 
     <!-- Main Layout -->
-    <div class="w-full flex-auto overflow-hidden grid grid-cols-4">
+    <div class="w-full flex-auto overflow-hidden grid grid-cols-4 md:flex-row order-3 md:order-2 mt-4 md:mt-0">
         <x-appsidebar :user="auth()->user()" />
 
         <!-- Swiper -->
-        <div class="col-span-3">
-            <main class="flex-1 flex-col overflow-y-auto hidden md:flex h-full">
+        <div class="col-span-3 ">
+            <main class="flex-1 flex-col overflow-y-auto md:flex h-full">
                 @livewire('home')
             </main>
         </div>
