@@ -14,9 +14,10 @@ class LastSeen
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-        $user?->update(['last_seen' => new DateTime(),]);
 
-        Log::debug("User ID: " . $user->id);
+        if ($user) {
+            $user?->update(['last_seen' => new DateTime(),]);
+        }
 
         return $next($request);
     }
