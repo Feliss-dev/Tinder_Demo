@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class ReceiverMessageBubble extends Component
+class MessageBubble extends Component
 {
     public function __construct(public Message $message)
     {
@@ -15,6 +15,6 @@ class ReceiverMessageBubble extends Component
 
     public function render(): View|Closure|string
     {
-        return view('components.receiver-message-bubble');
+        return view('components.message-bubble');
     }
 }

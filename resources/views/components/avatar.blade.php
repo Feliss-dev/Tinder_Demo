@@ -4,7 +4,7 @@
 <div {{ $attributes->merge(['class' => "shrink-0 inline-flex items-center justify-center h-8 w-8 rounded-full overflow-hidden"]) }}>
     @if(auth()->user()->activeAvatar)
         <img
-            @class(['shrink-0 w-full h-full object-cover object-center rounded-full'])
+            class='shrink-0 w-full h-full object-cover object-center rounded-full'
             src="{{ asset('storage/' . auth()->user()->activeAvatar->path) }}"
             alt="Avatar">
     @else

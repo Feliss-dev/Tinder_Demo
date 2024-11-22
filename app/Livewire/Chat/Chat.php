@@ -20,9 +20,10 @@ class Chat extends Component
     public $conversation;
     public $receiver;
 
-    public $body;
     public $loadedMessages;
-    public $paginate_var =10;
+    public $paginate_var = 10;
+
+    protected $listeners = [ 'user-send-message' => 'userSendMessage' ];
 
     function listenBroadcastedMessage(int $messageID){
         $this->dispatch('scroll-bottom');
@@ -40,38 +41,12 @@ class Chat extends Component
         $this->dispatch('new-message-created');
     }
 
-    function sendMessage() {
-        #check auth
-        abort_unless(auth()->check(),401);
-        $this->validate(['body'=>'required|string']);
-
-        #create message
-        $createdMessage = Message::create([
-            'conversation_id'=>$this->conversation->id,
-            'sender_id'=>auth()->id(),
-            'receiver_id'=>$this->receiver->id,
-            'body'=>$this->body
-        ]);
-
-        $this->reset('body');
-
-        #dispatch event to scroll chat to bottom
-        $this->dispatch('scroll-bottom');
-
+    function userSendMessage(int $messageId) {
         #push the message
-        $this->loadedMessages->push($createdMessage);
+        $this->loadedMessages->push(Message::where('id', $messageId)->first());
 
-        #update the conversation model
-        $this->conversation->updated_at = now();
-        $this->conversation->save();
-
-        #dispatch event
-        $this->dispatch('new-message-created');
-
-        #broadcast out message
-        // $this->receiver->notify(new MessageSentNotification(auth()->user(), $createdMessage, $this->conversation));
-
-        broadcast(new ConversationMessageSent($createdMessage, $this->conversation->id))->toOthers();
+        #scroll bottom
+        $this->dispatch('scroll-bottom');
     }
 
     #[On('loadMore')]
@@ -97,20 +72,6 @@ class Chat extends Component
                                             ->take($this->paginate_var)
                                             ->get();
             return $this->loadedMessages;
-    }
-
-    function deleteMatch() {
-        abort_unless(auth()->check(), 401);
-
-        //Make sure user belong to match
-        $belongsToMatch = auth()->user()->matches()->where('swipe_matches.id', $this->conversation->match_id)->exists();
-        abort_unless($belongsToMatch, 403);
-
-        // Delete match
-        SwipeMatch::where('id', $this->conversation->match_id)->delete();
-
-        //Redirect
-        $this->redirect(route("dashboard"), navigate: true);
     }
 
     function mount($chat){
@@ -142,6 +103,6 @@ class Chat extends Component
 
     #[Layout('layouts.chat')]
     public function render() {
-        return view('livewire.chat.chat') ;
+        return view('livewire.chat.chat');
     }
 }

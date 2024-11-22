@@ -1,6 +1,6 @@
 <div id="tinder" class="m-auto md:p-8 w-full h-full relative flex overflow-hidden">
     <!-- Filtering Panel -->
-    <div class="mt-4">
+    <div class="mt-4 ">
         <form wire:submit.prevent="applyFilters"
               class="bg-white p-8 rounded-3xl shadow-xl space-y-8 w-full max-w-4xl border-t-4 border-pink-500 h-auto">
 
