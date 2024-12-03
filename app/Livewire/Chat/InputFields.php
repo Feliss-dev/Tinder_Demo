@@ -54,7 +54,7 @@ class InputFields extends Component
         $this->reset('body');
         $this->reset('files');
 
-        $allFiles = [];
+        $this->allFiles = [];
 
         #update the conversation model
         $this->conversation->updated_at = now();
