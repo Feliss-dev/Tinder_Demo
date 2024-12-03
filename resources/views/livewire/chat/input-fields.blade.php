@@ -3,7 +3,7 @@
     <form action="" x-data="{ body: @entangle('body') }" @submit.prevent="$wire.sendMessage()" autocomplete="off">
         @csrf
 
-        <livewire:chat.file-uploading />
+        <livewire:chat.file-viewer />
 
         {{-- Hiding input --}}
         <input type="hidden" autocomplete="false" style="display: none">

@@ -16,6 +16,8 @@ class InputFields extends Component
 {
     use WithFileUploads;
 
+    protected $listeners = [ 'delete-file' => 'deleteFile' ];
+
     public $body;
     public Conversation $conversation;
     public User $receiver;
@@ -34,8 +36,8 @@ class InputFields extends Component
         $fileLocations = [];
 
         # store files first.
-        if (!empty($this->files)) {
-            foreach ($this->files as $file) {
+        if (!empty($this->allFiles)) {
+            foreach ($this->allFiles as $file) {
                 $fileLocations[] = $file->storeAs('chat/' . $this->conversation->id, date('YmdHis', time()) . '_' . $file->getClientOriginalName(), 'public');
             }
         }
@@ -62,7 +64,8 @@ class InputFields extends Component
         $this->dispatch('new-message-created');
         $this->dispatch('user-send-message', $createdMessage->id);
 
-        $this->dispatch('upload-file', TemporaryUploadedFile::serializeMultipleForLivewireResponse([]));
+        # dispatch refresh-files event with empty array value to FileViewer so that it hide the small previewing container
+        $this->dispatch('refresh-display', TemporaryUploadedFile::serializeMultipleForLivewireResponse([]));
 
         #broadcast out message
         broadcast(new ConversationMessageSent($createdMessage, $this->conversation->id))->toOthers();
@@ -76,7 +79,14 @@ class InputFields extends Component
         $this->allFiles = array_merge($this->allFiles, $this->files);
 
         $serializedFile = TemporaryUploadedFile::serializeMultipleForLivewireResponse($this->allFiles);
-        $this->dispatch('upload-file', $serializedFile);
+        $this->dispatch('refresh-display', $serializedFile);
+    }
+
+    public function deleteFile(int $index) {
+        array_splice($this->allFiles, $index, 1);
+
+        $serializedFile = TemporaryUploadedFile::serializeMultipleForLivewireResponse($this->allFiles);
+        $this->dispatch('refresh-display', $serializedFile);
     }
 
     public function render() {

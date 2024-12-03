@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-class FileUploading extends Component
+class FileViewer extends Component
 {
-    protected $listeners = [ 'upload-file' => 'uploadFile', 'refreshComponent' => '$refresh' ];
+    protected $listeners = [ 'refresh-display' => 'refreshFiles', 'refreshComponent' => '$refresh' ];
 
     public array $files = [];
 
-    public function uploadFile($serializedFiles) {
+    public function refreshFiles($serializedFiles) {
         if (!TemporaryUploadedFile::canUnserialize($serializedFiles)) return;
 
         $this->files = TemporaryUploadedFile::unserializeFromLivewireRequest($serializedFiles);
@@ -20,11 +20,10 @@ class FileUploading extends Component
     }
 
     public function deleteFile(int $fileIndex) {
-        array_splice($this->files, $fileIndex, 1);
-        $this->dispatch('refreshComponent');
+        $this->dispatch('delete-file', index: $fileIndex);
     }
 
     public function render() {
-        return view('livewire.chat.file-uploading', ['files' => $this->files]);
+        return view('livewire.chat.file-viewer', ['files' => $this->files]);
     }
 }
