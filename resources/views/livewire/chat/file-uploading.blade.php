@@ -4,7 +4,9 @@
         {{-- Fuck this shit, I gave up midway --}}
         @foreach ($files as $file)
             {{-- TODO: Delete, Preview, Handle files that isn't image --}}
-            <div class="h-full aspect-square border-2 border-gray-500 rounded-xl p-1 grid grid-rows-[5fr_1fr] grid-flow-col">
+            <div class="h-full aspect-square border-2 border-gray-500 rounded-xl p-1 grid grid-rows-[5fr_1fr] grid-flow-col"
+            
+            >
                 <img src="{{ $file->temporaryUrl()  }}" alt="{{ $file->temporaryUrl() }}" class="w-full object-fit-cover" />
                 <p>{{$file->getClientOriginalName()}}</p>
             </div>
