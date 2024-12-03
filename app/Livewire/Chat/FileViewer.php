@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Chat;
 
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -9,7 +10,7 @@ class FileUploading extends Component
 {
     protected $listeners = [ 'upload-file' => 'uploadFile', 'refreshComponent' => '$refresh' ];
 
-    public $files = [];
+    public array $files = [];
 
     public function uploadFile($serializedFiles) {
         if (!TemporaryUploadedFile::canUnserialize($serializedFiles)) return;
@@ -18,8 +19,12 @@ class FileUploading extends Component
         $this->dispatch('refreshComponent');
     }
 
-    public function render()
-    {
+    public function deleteFile(int $fileIndex) {
+        array_splice($this->files, $fileIndex, 1);
+        $this->dispatch('refreshComponent');
+    }
+
+    public function render() {
         return view('livewire.chat.file-uploading', ['files' => $this->files]);
     }
 }
