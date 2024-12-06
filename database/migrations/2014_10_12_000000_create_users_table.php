@@ -27,7 +27,6 @@ return new class extends Migration
             $table->string('password')->nullable();
 
             $table->string('google_id')->nullable();
-            $table->timestamp('last_seen_at')->nullable();
 
             $table->rememberToken();
             $table->timestamps();

@@ -16,7 +16,7 @@ class LastSeen
         $user = $request->user();
 
         if ($user) {
-            $user->update(['last_seen' => new DateTime(),]);
+            $user->update(['last_seen_at' => new DateTime(),]);
         }
 
         return $next($request);
