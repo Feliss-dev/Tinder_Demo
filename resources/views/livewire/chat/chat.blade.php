@@ -102,7 +102,7 @@
 
                     @foreach ($loadedMessages as $message)
                         @if ($message->sender_id == auth()->id())
-                            <x-message-bubble :message="$message" sender="this" />
+                            <x-message-bubble :message="$message" sender="this"  />
                         @else
                             <x-message-bubble :message="$message" sender="other" />
                         @endif
