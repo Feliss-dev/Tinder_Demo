@@ -1,8 +1,10 @@
 <div
+    wire:snapshot="...your snapshot..." wire:effects="..."
     x-data="
     {
         height: 0,
         conversationElement:document.getElementById('conversation')
+
     }"
 
     x-init="
@@ -12,6 +14,16 @@
     Echo.private('conversation.{{ $conversation->id  }}').listen('.conversation-sent', function(e) {
         $wire.listenBroadcastedMessage(e.message_id);
     });
+
+      // Listen for user status update from Livewire event
+        Echo.channel('user-status')
+            .listen('UserOnlineStatusUpdated', (event) => {
+             console.log(event);
+
+            });
+
+
+
     "
 
     @scroll-bottom.window="
@@ -49,6 +61,22 @@
                     <h5 class="font-bold text-gray-500 truncate">
                         {{ $receiver->name }}
                     </h5>
+                    <div id="user-{{ $receiver->id }}"
+                        class="flex items-center space-x-2 text-gray-500"
+
+                        x-data="{
+                            lastSeen: {{ $receiver->last_seen_at ? $receiver->last_seen_at->diffInSeconds(now()) : 999999 }},
+                        }">
+                       <span class="h-3 w-3 rounded-full"
+                       :class="{
+                        'bg-green-500': lastSeen < 120,
+                        'bg-red-500': lastSeen >= 120
+                    }"></span>
+                       <span class="last-seen" x-ref="lastSeen">
+                           {{ $receiver->last_seen_at ? 'Last seen: ' . $receiver->last_seen_at->diffForHumans() : 'Never' }}
+                       </span>
+                   </div>
+
 
                     <div class="ml-auto flex items-center gap-2  px-2">
                         <x-dropdown align="left">

@@ -22,3 +22,7 @@ Broadcast::channel('conversation.{id}', function($user, $conversationID) {
 
     return $conversation->sender_id === $user->id || $conversation->receiver_id === $user->id;
 });
+
+Broadcast::channel('user-status', function () {
+   return true;
+});
