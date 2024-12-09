@@ -51,6 +51,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
+
+
     public function isFake()
     {
         return $this->is_fake;
@@ -101,6 +103,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'last_seen_at' => 'datetime',
     ];
 
     public function getAgeAttribute()

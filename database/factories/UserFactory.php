@@ -30,14 +30,14 @@ class UserFactory extends Factory
             'birth_date' => $this->faker->date('Y-m-d'),
 
             'bio' => $this->faker->text(),
-            
+
             'images' => 'https://randomuser.me/api/portraits/women/' . rand(0, 99) . '.jpg', // Link ảnh giả
             'is_fake' => false,
             'is_admin' => false,
          ];
     }
 
-    // Congigure the model
+    // Configurate the model
 
 
     /**
