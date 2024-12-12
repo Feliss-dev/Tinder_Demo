@@ -34,7 +34,7 @@
     });"
     class="flex h-screen overflow-hidden">
 
-    <div class="grid grid-cols-6 overflow-hidden">
+    <div class="grid grid-cols-6 overflow-hidden  w-full">
         <div class="col-span-4">
             <main class="w-full h-full grow border flex flex-col relative">
                 <header class="flex items-center gap-2.5 p-2 border">
@@ -152,7 +152,7 @@
             </main>
         </div>
 
-        <div class="col-span-2 border overflow-y-auto">
+        <div class="col-span-2 border overflow-y-auto ">
             <livewire:chat.profile-card :user="$receiver" :conversation="$conversation" />
         </div>
     </div>
