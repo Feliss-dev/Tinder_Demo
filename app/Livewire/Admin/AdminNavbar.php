@@ -11,7 +11,7 @@ class AdminNavbar extends Component
     public function submitSearch()
     {
         // Dispatch event to the UserTable component
-        $this->dispatch('searchUsers', searchTerm: $this->searchTerm);
+        // $this->dispatch('searchUsers', searchTerm: $this->searchTerm);
     }
 
     public function render()

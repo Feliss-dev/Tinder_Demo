@@ -18,7 +18,7 @@
                 </svg>
             </span>
 
-            <input type="text" placeholder="Search user" class="rounded-none rounded-e-lg border-gray-500"/>
+            <input type="text" placeholder="Search" class="rounded-none rounded-e-lg border-gray-500" wire:model.live.debounce.150ms="searchTerm"/>
         </div>
     </div>
 

@@ -3,6 +3,8 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Conversation;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
@@ -13,27 +15,21 @@ class ConversationTable extends Component
 
     public $perPage = 10; // Default items per page
 
-    private $conversations;
-
-    protected $listeners = [ 'conversation_table_initialize' => 'refreshConversationTable' ];
-
-    public function mount() {
-        $this->refreshConversationTable();
-    }
-
-    public function refreshConversationTable() {
-        $query = Conversation::query();
-        $this->conversations = $query->paginate($this->perPage);
-
-
-    }
+    public $searchTerm = '';
 
     public function render()
     {
-        $this->refreshConversationTable();
+        $query = Conversation::query();
+
+        if (!empty($this->searchTerm)) {
+            $query->whereRelation('sender', 'name', 'like', '%' . $this->searchTerm . '%')
+                  ->orWhereRelation('receiver', 'name', 'like', '%' . $this->searchTerm . '%');
+        }
+
+        $conversations = $query->paginate($this->perPage);
 
         return view('livewire.admin.conversation-table', [
-            'conversations' => $this->conversations,
+            'conversations' => $conversations,
         ]);
     }
 }

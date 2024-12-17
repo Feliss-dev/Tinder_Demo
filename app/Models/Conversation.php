@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Conversation extends Model {
     use HasFactory;
@@ -19,6 +20,14 @@ class Conversation extends Model {
 
     function match() : BelongsTo {
         return $this->belongsTo(SwipeMatch::class);
+    }
+
+    function sender(): HasOne {
+        return $this->hasOne(User::class, 'id', 'sender_id');
+    }
+
+    function receiver(): HasOne {
+        return $this->hasOne(User::class, 'id', 'receiver_id');
     }
 
     public function getReceiver() {

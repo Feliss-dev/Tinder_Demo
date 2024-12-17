@@ -17,7 +17,7 @@ class NewNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public int $userId) {
+    public function __construct(public string $message, public int $userId) {
     }
 
     public function broadcastOn(): Channel
@@ -30,8 +30,10 @@ class NewNotification implements ShouldBroadcast
         return 'new-notification';
     }
 
-//    public function broadcastWith(): array
-//    {
-//        return [];
-//    }
+    public function broadcastWith(): array
+    {
+        return [
+            'message' => $this->message,
+        ];
+    }
 }
