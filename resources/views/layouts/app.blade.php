@@ -39,6 +39,10 @@
                 @livewire('home')
             </main>
         </div>
+        
+        <livewire:chatbot />
+
+
     </div>
 
     @livewireScripts
