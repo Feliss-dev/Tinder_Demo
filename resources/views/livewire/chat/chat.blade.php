@@ -129,11 +129,7 @@
                     class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-scroll flex-grow overflow-x-hidden w-full my-auto" style="flex: 1 1 0;">
 
                     @foreach ($loadedMessages as $message)
-                        @if ($message->sender_id == auth()->id())
-                            <x-message-bubble :message="$message" sender="this"  />
-                        @else
-                            <x-message-bubble :message="$message" sender="other" />
-                        @endif
+                        <livewire:chat.message-bubble :message="$message"/>
                     @endforeach
 
                     @if (count($loadedMessages) !== 0)

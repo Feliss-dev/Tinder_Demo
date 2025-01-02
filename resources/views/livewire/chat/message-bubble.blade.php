@@ -1,25 +1,26 @@
-@props(['sender' => 'this'])
-
 @php
-$alignmentClasses = match ($sender) {
-    'other' => 'mr-auto',
-    default => 'ml-auto',
-};
+    if (!isset($sender)) {
+        $sender = "this";
+    }
 
-$colorClasses = match ($sender) {
-    'other' => 'bg-gray-300',
-    default => 'bg-blue-500'
-};
+    $alignmentClasses = match ($sender) {
+        'other' => 'mr-auto',
+        default => 'ml-auto',
+    };
 
-$roundedClass = match ($sender) {
-    'other' => 'rounded-bl-none',
-    default => 'rounded-br-none'
-}
+    $colorClasses = match ($sender) {
+        'other' => 'bg-gray-300',
+        default => 'bg-blue-500'
+    };
+
+    $roundedClass = match ($sender) {
+        'other' => 'rounded-bl-none',
+        default => 'rounded-br-none'
+    }
 @endphp
 
-<div class="w-[85%] {{$alignmentClasses}}" x-data="{ hover: false, openDropdown: false }" @mouseover="hover = true" @mouseleave="hover = false;">
+<div class="w-[85%] {{$alignmentClasses}}" x-data="{ hover: false, openDropdown: false, openDeleteModal: false }" @mouseover="hover = true" @mouseleave="hover = false;">
     <div class="flex flex-row items-center justify-end">
-        {{-- Actions --}}
         <div style="flex: 0 1 30px" class="flex justify-content-center align-items-center relative" x-on:keydown.escape.prevent.stop="openDropdown = false">
             <button x-show="hover || openDropdown" x-on:click="openDropdown = !openDropdown">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" viewBox="0 0 16 16" class="my-auto">
@@ -27,50 +28,18 @@ $roundedClass = match ($sender) {
                 </svg>
             </button>
 
-            <!-- Panel -->
             <div x-show="openDropdown" x-on:click.outside="openDropdown = false" x-cloak class="absolute top-4 min-w-48 rounded-lg shadow-sm mt-2 z-10 bg-white p-1.5 outline-none border border-gray-200">
-                <a href="" class="px-2 py-2 w-full flex items-center rounded-md text-left text-red-500 hover:bg-gray-200">
+                <button @click="openDeleteModal = true;" class="px-2 py-2 w-full flex items-center rounded-md text-left text-red-500 hover:bg-gray-200">
                     Delete
-                </a>
+                </button>
 
                 <a href="" class="px-2 py-2 w-full flex items-center rounded-md text-left text-gray-800 hover:bg-gray-200">
                     Reply
                 </a>
             </div>
         </div>
-{{--        <div style="flex: 0 1 30px" class="flex justify-content-center align-items-center relative" x-data="{--}}
-{{--            openDropdown: false,--}}
-{{--            toggle() {--}}
-{{--                if (this.openDropdown) return this.close();--}}
-
-{{--                this.openDropdown = true;--}}
-{{--            },--}}
-{{--            close(focusAfter) {--}}
-{{--                if (!this.openDropdown) return;--}}
-
-{{--                this.openDropdown = false;--}}
-{{--                focusAfter && focusAfter.focus();--}}
-{{--            }--}}
-{{--        }" x-on:keydown.escape.prevent.stop="close($refs.button)">--}}
-{{--            <button x-show="hover" x-on:click="toggle()">--}}
-{{--                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" viewBox="0 0 16 16" class="my-auto">--}}
-{{--                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>--}}
-{{--                </svg>--}}
-{{--            </button>--}}
-
-{{--            <div x-show="openDropdown" x-on:click.outside="close()" x-cloak class="absolute origin-top left-0 top-0 min-w-48 rounded-lg shadow-sm mt-2 z-10 bg-white p-1.5 outline-none border border-gray-200">--}}
-{{--                <a href="" class="px-2 py-2 w-full flex items-center rounded-md text-left text-red-500 hover:bg-gray-200">--}}
-{{--                    Delete--}}
-{{--                </a>--}}
-
-{{--                <a href="" class="px-2 py-2 w-full flex items-center rounded-md text-left text-gray-800 hover:bg-gray-200">--}}
-{{--                    Reply--}}
-{{--                </a>--}}
-{{--            </div>--}}
-{{--        </div>--}}
 
         <div style="flex: 0 9 auto" class="flex flex-col content-end">
-            {{-- Message bubble --}}
             <div class='rounded-2xl w-fit {{$colorClasses}} {{$roundedClass}} {{$alignmentClasses}}'>
                 @if (!empty($message->body))
                     <p @class(['p-2', 'text-white' => $sender == 'this', 'text-black' => $sender != 'this'])>{{$message->body}}</p>
@@ -124,6 +93,21 @@ $roundedClass = match ($sender) {
                     </div>
                 @endforeach
             @endif
+        </div>
+    </div>
+
+    <div x-show="openDeleteModal" class="fixed inset-0 flex items-center justify-center z-50">
+        <div class="bg-black bg-opacity-65 w-full h-full flex justify-center items-center" x-on:click.self="openDeleteModal = false">
+            <div class="bg-gray-700 p-8 rounded-xl">
+                <h1 class="text-white font-bold text-xl">Delete Message</h1>
+
+                <p class="text-white mt-4">Are you sure you want to delete this message? This action cannot be reverted on normal circumstance.</p>
+
+                <div class="flex justify-end gap-6 mt-4">
+                    <button class="bg-red-500 hover:bg-red-700 rounded-md px-6 py-2 text-white" @click="openDeleteModal = false; deleteMessage()">Delete</button>
+                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="openDeleteModal = false;">Cancel</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
