@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
-use Livewire\Component;
-use Illuminate\Support\Facades\Http;
 use Gemini\Laravel\Facades\Gemini;
+use Livewire\Component;
 
 class Chatbot extends Component
 {
@@ -17,7 +16,8 @@ class Chatbot extends Component
         $this->messages[] = ['role' => 'user', 'text' => $this->userMessage];
 
         $response = Gemini::geminiPro()->generateContent($this->userMessage);
-        $botResponse = $response->text() ?? 'Error: No response';
+        $botResponse = trim(preg_replace('/\*\*(.*?)\*\*/', '$1', $response->text())) ?? 'Error: No response';
+
         $this->messages[] = ['role' => 'bot', 'text' => $botResponse];
 
         $this->userMessage = '';
