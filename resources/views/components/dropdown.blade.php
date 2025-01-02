@@ -15,8 +15,8 @@ switch ($align) {
 }
 @endphp
 
-<div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-    <div @click="open = !open">
+<div x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false" x-on:keydown.escape.prevent.stop="open = false;" {{ $attributes->merge(['class' => 'relative']) }}>
+    <div @click="open = true">
         {{ $trigger }}
     </div>
 

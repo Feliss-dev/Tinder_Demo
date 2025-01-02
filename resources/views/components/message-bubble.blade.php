@@ -17,16 +17,57 @@ $roundedClass = match ($sender) {
 }
 @endphp
 
-<div class="w-[85%] {{$alignmentClasses}}" x-data="{ hover: false }" @mouseover="hover = true" @mouseleave="hover = false">
-    <div class="flex flex-row align-items-center justify-end">
+<div class="w-[85%] {{$alignmentClasses}}" x-data="{ hover: false, openDropdown: false }" @mouseover="hover = true" @mouseleave="hover = false;">
+    <div class="flex flex-row items-center justify-end">
         {{-- Actions --}}
-        <div style="flex: 0 1 30px" class="flex justify-content-center align-items-center">
-            <button x-show="hover">
+        <div style="flex: 0 1 30px" class="flex justify-content-center align-items-center relative" x-on:keydown.escape.prevent.stop="openDropdown = false">
+            <button x-show="hover || openDropdown" x-on:click="openDropdown = !openDropdown">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" viewBox="0 0 16 16" class="my-auto">
                     <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
                 </svg>
             </button>
+
+            <!-- Panel -->
+            <div x-show="openDropdown" x-on:click.outside="openDropdown = false" x-cloak class="absolute top-4 min-w-48 rounded-lg shadow-sm mt-2 z-10 bg-white p-1.5 outline-none border border-gray-200">
+                <a href="" class="px-2 py-2 w-full flex items-center rounded-md text-left text-red-500 hover:bg-gray-200">
+                    Delete
+                </a>
+
+                <a href="" class="px-2 py-2 w-full flex items-center rounded-md text-left text-gray-800 hover:bg-gray-200">
+                    Reply
+                </a>
+            </div>
         </div>
+{{--        <div style="flex: 0 1 30px" class="flex justify-content-center align-items-center relative" x-data="{--}}
+{{--            openDropdown: false,--}}
+{{--            toggle() {--}}
+{{--                if (this.openDropdown) return this.close();--}}
+
+{{--                this.openDropdown = true;--}}
+{{--            },--}}
+{{--            close(focusAfter) {--}}
+{{--                if (!this.openDropdown) return;--}}
+
+{{--                this.openDropdown = false;--}}
+{{--                focusAfter && focusAfter.focus();--}}
+{{--            }--}}
+{{--        }" x-on:keydown.escape.prevent.stop="close($refs.button)">--}}
+{{--            <button x-show="hover" x-on:click="toggle()">--}}
+{{--                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" viewBox="0 0 16 16" class="my-auto">--}}
+{{--                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>--}}
+{{--                </svg>--}}
+{{--            </button>--}}
+
+{{--            <div x-show="openDropdown" x-on:click.outside="close()" x-cloak class="absolute origin-top left-0 top-0 min-w-48 rounded-lg shadow-sm mt-2 z-10 bg-white p-1.5 outline-none border border-gray-200">--}}
+{{--                <a href="" class="px-2 py-2 w-full flex items-center rounded-md text-left text-red-500 hover:bg-gray-200">--}}
+{{--                    Delete--}}
+{{--                </a>--}}
+
+{{--                <a href="" class="px-2 py-2 w-full flex items-center rounded-md text-left text-gray-800 hover:bg-gray-200">--}}
+{{--                    Reply--}}
+{{--                </a>--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
         <div style="flex: 0 9 auto" class="flex flex-col content-end">
             {{-- Message bubble --}}
