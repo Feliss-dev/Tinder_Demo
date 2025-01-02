@@ -17,70 +17,72 @@ $roundedClass = match ($sender) {
 }
 @endphp
 
-<div class="max-w-[85%] {{$alignmentClasses}}">
-    {{-- Message bubble --}}
-    <div class='rounded-2xl w-fit {{$colorClasses}} {{$roundedClass}} {{$alignmentClasses}}'>
-        @if (!empty($message->body))
-            <p @class(['p-2', 'text-white' => $sender == 'this', 'text-black' => $sender != 'this'])>{{$message->body}}</p>
-        @endif
+<div class="w-[85%] {{$alignmentClasses}}" x-data="{ hover: false }" @mouseover="hover = true" @mouseleave="hover = false">
+    <div class="flex flex-row align-items-center justify-end">
+        {{-- Actions --}}
+        <div style="flex: 0 1 30px" class="flex justify-content-center align-items-center">
+            <button x-show="hover">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" viewBox="0 0 16 16" class="my-auto">
+                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+                </svg>
+            </button>
+        </div>
+
+        <div style="flex: 0 9 auto" class="flex flex-col content-end">
+            {{-- Message bubble --}}
+            <div class='rounded-2xl w-fit {{$colorClasses}} {{$roundedClass}} {{$alignmentClasses}}'>
+                @if (!empty($message->body))
+                    <p @class(['p-2', 'text-white' => $sender == 'this', 'text-black' => $sender != 'this'])>{{$message->body}}</p>
+                @endif
+            </div>
+
+            @if (!empty($message->files))
+                @php
+                    $filenames = json_decode($message->files, true);
+                @endphp
+
+                @foreach ($filenames as $file)
+                    <div class="pt-1 {{$alignmentClasses}}" x-data="{ showPreviewModal: false }">
+                        <img
+                            src="{{ asset('storage/' . $file) }}"
+                            alt="Uploaded File"
+                            class="object-cover cursor-pointer max-h-[220px] w-auto {{$alignmentClasses}}"
+
+                            x-on:click="showPreviewModal = true"
+                        />
+
+                        <!-- Zooming Modal -->
+                        <div x-show="showPreviewModal"
+                             class="fixed inset-0 flex items-center justify-center z-50"
+
+                             x-transition:enter="ease-out duration-300"
+                             x-transition:enter-start="opacity-0 scale-90"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             x-transition:leave="ease-in duration-200"
+                             x-transition:leave-start="opacity-100 scale-100"
+                             x-transition:leave-end="opacity-0 scale-90"
+                        >
+                            <div class="bg-black bg-opacity-75 w-full h-full flex justify-center items-center"
+                             x-on:click.self="showPreviewModal = false">
+                                <img src="{{ asset('storage/' . $file) }}"
+                                     alt="Zoomed Image"
+                                     class="max-w-full max-h-full object-contain"
+                                />
+
+                                <button
+                                x-on:click="showPreviewModal = false"
+                                class="absolute top-2 right-2 text-white text-2xl cursor-pointer bg-rose-600 bg-opacity-50 p-2 rounded-full focus:outline-none hover:bg-opacity-75"
+
+                                >
+                                &times;
+
+
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
     </div>
-
-    {{-- File or Image Frame --}}
-    @if (!empty($message->files))
-    @php
-        $filenames = json_decode($message->files, true);
-    @endphp
-
-    @foreach ($filenames as $file)
-        <div class="border-2 border-gray-200 rounded-lg p-1 bg-gray-50 max-w-[35%]"
-             x-data="{ showModal: false }">
-            @if (str_starts_with(mime_content_type(storage_path('app/public/' . $file)), 'image/'))
-                {{-- Click image to preview --}}
-
-                <div class="w-[250px] h-[250px]">
-                    <img
-                        src="{{ asset('storage/' . $file) }}"
-                        alt="Uploaded File"
-                        class="w-full h-full object-cover cursor-pointer"
-
-                        x-on:click="showModal = true"
-                    />
-                </div>
-
-            <!-- Zooming Modal -->
-            <div x-show="showModal"
-                 class="fixed inset-0 flex items-center justify-center z-50"
-
-                 x-transition:enter="ease-out duration-300"
-                 x-transition:enter-start="opacity-0 scale-90"
-                 x-transition:enter-end="opacity-100 scale-100"
-                 x-transition:leave="ease-in duration-200"
-                 x-transition:leave-start="opacity-100 scale-100"
-                 x-transition:leave-end="opacity-0 scale-90"
-            >
-            <div class="bg-black bg-opacity-75 w-full h-full flex justify-center items-center"
-             x-on:click.self="showModal = false">
-                <img src="{{ asset('storage/' . $file) }}"
-                     alt="Zoomed Image"
-                     class="max-w-full max-h-full object-contain"
-                />
-                {{-- Button close --}}
-                <button
-                x-on:click="showModal = false"
-                class="absolute top-2 right-2 text-white text-2xl cursor-pointer bg-rose-600 bg-opacity-50 p-2 rounded-full focus:outline-none hover:bg-opacity-75"
-
-                >
-                &times;
-
-
-                </button>
-            </div>
-            </div>
-              @else
-                  <p class="text-sm text-gray-500 truncate">{{$file}}</p>
-              @endif
-          </div>
-      @endforeach
-  @endif
-
 </div>

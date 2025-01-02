@@ -7,9 +7,6 @@ use App\Models\Message;
 use App\Models\Conversation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Message>
- */
 class MessageFactory extends Factory
 {
     /**
