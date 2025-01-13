@@ -16,12 +16,14 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Chat extends Component
 {
+    const PAGINATE_STEP = 25;
+
     public $chat;
     public $conversation;
     public $receiver;
 
     public $loadedMessages;
-    public $paginate_var = 10;
+    public $paginate_var = self::PAGINATE_STEP;
 
     protected $listeners = [ 'user-send-message' => 'userSendMessage' ];
 
@@ -51,17 +53,14 @@ class Chat extends Component
 
     #[On('loadMore')]
     function loadMore(){
-        #increment
-        $this->paginate_var += 10;
+        $this->paginate_var += self::PAGINATE_STEP;
 
-        #call the loadMessages()
         $this->loadMessages();
-
-        #dispatch event
         $this->dispatch('update-height');
-
     }
-    function loadMessages(){
+
+    function loadMessages() {
+        \Illuminate\Support\Facades\Log::debug("loading amount: " . $this->paginate_var);
 
         #get count
         $count = Message::where('conversation_id', $this->conversation->id)->count();
@@ -71,7 +70,8 @@ class Chat extends Component
                                             ->skip($count - $this->paginate_var)
                                             ->take($this->paginate_var)
                                             ->get();
-            return $this->loadedMessages;
+
+        return $this->loadedMessages;
     }
 
     function mount($chat){

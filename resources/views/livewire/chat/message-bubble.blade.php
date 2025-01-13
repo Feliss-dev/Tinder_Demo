@@ -16,7 +16,7 @@
     $roundedClass = match ($sender) {
         'other' => 'rounded-bl-none',
         default => 'rounded-br-none'
-    }
+    };
 @endphp
 
 <div class="w-[85%] {{$alignmentClasses}}" x-data="{ hover: false, openDropdown: false, openDeleteModal: false }" @mouseover="hover = true" @mouseleave="hover = false;">
@@ -41,6 +41,10 @@
 
         <div style="flex: 0 9 auto" class="flex flex-col content-end">
             <div class='rounded-2xl w-fit {{$colorClasses}} {{$roundedClass}} {{$alignmentClasses}}'>
+                @php
+                    \Illuminate\Support\Facades\Log::debug("Building Message 2: " . $message->body);
+                @endphp
+
                 @if (!empty($message->body))
                     <p @class(['p-2', 'text-white' => $sender == 'this', 'text-black' => $sender != 'this'])>{{$message->body}}</p>
                 @endif
@@ -70,8 +74,7 @@
                              x-transition:enter-end="opacity-100 scale-100"
                              x-transition:leave="ease-in duration-200"
                              x-transition:leave-start="opacity-100 scale-100"
-                             x-transition:leave-end="opacity-0 scale-90"
-                        >
+                             x-transition:leave-end="opacity-0 scale-90">
                             <div class="bg-black bg-opacity-75 w-full h-full flex justify-center items-center"
                              x-on:click.self="showPreviewModal = false">
                                 <img src="{{ asset('storage/' . $file) }}"
@@ -79,14 +82,9 @@
                                      class="max-w-full max-h-full object-contain"
                                 />
 
-                                <button
-                                x-on:click="showPreviewModal = false"
-                                class="absolute top-2 right-2 text-white text-2xl cursor-pointer bg-rose-600 bg-opacity-50 p-2 rounded-full focus:outline-none hover:bg-opacity-75"
-
-                                >
-                                &times;
-
-
+                                <button x-on:click="showPreviewModal = false"
+                                        class="absolute top-2 right-2 text-white text-2xl cursor-pointer bg-rose-600 bg-opacity-50 p-2 rounded-full focus:outline-none hover:bg-opacity-75">
+                                    &times;
                                 </button>
                             </div>
                         </div>
@@ -96,7 +94,7 @@
         </div>
     </div>
 
-    <div x-show="openDeleteModal" class="fixed inset-0 flex items-center justify-center z-50">
+    <div x-show="openDeleteModal" class="fixed inset-0 flex items-center justify-center z-50" x-cloak>
         <div class="bg-black bg-opacity-65 w-full h-full flex justify-center items-center" x-on:click.self="openDeleteModal = false">
             <div class="bg-gray-700 p-8 rounded-xl">
                 <h1 class="text-white font-bold text-xl">Delete Message</h1>
