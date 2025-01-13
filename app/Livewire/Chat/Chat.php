@@ -60,8 +60,6 @@ class Chat extends Component
     }
 
     function loadMessages() {
-        \Illuminate\Support\Facades\Log::debug("loading amount: " . $this->paginate_var);
-
         #get count
         $count = Message::where('conversation_id', $this->conversation->id)->count();
 
