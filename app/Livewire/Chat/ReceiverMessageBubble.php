@@ -8,8 +8,6 @@ use Livewire\Component;
 
 class ReceiverMessageBubble extends Component
 {
-    protected $listeners = ['refresh-component' => '$refresh'];
-
     public Message $message;
 
     public function render()

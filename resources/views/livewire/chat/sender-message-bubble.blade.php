@@ -13,17 +13,29 @@
                 </button>
 
                 <div x-show="openDropdown" x-on:click.outside="openDropdown = false" x-cloak class="absolute top-4 min-w-48 rounded-lg shadow-sm mt-2 z-10 bg-white p-1.5 outline-none border border-gray-200">
-                    <button @click="openDeleteModal = true;" class="p-2 w-full flex items-center rounded-md text-left text-red-500 hover:bg-gray-200">
+                    <button @click="openDeleteModal = true; openDropdown = false;" class="p-2 w-full flex items-center rounded-md text-left text-red-500 hover:bg-gray-200">
                         Delete
                     </button>
 
-                    <a href="" class="p-2 w-full flex items-center rounded-md text-left text-gray-800 hover:bg-gray-200">
+                    <button @click="openDropdown = false" wire:click="reply" class="p-2 w-full flex items-center rounded-md text-left text-gray-800 hover:bg-gray-200">
                         Reply
-                    </a>
+                    </button>
                 </div>
             </div>
 
-            <div style="flex: 0 9 auto" class="flex flex-col content-end">
+            <div style="flex: 0 9 auto" class="relative flex flex-col content-end">
+                @if ($message->reply_id != null)
+                    @php
+                        $replyMessage = \App\Models\Message::where('id', $message->reply_id)->first();
+                        $selfReply = $replyMessage->sender_id == auth()->id();
+                    @endphp
+
+                    <div class="relative w-fit ml-auto rounded-md {{$selfReply ? 'bg-blue-300' : 'bg-gray-200'}} p-2">
+                        <p class="{{$selfReply ? 'text-white' : 'text-black'}} text-xs">{{$selfReply ? 'You' : \App\Models\User::where('id', $replyMessage->sender_id)->first()->name}} said:</p>
+                        <p class="{{$selfReply ? 'text-white' : 'text-black'}}">{{$replyMessage->body}}</p>
+                    </div>
+                @endif
+
                 <div class='rounded-2xl w-fit bg-blue-500 rounded-br-none ml-auto'>
                     @if (!empty($message->body))
                         <p class="text-white p-2">{{$message->body}}</p>
@@ -84,7 +96,7 @@
 
                 <div class="flex justify-end gap-6 mt-4">
                     <button class="bg-red-500 hover:bg-red-700 rounded-md px-6 py-2 text-white" @click="openDeleteModal = false" wire:click="delete">Delete</button>
-                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="openDeleteModal = false;">Cancel</button>
+                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="openDeleteModal = false">Cancel</button>
                 </div>
             </div>
         </div>

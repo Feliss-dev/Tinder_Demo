@@ -23,7 +23,7 @@ class Chat extends Component
     public $receiver;
 
     public $loadedMessages;
-    public $paginate_var = self::PAGINATE_STEP;
+    public $loadAmount = self::PAGINATE_STEP;
 
     protected $listeners = [ 'user-send-message' => 'userSendMessage' ];
 
@@ -53,23 +53,21 @@ class Chat extends Component
 
     #[On('loadMore')]
     function loadMore(){
-        $this->paginate_var += self::PAGINATE_STEP;
+        $this->loadAmount += self::PAGINATE_STEP;
 
-        $this->loadMessages();
+        $this->reloadMessages();
         $this->dispatch('update-height');
     }
 
-    function loadMessages() {
+    function reloadMessages() {
         #get count
         $count = Message::where('conversation_id', $this->conversation->id)->count();
 
         // skip and query
         $this->loadedMessages = Message::where('conversation_id', $this->conversation->id)
-                                            ->skip($count - $this->paginate_var)
-                                            ->take($this->paginate_var)
+                                            ->skip($count - $this->loadAmount)
+                                            ->take($this->loadAmount)
                                             ->get();
-
-        return $this->loadedMessages;
     }
 
     function mount($chat){
@@ -96,11 +94,12 @@ class Chat extends Component
         #set receiver
         $this->receiver = $this->conversation->getReceiver();
 
-        $this->loadMessages();
+        $this->reloadMessages();
     }
 
     #[Layout('layouts.chat')]
     public function render() {
+        $this->reloadMessages();
         return view('livewire.chat.chat');
     }
 }

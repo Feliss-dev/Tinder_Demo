@@ -129,11 +129,8 @@
                     class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-scroll flex-grow overflow-x-hidden w-full my-auto" style="flex: 1 1 0;">
 
                     @foreach ($loadedMessages as $message)
-                        @if ($message->sender_id == auth()->id())
-                            <livewire:chat.sender-message-bubble :message="$message" :key="$message->id"/>
-                        @else
-                            <livewire:chat.receiver-message-bubble :message="$message" :key="$message->id"/>
-                        @endif
+                        {{-- Fuck Livewire --}}
+                        <livewire:chat.message-bubble :$message :key="$message->id"/>
                     @endforeach
 
                     @if (count($loadedMessages) !== 0)
@@ -141,7 +138,7 @@
                             $lastMessage = $loadedMessages[count($loadedMessages) - 1];
                         @endphp
 
-                        <p @class(['text-xs text-gray-500', 'ml-auto' => $lastMessage->sender_id == auth()->id()])>Sent at {{ $lastMessage->created_at  }}</p>
+                        <p @class(['text-xs text-gray-500', 'ml-auto' => $lastMessage->sender_id == auth()->id()])>Sent at {{ $lastMessage->created_at }}</p>
                     @endif
 
                 </section>

@@ -1,11 +1,23 @@
-<div class="w-[85%] mr-auto" x-data="{ hover: false, openDropdown: false, openDeleteModal: false }" @mouseover="hover = true" @mouseleave="hover = false;">
+<div class="w-[85%] mr-auto" x-data="{ hover: false, openDropdown: false }" @mouseover="hover = true" @mouseleave="hover = false;">
     <div class="flex flex-row items-center justify-start">
         @if ($message->delete_status == 1)
             <div class='rounded-2xl w-fit border-dashed border-2 border-black mr-auto'>
                 <p class="p-2 text-black">Deleted!</p>
             </div>
         @else
-            <div style="flex: 0 9 auto" class="flex flex-col content-end">
+            <div style="flex: 0 9 auto" class="relative flex flex-col content-end">
+                @if ($message->reply_id != null)
+                    @php
+                        $replyMessage = \App\Models\Message::where('id', $message->reply_id)->first();
+                        $selfReply = $replyMessage->sender_id == auth()->id();
+                    @endphp
+
+                    <div class="relative w-fit mr-auto rounded-md {{$selfReply ? 'bg-blue-300' : 'bg-gray-200'}} p-2">
+                        <p class="{{$selfReply ? 'text-white' : 'text-black'}} text-xs">{{$selfReply ? 'You' : \App\Models\User::where('id', $replyMessage->sender_id)->first()->name}} said:</p>
+                        <p class="{{$selfReply ? 'text-white' : 'text-black'}}">{{$replyMessage->body}}</p>
+                    </div>
+                @endif
+
                 <div class='rounded-2xl w-fit bg-gray-300 rounded-bl-none mr-auto'>
                     @if (!empty($message->body))
                         <p class="text-black p-2">{{$message->body}}</p>
@@ -63,26 +75,11 @@
                 </button>
 
                 <div x-show="openDropdown" x-on:click.outside="openDropdown = false" x-cloak class="absolute top-4 min-w-48 rounded-lg shadow-sm mt-2 z-10 bg-white p-1.5 outline-none border border-gray-200">
-                    <a href="" class="p-2 w-full flex items-center rounded-md text-left text-gray-800 hover:bg-gray-200">
+                    <button wire:click="reply" @click="openDropdown = false" class="p-2 w-full flex items-center rounded-md text-left text-gray-800 hover:bg-gray-200">
                         Reply
-                    </a>
+                    </button>
                 </div>
             </div>
         @endif
-    </div>
-
-    <div x-show="openDeleteModal" class="fixed inset-0 flex items-center justify-center z-50" x-cloak>
-        <div class="bg-black bg-opacity-65 w-full h-full flex justify-center items-center" x-on:click.self="openDeleteModal = false">
-            <div class="bg-gray-700 p-8 rounded-xl">
-                <h1 class="text-white font-bold text-xl">Delete Message</h1>
-
-                <p class="text-white mt-4">Are you sure you want to delete this message? This action cannot be reverted on normal circumstance.</p>
-
-                <div class="flex justify-end gap-6 mt-4">
-                    <button class="bg-red-500 hover:bg-red-700 rounded-md px-6 py-2 text-white" @click="openDeleteModal = false" wire:click="delete">Delete</button>
-                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="openDeleteModal = false;">Cancel</button>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
