@@ -39,7 +39,8 @@
                 </div>
             </div>
         </div>
-
+         {{-- AI chat bot --}}
+         <livewire:chatbot/>
         @livewireScripts
     </body>
 </html>
