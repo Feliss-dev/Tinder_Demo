@@ -23,7 +23,7 @@ new class extends Component {
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <a class="my-auto" href="/">
-                            <x-logo width="48" height="48" />
+                            <x-logo class="w-12 h-12" />
                         </a>
 
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
@@ -34,7 +34,7 @@ new class extends Component {
                             {{ __('View My Profile') }}
                         </x-nav-link>
 
-                        @livewire('components.notificationdropdown')
+                        <livewire:components.notification-bell />
 
                         {{-- <livewire:notification-dropdown /> --}}
 

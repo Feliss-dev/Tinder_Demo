@@ -35,7 +35,7 @@
                             <!-- Logo -->
                             <div class=" flex w-4 flex-shrink-0 mr-6">
                                 <a href="{{ route('home') }}" wire:navigate>
-                                    <x-logo width="60px" height="60px" />
+                                    <x-logo class="w-16 h-16" />
                                 </a>
                             </div>
 

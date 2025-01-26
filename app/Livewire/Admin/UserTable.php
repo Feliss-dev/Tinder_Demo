@@ -2,15 +2,12 @@
 
 namespace App\Livewire\Admin;
 
-use App\Events\NewNotification;
-use DB;
+use App\Notifications\SystemNotification;
 use App\Models\User;
-use App\Notifications\AdminMessageNotification;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification as FacadesNotification;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
@@ -90,7 +87,6 @@ class UserTable extends Component
     }
 
     public function sendNotification($userId){
-
         $this->dispatch('notification-sent');
         $user = User::find($userId);
 
@@ -99,15 +95,11 @@ class UserTable extends Component
             return;
         }
 
-       // Send notification to user
+        // Send notification to user
+        $user->notify(new SystemNotification($this->message, $userId));
 
-        // Gửi thông báo đến người dùng
-        FacadesNotification::send($user, new AdminMessageNotification($this->message, $userId));
-
-        // Phát trực tiếp thông báo qua Laravel Echo
-        broadcast(new NewNotification($this->message, $userId))->toOthers();
-
-        // NewNotification::broadcast($this->message, $userId)->toOthers();
+        // Broadcast to user an event so that UI can be updated.
+        // broadcast(new NewNotification($this->message, $userId))->toOthers();
 
         session()->flash('success', 'Notification sent successfully!');
     }
