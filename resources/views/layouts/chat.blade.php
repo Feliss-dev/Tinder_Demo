@@ -22,21 +22,24 @@
         @livewireStyles
     </head>
 
-    <body class="font-sans antialiased flex flex-col w-full">
-        <div class="min-h-screen bg-gray-100">
+    <body class="font-sans antialiased bg-gray-100 flex flex-col min-h-screen">
+        <div class="flex flex-col min-h-screen">
+            <!-- Navigation -->
             <livewire:layout.navigation />
 
             <!-- Main Layout -->
-            <div class="w-full flex-auto overflow-hidden grid grid-cols-4">
+            <div class="flex flex-1 flex-col md:flex-row">
                 <!-- Sidebar -->
-                <x-appsidebar :user="auth()->user()" />
+                <aside class="w-full md:w-1/4 bg-white shadow-md border-r hidden md:block">
+                    <x-appsidebar :user="auth()->user()" />
+                </aside>
 
-                <!-- Swiper -->
-                <div class="col-span-3">
-                    <main class="flex-1 flex-col overflow-y-auto hidden md:flex h-full">
+                <!-- Main Content -->
+                <main class="flex-1 bg-gray-50">
+                    <div class="w-full h-full">
                         @livewire('chat.chat', ['chat' => request()->chat])
-                    </main>
-                </div>
+                    </div>
+                </main>
             </div>
         </div>
          {{-- AI chat bot --}}

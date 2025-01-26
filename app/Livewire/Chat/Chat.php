@@ -16,12 +16,14 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Chat extends Component
 {
+    const PAGINATE_STEP = 25;
+
     public $chat;
     public $conversation;
     public $receiver;
 
     public $loadedMessages;
-    public $paginate_var = 10;
+    public $loadAmount = self::PAGINATE_STEP;
 
     protected $listeners = [ 'user-send-message' => 'userSendMessage' ];
 
@@ -51,27 +53,21 @@ class Chat extends Component
 
     #[On('loadMore')]
     function loadMore(){
-        #increment
-        $this->paginate_var += 10;
+        $this->loadAmount += self::PAGINATE_STEP;
 
-        #call the loadMessages()
-        $this->loadMessages();
-
-        #dispatch event
+        $this->reloadMessages();
         $this->dispatch('update-height');
-
     }
-    function loadMessages(){
 
+    function reloadMessages() {
         #get count
         $count = Message::where('conversation_id', $this->conversation->id)->count();
 
         // skip and query
         $this->loadedMessages = Message::where('conversation_id', $this->conversation->id)
-                                            ->skip($count - $this->paginate_var)
-                                            ->take($this->paginate_var)
+                                            ->skip($count - $this->loadAmount)
+                                            ->take($this->loadAmount)
                                             ->get();
-            return $this->loadedMessages;
     }
 
     function mount($chat){
@@ -98,11 +94,12 @@ class Chat extends Component
         #set receiver
         $this->receiver = $this->conversation->getReceiver();
 
-        $this->loadMessages();
+        $this->reloadMessages();
     }
 
     #[Layout('layouts.chat')]
     public function render() {
+        $this->reloadMessages();
         return view('livewire.chat.chat');
     }
 }

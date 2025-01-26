@@ -3,6 +3,24 @@
     <form action="" x-data="{ body: @entangle('body') }" @submit.prevent="$wire.sendMessage()" autocomplete="off">
         @csrf
 
+        {{-- Replying Displayer --}}
+        @if ($replyingMessage)
+            @php
+                $who = $replyingMessage->sender_id == auth()->user()->id ? "yourself" : \App\Models\User::where('id', $replyingMessage->sender_id)->first()->name;
+                $content = $replyingMessage->body;
+
+                if ($content == null) {
+                    // Display as "<n attached images>"
+                    $amount = count(json_decode($replyingMessage->files));
+                    $content = "<" . $amount . " attached images>";
+                }
+            @endphp
+            <div>
+                <p>Replying to {{ $who }}: {{$content}}</p>
+            </div>
+        @endif
+
+        {{-- File Displayer --}}
         <livewire:chat.file-viewer />
 
         {{-- Hiding input --}}

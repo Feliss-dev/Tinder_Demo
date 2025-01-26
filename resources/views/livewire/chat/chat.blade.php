@@ -34,7 +34,7 @@
     });"
     class="flex h-screen overflow-hidden">
 
-    <div class="grid grid-cols-6 overflow-hidden">
+    <div class="grid grid-cols-6 overflow-hidden  w-full">
         <div class="col-span-4">
             <main class="w-full h-full grow border flex flex-col relative">
                 <header class="flex items-center gap-2.5 p-2 border">
@@ -129,11 +129,8 @@
                     class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-scroll flex-grow overflow-x-hidden w-full my-auto" style="flex: 1 1 0;">
 
                     @foreach ($loadedMessages as $message)
-                        @if ($message->sender_id == auth()->id())
-                            <x-message-bubble :message="$message" sender="this"  />
-                        @else
-                            <x-message-bubble :message="$message" sender="other" />
-                        @endif
+                        {{-- Fuck Livewire --}}
+                        <livewire:chat.message-bubble :$message :key="$message->id"/>
                     @endforeach
 
                     @if (count($loadedMessages) !== 0)
@@ -141,7 +138,7 @@
                             $lastMessage = $loadedMessages[count($loadedMessages) - 1];
                         @endphp
 
-                        <p @class(['text-xs text-gray-500', 'ml-auto' => $lastMessage->sender_id == auth()->id()])>Sent at {{ $lastMessage->created_at  }}</p>
+                        <p @class(['text-xs text-gray-500', 'ml-auto' => $lastMessage->sender_id == auth()->id()])>Sent at {{ $lastMessage->created_at }}</p>
                     @endif
 
                 </section>
@@ -152,7 +149,7 @@
             </main>
         </div>
 
-        <div class="col-span-2 border overflow-y-auto">
+        <div class="col-span-2 border overflow-y-auto ">
             <livewire:chat.profile-card :user="$receiver" :conversation="$conversation" />
         </div>
     </div>

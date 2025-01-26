@@ -1,4 +1,4 @@
-<div class="h-full flex flex-col ">
+<div class="h-full flex flex-col hidden md:flex ">
     <div class="h-16 p-2.5 w-full
                             flex-shrink-0
                             bg-gradient-to-r from-[#266DD3] to-[#17BEBB]
@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="basis-full ">
+    <div class="basis-full">
         <livewire:components.tabs />
     </div>
 </div>

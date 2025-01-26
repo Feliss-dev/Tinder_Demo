@@ -14,6 +14,9 @@ export default {
             fontFamily: {
                 sans: ['nunito', ...defaultTheme.fontFamily.sans],
             },
+            screens: {
+                'tiny': '10px', // Thêm breakpoint tùy chỉnh 'tiny' cho màn hình nhỏ hơn
+            },
         },
     },
 

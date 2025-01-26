@@ -7,6 +7,7 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
@@ -16,7 +17,7 @@ class InputFields extends Component
 {
     use WithFileUploads;
 
-    protected $listeners = [ 'delete-file' => 'deleteFile' ];
+    protected $listeners = [ 'delete-file' => 'deleteFile', 'refresh-component' => '$refresh' ];
 
     public $body;
     public Conversation $conversation;
@@ -24,6 +25,8 @@ class InputFields extends Component
 
     public $files;
     public $allFiles = [];
+
+    public Message|null $replyingMessage = null;
 
     function sendMessage() {
         #check auth
@@ -49,12 +52,14 @@ class InputFields extends Component
             'receiver_id' => $this->receiver->id,
             'body' => $this->body,
             'files' => json_encode($fileLocations),
+            'reply_id' => $this->replyingMessage?->id,
         ]);
 
         $this->reset('body');
         $this->reset('files');
 
         $this->allFiles = [];
+        $this->replyingMessage = null;
 
         #update the conversation model
         $this->conversation->updated_at = now();
@@ -87,6 +92,12 @@ class InputFields extends Component
 
         $serializedFile = TemporaryUploadedFile::serializeMultipleForLivewireResponse($this->allFiles);
         $this->dispatch('refresh-display', $serializedFile);
+    }
+
+    #[On('reply-message')]
+    public function reply(int $message_id) {
+        $this->replyingMessage = Message::where('id', $message_id)->first();
+        $this->dispatch('refresh-component');
     }
 
     public function render() {
