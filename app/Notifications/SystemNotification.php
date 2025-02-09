@@ -25,7 +25,7 @@ class SystemNotification extends Notification
     {
         return [
             "message" => $this->message,
-            "userId" => $this->userId,
+            "user_id" => $this->userId,
         ];
     }
 
