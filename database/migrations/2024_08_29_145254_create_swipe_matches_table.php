@@ -16,9 +16,13 @@ return new class extends Migration
             $table->foreignId('swipe_id_1')->constrained('swipes')->cascadeOnDelete();
             $table->foreignId('swipe_id_2')->constrained('swipes')->cascadeOnDelete();
 
+            $table->foreignId('user_id_1')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id_2')->constrained('users')->cascadeOnDelete();
+
             //This uniqueness constraint prevents duplicate SwipeMatch records for the same pair of users,
             // ensuring that a match cannot be repeated
             $table->unique(['swipe_id_1', 'swipe_id_2']);
+            $table->unique(['user_id_1', 'user_id_2']);
 
             $table->timestamps();
         });

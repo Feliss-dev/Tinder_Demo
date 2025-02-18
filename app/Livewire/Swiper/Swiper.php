@@ -26,15 +26,26 @@ class Swiper extends Component
     public $users;
     public $filtersApplied = false; // Theo dõi trạng thái bộ lọc có được áp dụng hay chưa
     public $matchedUser;
+    public $user;
     public $selectedLanguages = [];
     public $selectedInterests =[];
     public $selectedDatingGoals = [];
+
+    public $profiles = false; // Property to store profile visibility status
 
     #[Locked]
     public $currentMatchId;
 
     #[Locked]
     public $swipedUserId;
+
+    protected $listeners = ['viewProfile'];
+
+    public function viewProfile($userId)
+{
+    $this->user = User::find($userId);
+    $this->profiles = true; // Hiển thị thông tin người dùng
+}
 
     #[On('swipedright')]
     public function swipedRight(User $user)
@@ -107,6 +118,8 @@ class Swiper extends Component
                 $match = SwipeMatch::create([
                     'swipe_id_1' => $swipe->id,
                     'swipe_id_2' => $matchingSwipe->id,
+                    'user_id_1' => min($authUserId, $this->swipedUserId), // Ensure consistent ordering
+                    'user_id_2' => max($authUserId, $this->swipedUserId),
                 ]);
 
                 //Show match found alert
@@ -205,6 +218,8 @@ class Swiper extends Component
             'interests' => Interest::all(),
             'languages' => Language::all(),
             'datingGoals' => DatingGoal::all(),
+            'user' => $this->user,
+            'profiles' => $this->profiles,
         ]);
     }
 }
