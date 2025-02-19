@@ -31,7 +31,7 @@
             <div class="flex flex-1 flex-col md:flex-row">
                 <!-- Sidebar -->
                 <aside class="w-full md:w-1/4 bg-white shadow-md border-r hidden md:block">
-                    <x-appsidebar :user="auth()->user()" />
+                    <x-app-sidebar :user="auth()->user()" />
                 </aside>
 
                 <!-- Main Content -->
