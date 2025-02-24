@@ -3,22 +3,20 @@ FROM php:8.3-fpm AS php
 # Move workdirectory
 WORKDIR /var/www/html/Tinder_Demo
 
-# Setup system.
-RUN groupadd -g 1000 web && useradd -m -u 1000 -g web webuser
+# Update apt-get.
+RUN apt-get update && apt-get install -y git curl libonig-dev libxml2-dev libpng-dev zip unzip
 
-COPY --chown=webuser:web . /var/www/html/Tinder_Demo/
-
-# Make webuser own the source code files.
-RUN chown -R webuser:web /var/www/html/Tinder_Demo
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Setup Composer
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
-# Update apt-get.
-RUN apt-get update && apt-get install -y
+# Setup group and user.
+RUN groupadd -g 1000 web && useradd -m -u 1000 -g web webuser
 
-# Configure php extensions.
-RUN apt-get install -y zip libzip-dev && docker-php-ext-install zip
+# Copy the project source
+COPY --chown=webuser:web . /var/www/html/Tinder_Demo/
 
 # Switch to non-rooted user to install composer libraries (as recommendation)
 USER webuser
@@ -28,4 +26,5 @@ USER root
 
 EXPOSE 8000
 
-CMD [ "php", "artisan", "serve", "--host", "0.0.0.0" ]
+CMD [ "./start.bash" ]
+# CMD [ "php", "artisan", "serve", "--host", "0.0.0.0" ]
