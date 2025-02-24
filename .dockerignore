@@ -1,2 +1,5 @@
 **/.git
 .env.example
+Dockerfile
+.gitignore
+.gitattributes

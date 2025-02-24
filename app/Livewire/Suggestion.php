@@ -12,26 +12,17 @@ class Suggestion extends Component
     public $error = null;
 
     public function mount(){
-
-
         $this->fetchSuggestions();
-
-
-
     }
 
     public function fetchSuggestions(){
         $userId = auth()->user()->id; // Lấy ID của user hiện tại
         try {
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->post('http://127.0.0.1:5000/suggestions', [
+            $response = Http::post('http://localhost:5000/suggestions', [
                 'user_id' => $userId,
             ]);
             Log::info('Sending request to FastAPI', ['user_id' => $userId]);
             Log::info('API response: ' . $response->body());
-
-
 
             if ($response->ok()) {
                 $data = $response->json();

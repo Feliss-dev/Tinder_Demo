@@ -8,36 +8,26 @@ use Livewire\Component;
 
 class Recommendations extends Component
 {
-
     public $recommendations = [];
     public $error = null;
 
-    public function viewProfile($userId)
-{
-    $this->dispatch('viewProfile', $userId);
-}
+    public function viewProfile($userId) {
+        $this->dispatch('viewProfile', $userId);
+    }
 
     public function mount(){
-
-
         $this->fetchRecommendations();
-
-
-
     }
 
     public function fetchRecommendations(){
         $userId = auth()->user()->id; // Lấy ID của user hiện tại
         try {
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->post('http://127.0.0.1:5000/recommend', [
+            $response = Http::post("http://localhost:5000/recommend", [
                 'user_id' => $userId,
             ]);
+
             Log::info('Sending request to FastAPI', ['user_id' => $userId]);
             Log::info('API response: ' . $response->body());
-
-
 
             if ($response->ok()) {
                 $this->recommendations = $response->json(); // Lưu danh sách recommendations
