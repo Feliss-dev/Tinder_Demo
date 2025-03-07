@@ -20,9 +20,9 @@ class Recommendations extends Component
     }
 
     public function fetchRecommendations(){
-        $userId = auth()->user()->id; // Lấy ID của user hiện tại
+        $userId = auth()->user()->id;
         try {
-            $response = Http::post("http://localhost:5000/recommend", [
+            $response = Http::post("http://host.docker.internal:5000/recommend", [
                 'user_id' => $userId,
             ]);
 

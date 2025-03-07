@@ -16,9 +16,9 @@ class Suggestion extends Component
     }
 
     public function fetchSuggestions(){
-        $userId = auth()->user()->id; // Lấy ID của user hiện tại
+        $userId = auth()->user()->id;
         try {
-            $response = Http::post('http://localhost:5000/suggestions', [
+            $response = Http::post('http://host.docker.internal:5000/suggestions', [
                 'user_id' => $userId,
             ]);
             Log::info('Sending request to FastAPI', ['user_id' => $userId]);
