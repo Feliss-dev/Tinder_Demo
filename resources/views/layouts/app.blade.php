@@ -23,11 +23,7 @@
 </head>
 
 <body class="font-sans antialiased flex flex-col w-full h-screen overflow-scroll mb-1 bg-[#e5e5e5]">
-    @if (auth()->user()->is_admin)
-        <livewire:layout.admin_navigation />
-    @else
-        <livewire:layout.navigation />
-    @endif
+    <livewire:layout.navigation />
 
     <!-- Main Layout -->
     <div class="w-full flex-auto overflow-hidden grid grid-cols-4 md:flex-row order-3 md:order-2 mt-4 md:mt-0">

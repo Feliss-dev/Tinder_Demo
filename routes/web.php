@@ -33,6 +33,9 @@ Route::middleware('auth')->group(function () {
     // User details
     Route::get('view_my_details', [UserController::class, 'viewMyDetails'])->name('view_my_details');
 
+    // Visiting users' profile
+    Route::get('/users/{id}', [UserController::class, 'visitUserProfile'])->name('users.profile');
+
     // Personal profiles
     Route::get('/profile', [UserController::class, 'userProfile'])->name('profile');
     Route::get('/info', [UserController::class, 'showProfileForm'])->name('info');

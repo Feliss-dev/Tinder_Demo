@@ -34,34 +34,38 @@ new class extends Component {
                             {{ __('View My Profile') }}
                         </x-nav-link>
 
+                        @if (auth()->user()->is_admin)
+                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" wire:navigate>
+                                {{ __('Admin Dashboard') }}
+                            </x-nav-link>
+                        @endif
 
+                        <livewire:components.notificationdropdown/>
 
-                        @livewire('components.notificationdropdown')
+                        <button x-on:click="console.log('Test')" class="px-4 py-2">Test</button>
 
-                         <!-- Recommendations Button -->
-                         <div x-data="{ recommendationsOpen: false }" class="relative justify-center items-center mt-3">
-                            <button @click="recommendationsOpen = !recommendationsOpen" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                Recommendations
-                            </button>
-                            <div x-show="recommendationsOpen" @click.away="recommendationsOpen = false" class="absolute right-0 mt-2 bg-white rounded-md shadow-lg overflow-hidden z-20" style="width: 20rem;">
-                                @livewire('recommendations')
-                            </div>
-                        </div>
+{{--                         <!-- Recommendations Button -->--}}
+{{--                         <div x-data="{ recommendationsOpen: false }" class="relative justify-center items-center mt-3">--}}
+{{--                             <button @click="console.log('Test')" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">--}}
+{{--                                Recommendations--}}
+{{--                             </button>--}}
 
-                        <!-- Suggestions Button -->
-                        <div x-data="{ suggestionsOpen: false }" class="relative justify-center items-center mt-3">
-                            <button @click="suggestionsOpen = !suggestionsOpen" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-                                Suggestions
-                            </button>
-                            <div x-show="suggestionsOpen" @click.away="suggestionsOpen = false" class="absolute right-0 mt-2 bg-white rounded-md shadow-lg overflow-hidden z-20" style="width: 20rem;">
-                                @livewire('suggestion')
-                            </div>
-                        </div>
+{{--                             <p x-show="!recommendationsOpen">E</p>--}}
 
+{{--                            <div x-cloak x-show="recommendationsOpen" x-on:click.outside="recommendationsOpen = false" class="absolute right-0 mt-2 bg-white rounded-md shadow-lg overflow-hidden z-20" style="width: 20rem;">--}}
+{{--                                @livewire('recommendations')--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
-
-
-
+{{--                        <!-- Suggestions Button -->--}}
+{{--                        <div x-data="{ suggestionsOpen: false }" class="relative justify-center items-center mt-3">--}}
+{{--                            <button @click="suggestionsOpen = !suggestionsOpen" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">--}}
+{{--                                Suggestions--}}
+{{--                            </button>--}}
+{{--                            <div x-cloak x-show="suggestionsOpen" x-on:click.outside="suggestionsOpen = false" class="absolute right-0 mt-2 bg-white rounded-md shadow-lg overflow-hidden z-20" style="width: 20rem;">--}}
+{{--                                @livewire('suggestion')--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
 
                 </div>

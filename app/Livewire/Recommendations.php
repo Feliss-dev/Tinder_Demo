@@ -11,10 +11,6 @@ class Recommendations extends Component
     public $recommendations = [];
     public $error = null;
 
-    public function viewProfile($userId) {
-        $this->dispatch('viewProfile', $userId);
-    }
-
     public function mount(){
         $this->fetchRecommendations();
     }
@@ -22,7 +18,7 @@ class Recommendations extends Component
     public function fetchRecommendations(){
         $userId = auth()->user()->id;
         try {
-            $response = Http::post("http://host.docker.internal:5000/recommend", [
+            $response = Http::post(env('AI_RECOMMEND_URL'), [
                 'user_id' => $userId,
             ]);
 

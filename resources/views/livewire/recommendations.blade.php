@@ -19,9 +19,10 @@
                             <p class="font-medium">User ID: {{ $recommendation['user_id'] }}</p>
                             <p class="text-sm text-gray-600">Similarity: {{ number_format($recommendation['similarity'], 2) }}</p>
                         </div>
-                        <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" wire:click="viewProfile({{ $recommendation['user_id'] }})">
+
+                        <a href="{{ route('users.profile', $recommendation['user_id']) }}" class="bg-blue-500 text-white p-2 ml-2 rounded hover:bg-blue-600">
                             View Profile
-                        </button>
+                        </a>
                     </li>
                 @endforeach
             </ul>

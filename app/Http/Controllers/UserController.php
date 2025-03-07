@@ -50,6 +50,18 @@ class UserController extends Controller
         return view('layouts.user.my_details', compact('user'));
     }
 
+    public function visitUserProfile($id) {
+        $other = User::where('id', $id)->first();
+
+        if ($other) {
+            return view('layouts.user.others_user_details', [
+                'other' => $other,
+            ]);
+        } else {
+            return view('layouts.user.others_user_details_not_found');
+        }
+    }
+
     public function updateInfor(Request $request)
     {
         // Validation.

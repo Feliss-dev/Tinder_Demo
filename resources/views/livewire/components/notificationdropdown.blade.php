@@ -13,11 +13,8 @@
         </svg>
     </button>
 
-    <!-- Click Outside to Close the Dropdown -->
-    <div x-show="dropdownOpen" @click="dropdownOpen = false" class="fixed inset-0 h-full w-full z-10"></div>
-
     <!-- Dropdown Content -->
-    <div x-show="dropdownOpen" class="absolute right-0 mt-2 bg-white rounded-md shadow-lg overflow-hidden z-20"
+    <div x-show="dropdownOpen" x-on:click.outside="dropdownOpen = false" x-cloak class="absolute right-0 mt-2 bg-white rounded-md shadow-lg overflow-hidden z-20"
         style="width: 20rem;">
         <div class="py-2 max-h-72 overflow-y-auto">
             @foreach ($notifications as $notification)

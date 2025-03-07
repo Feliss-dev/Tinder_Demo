@@ -39,14 +39,6 @@ class Swiper extends Component
     #[Locked]
     public $swipedUserId;
 
-    protected $listeners = ['viewProfile'];
-
-    public function viewProfile($userId)
-{
-    $this->user = User::find($userId);
-    $this->profiles = true; // Hiển thị thông tin người dùng
-}
-
     #[On('swipedright')]
     public function swipedRight(User $user)
     {

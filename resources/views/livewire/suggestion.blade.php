@@ -14,21 +14,21 @@
         @if (count($suggestions) > 0)
             <ul class="space-y-2">
                 @foreach ($suggestions as $suggestion)
-    @if (is_array($suggestion))
-        <li class="p-3 border rounded flex justify-between items-center">
-            <div>
-                <p class="font-medium">User ID: {{ $suggestion['user_id'] }}</p>
-                <p class="text-sm text-gray-600">Shared Interests: {{ $suggestion['shared_interests'] }}</p>
-                <p class="text-sm text-gray-600">Shared Languages: {{ $suggestion['shared_languages'] }}</p>
-                <p class="text-sm text-gray-600">Same Goal: {{ $suggestion['same_goal'] }}</p>
-                <p class="text-sm text-gray-600 font-semibold">Match Score: {{ number_format($suggestion['score'], 2) }}</p>
-            </div>
-            <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-                View Profile
-            </button>
-        </li>
-    @endif
-@endforeach
+                    @if (is_array($suggestion))
+                        <li class="p-3 border rounded flex justify-between items-center">
+                            <div>
+                                <p class="font-medium">User ID: {{ $suggestion['user_id'] }}</p>
+                                <p class="text-sm text-gray-600">Shared Interests: {{ $suggestion['shared_interests'] }}</p>
+                                <p class="text-sm text-gray-600">Shared Languages: {{ $suggestion['shared_languages'] }}</p>
+                                <p class="text-sm text-gray-600">Same Goal: {{ $suggestion['same_goal'] }}</p>
+                                <p class="text-sm text-gray-600 font-semibold">Match Score: {{ number_format($suggestion['score'], 2) }}</p>
+                            </div>
+                            <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                                View Profile
+                            </button>
+                        </li>
+                    @endif
+                @endforeach
 
             </ul>
         @else

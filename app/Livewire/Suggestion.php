@@ -18,7 +18,7 @@ class Suggestion extends Component
     public function fetchSuggestions(){
         $userId = auth()->user()->id;
         try {
-            $response = Http::post('http://host.docker.internal:5000/suggestions', [
+            $response = Http::post(env('AI_SUGGESTIONS_URL'), [
                 'user_id' => $userId,
             ]);
             Log::info('Sending request to FastAPI', ['user_id' => $userId]);

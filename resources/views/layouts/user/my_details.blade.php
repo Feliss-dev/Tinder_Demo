@@ -22,18 +22,10 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-
-
-
-
 </head>
 
 <body >
-    @if (auth()->user()->is_admin)
-        <livewire:layout.admin_navigation />
-    @else
-        <livewire:layout.navigation />
-    @endif
+    <livewire:layout.navigation />
 
     <div class="wrapper my-6 bg-white ">
         <div class="container">
