@@ -25,7 +25,7 @@
 
         {{-- Hiding input --}}
         <input type="hidden" autocomplete="false" style="display: none">
-        <input type="file" id="file-upload" class="hidden" wire:model="files" multiple>
+        <input type="file" id="file-upload" wire:model="files" class="hidden" multiple>
 
         <div class="grid grid-cols-12 items-center">
             {{-- File Uploading --}}

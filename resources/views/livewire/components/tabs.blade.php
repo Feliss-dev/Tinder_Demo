@@ -14,7 +14,9 @@
         <div class="flex flex-col h-full bg-white">
             <div class="flex-1 flex flex-col">
                 <!-- Tab Buttons -->
-                <header class="flex-grow-0 flex-shrink-0 basis-0 flex items-center gap-5 mb-2 p-4 sticky top-0 bg-white z-10">
+                {{-- flex flex-row max-w-full h-full overflow-x-auto overflow-y-hidden whitespace-nowrap p-1 gap-2 --}}
+                <header class="flex flex-row max-w-full overflow-x-auto overflow-y-hidden whitespace-nowrap px-4 pt-3 pb-1 gap-5 items-center webkit-small-scrollbar">
+{{--                <header class="flex-grow-0 flex-shrink-0 basis-0 flex items-center gap-5 mb-2 p-4 sticky top-0 bg-white z-10">--}}
                     <button @click="tab = 'matches'" :class="tab === 'matches' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5" >
                         Matches
 
@@ -34,10 +36,18 @@
                             </span>
                         @endif
                     </button>
+
+                    <button @click="tab='messages'" :class="tab === 'messages' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5" >
+                        Recommends
+                    </button>
+
+                    <button @click="tab='messages'" :class="tab === 'messages' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5" >
+                        Suggests
+                    </button>
                 </header>
 
                 <!-- Tab Panel -->
-                <div class="overflow-y-scroll" style="flex: 1 1 0;"> <!-- Must be 0, not 0% -->
+                <div class="overflow-y-scroll webkit-small-scrollbar" style="flex: 1 1 0;"> <!-- Must be 0, not 0% -->
                     <div x-show="tab == 'matches'" class="grid grid-cols-3 gap-2 p-2">
                         @foreach ($matches as $i=> $match)
                             <div wire:click="createConversation('{{$match->id}}')" class="relative cursor-pointer">

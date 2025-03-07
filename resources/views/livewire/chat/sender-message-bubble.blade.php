@@ -51,7 +51,7 @@
                         <div class="pt-1 ml-auto" x-data="{ showPreviewModal: false }">
                             <img
                                 src="{{ asset('storage/' . $file) }}"
-                                alt="Uploaded File"
+                                alt="{{$file}}"
                                 class="object-cover cursor-pointer max-h-[220px] w-auto ml-auto"
 
                                 x-on:click="showPreviewModal = true"

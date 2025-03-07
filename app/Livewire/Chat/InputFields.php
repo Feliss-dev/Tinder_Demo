@@ -23,7 +23,7 @@ class InputFields extends Component
     public Conversation $conversation;
     public User $receiver;
 
-    public $files;
+    public $files = [];
     public $allFiles = [];
 
     public Message|null $replyingMessage = null;

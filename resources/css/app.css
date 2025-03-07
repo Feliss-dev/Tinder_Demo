@@ -25,4 +25,22 @@
     .admin-sidebar-tab-btn {
         @apply hover:bg-gray-200 active:bg-gray-300 flex justify-start items-center h-14 p-3
     }
+
+    .webkit-small-scrollbar::-webkit-scrollbar {
+        width: 7px;
+        height: 7px;
+    }
+
+    .webkit-small-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .webkit-small-scrollbar::-webkit-scrollbar-thumb {
+        border-radius: 100vh;
+        background: #888;
+    }
+
+    .webkit-small-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
 }

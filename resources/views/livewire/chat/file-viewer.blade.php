@@ -1,5 +1,5 @@
 <div @class(['h-48', 'hidden' => empty($files)])>
-    <div class="flex flex-row max-w-full h-full overflow-x-auto overflow-y-hidden whitespace-nowrap p-1 gap-2.5">
+    <div class="flex flex-row max-w-full h-full overflow-x-auto overflow-y-hidden whitespace-nowrap p-1 gap-2">
         @foreach ($files as $index => $file)
             {{-- TODO: Handle files that isn't image --}}
             <div class="relative h-full aspect-square border-2 border-gray-500 rounded-xl p-1 grid-flow-col" x-data="{ displayExtra: false }" @mouseleave="displayExtra = false;" @mouseover="displayExtra = true;">
