@@ -81,7 +81,7 @@
             </div>
 
             {{-- Carousel --}}
-            <div class="relative min-h-[50svh] w-full overflow-hidden">
+            <div class="relative h-full w-full overflow-hidden">
                 <template x-for="(image, index) in images" :key="image.path">
                     <div x-cloak x-show="imageIndex == index" class="absolute inset-0" x-transition.opacity.duration.500ms>
                         <img class="absolute w-full h-full inset-0 object-cover text-on-surface dark:text-on-surface-dark" x-bind:src="image.url" />
