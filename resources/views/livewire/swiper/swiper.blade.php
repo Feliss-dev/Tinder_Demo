@@ -1,12 +1,10 @@
 <div id="tinder" class="m-auto md:p-8 w-full h-full relative flex overflow-hidden">
     <!-- Filtering Panel -->
-    <div class="mt-4 ">
+    <div>
         <form wire:submit.prevent="applyFilters"
               class="bg-white p-8 rounded-3xl shadow-xl space-y-8 w-full max-w-4xl  border-pink-500 h-auto">
 
             <h2 class="text-xl font-bold text-gray-800 text-center mb-6">Find Your Match</h2>
-
-
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Cột 1 -->
@@ -122,7 +120,7 @@
             </div>
         </form>
     </div>
-    
+
     <!-- Swiper -->
     <div class="relative h-full w-full md:w-96 m-auto flex items-center justify-center">
         @if ($users->isEmpty())
@@ -697,7 +695,7 @@
     </div>
 
     <!-- Match popup modal -->
-    <div x-data="{ modalOpen: false }" @keydown.escape.window="modalOpen = false"
+    <div x-cloak x-data="{ modalOpen: false }" @keydown.escape.window="modalOpen = false"
         @close-match-modal.window="modalOpen=false" @match-found.window="modalOpen=true"
         class="relative z-50 w-auto h-auto">
 

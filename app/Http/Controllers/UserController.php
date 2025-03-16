@@ -12,6 +12,7 @@ use App\Models\Language;
 use App\Models\UserImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -46,8 +47,7 @@ class UserController extends Controller
 
     public function viewMyDetails()
     {
-        $user = Auth::user();
-        return view('layouts.user.my_details', compact('user'));
+        return view('layouts.user.user_details', ['user' => auth()->user()]);
     }
 
     public function visitUserProfile($id) {

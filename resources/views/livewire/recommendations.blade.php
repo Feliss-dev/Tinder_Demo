@@ -1,35 +1,40 @@
-<div class="p-4 bg-white shadow rounded z-50 " id="recommendations-content" x-show="recommendationsOpen" style="max-height: 300px; overflow-y: auto;">
-    <h2 class="text-xl font-semibold mb-4">Recommended Users</h2>
+<div class="h-full" id="recommendations-content">
+    @if ($recommendations && count($recommendations) > 0)
+        <ul class="space-y-2">
+            @foreach ($recommendations as $recommendation)
+                @php($recommendedUser = \App\Models\User::where('id', $recommendation['user_id'])->first())
 
-    <!-- Nút bấm để gửi yêu cầu -->
-    <button
-        wire:click="fetchRecommendations"
-        class="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-    >
-        Get Recommendations
-    </button>
+                <a class="p-2.5 w-full h-16 bg-white flex flex-row" href="{{ route('users.profile', $recommendation['user_id'])  }}">
+                    <div class="flex flex-col items-center justify-center">
+                        <x-avatar class="w-10 h-10" src="{{$recommendedUser->images}}" alt="{{$recommendedUser->name}}" />
+                    </div>
 
-    <!-- Hiển thị danh sách người dùng được đề xuất -->
-    @if ($recommendations)
-        @if (count($recommendations) > 0)
-            <ul class="space-y-2">
-                @foreach ($recommendations as $recommendation)
-                    <li class="p-3 border rounded flex justify-between items-center">
-                        <div>
-                            <p class="font-medium">User ID: {{ $recommendation['user_id'] }}</p>
-                            <p class="text-sm text-gray-600">Similarity: {{ number_format($recommendation['similarity'], 2) }}</p>
-                        </div>
-
-                        <a href="{{ route('users.profile', $recommendation['user_id']) }}" class="bg-blue-500 text-white p-2 ml-2 rounded hover:bg-blue-600">
-                            View Profile
-                        </a>
-                    </li>
-                @endforeach
-            </ul>
-        @else
-            <p class="text-gray-600">No recommendations found for you at this time.</p>
-        @endif
+                    <div class="ml-2 h-full flex-grow-0">
+                        <p class="text-black text-lg">{{$recommendedUser->name}}</p>
+                        <p class="text-black text-sm">Similarity: {{ number_format($recommendation['similarity'] * 100, 3) }}%</p>
+                    </div>
+                </a>
+            @endforeach
+        </ul>
+    @elseif ($error)
+        <div class="flex flex-col justify-center items-center h-full">
+            <p class="text-center">Error: {{$error}}</p>
+            <button
+                wire:click="fetchRecommendations"
+                class="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            >
+                Retry
+            </button>
+        </div>
     @else
-        <p class="text-red-600">Failed to load recommendations. Please try again later.</p>
+        <div class="flex flex-col justify-center items-center h-full">
+            <p class="text-center">Well this is awkward... Maybe you can request some recommendation from us.</p>
+            <button
+                wire:click="fetchRecommendations"
+                class="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            >
+                Request Recommendations
+            </button>
+        </div>
     @endif
 </div>

@@ -27,8 +27,8 @@
     }
 
     .webkit-small-scrollbar::-webkit-scrollbar {
-        width: 7px;
-        height: 7px;
+        width: 5px;
+        height: 5px;
     }
 
     .webkit-small-scrollbar::-webkit-scrollbar-track {

@@ -1,4 +1,4 @@
-<div x-data="{ showChatbot: false }" class="relative">
+<div x-data="{ showChatbot: false }" class="relative h-0">
     <button id="chatbot-toggler" @click="showChatbot = !showChatbot"
         class="fixed bottom-8 right-8 bg-pink-500 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:scale-110 transition-transform duration-300 ">
         <!-- Hint Text -->
@@ -17,7 +17,7 @@
         </span>
     </button>
 
-    <div x-show="showChatbot" x-transition
+    <div x-cloak x-show="showChatbot" x-transition
         class="chatbot-popup fixed bottom-20 right-8 bg-white shadow-lg rounded-lg w-96 z-50">
         <div class="chat-header bg-pink-500 p-4 flex justify-between items-center rounded-lg">
             <span class="logo-text text-white font-semibold text-lg">Cupid AI Chatbot</span>

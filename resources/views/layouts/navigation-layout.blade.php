@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +7,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    {{-- Favicon --}}
+    <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -21,13 +19,16 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased flex flex-col w-full h-screen overflow-hidden mb-1 bg-[#e5e5e5]">
-    <livewire:layout.navigation />
+<body class="font-sans antialiased bg-gray-100 flex flex-col h-screen overflow-hidden">
+    <livewire:layout.navigation @class(['flex-grow-0 flex-shrink-0 basis-auto'])/>
 
-    
+    <div class="h-full flex-grow flex-shrink basis-auto overflow-auto">
+        @yield('content')
+    </div>
 
     @livewireScripts
 </body>

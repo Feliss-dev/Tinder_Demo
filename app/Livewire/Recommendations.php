@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -11,22 +12,24 @@ class Recommendations extends Component
     public $recommendations = [];
     public $error = null;
 
-    public function mount(){
+    public function mount() {
         $this->fetchRecommendations();
     }
 
-    public function fetchRecommendations(){
+    public function fetchRecommendations() {
         $userId = auth()->user()->id;
         try {
             $response = Http::post(env('AI_RECOMMEND_URL'), [
                 'user_id' => $userId,
             ]);
 
-            Log::info('Sending request to FastAPI', ['user_id' => $userId]);
-            Log::info('API response: ' . $response->body());
+            if (App::environment('local')) {
+                Log::info('Sending request to FastAPI', ['user_id' => $userId]);
+                Log::info('API response: ' . $response->body());
+            }
 
             if ($response->ok()) {
-                $this->recommendations = $response->json(); // Lưu danh sách recommendations
+                $this->recommendations = $response->json();
                 $this->error = null;
             } else {
                 $this->recommendations = [];

@@ -42,8 +42,6 @@ new class extends Component {
 
                         <livewire:components.notificationdropdown/>
 
-                        <button x-on:click="console.log('Test')" class="px-4 py-2">Test</button>
-
 {{--                         <!-- Recommendations Button -->--}}
 {{--                         <div x-data="{ recommendationsOpen: false }" class="relative justify-center items-center mt-3">--}}
 {{--                             <button @click="console.log('Test')" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">--}}
