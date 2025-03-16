@@ -1,6 +1,6 @@
 <div class="w-full h-full">
     @php
-        $images = json_decode($user->images, true) ?? [];
+        $images = json_decode($user->images, false) ?? [];
         $imageCount = count($images);
     @endphp
 

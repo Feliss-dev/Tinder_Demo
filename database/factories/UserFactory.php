@@ -25,20 +25,14 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => bcrypt('password'), // mật khẩu mặc định
+            'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
-            'birth_date' => $this->faker->date('Y-m-d'),
-
+            'birth_date' => $this->faker->date(),
             'bio' => $this->faker->text(),
-
-            'images' => 'https://randomuser.me/api/portraits/women/' . rand(0, 99) . '.jpg', // Link ảnh giả
             'is_fake' => false,
             'is_admin' => false,
          ];
     }
-
-    // Configurate the model
-
 
     /**
      * Indicate that the model's email address should be unverified.
