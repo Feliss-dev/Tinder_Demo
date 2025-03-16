@@ -1,34 +1,34 @@
-<!DOCTYPE html>
+@extends('layouts.navigation-layout')
 
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@section('content')
+    <div class="w-full">
+        <div class="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
+            {{-- Display the current avatar --}}
+            <div class="flex flex-col items-center">
+                <div class="w-32 h-32 relative">
+                    @if ($user->activeAvatar)
+                        <img class="w-full h-full rounded-full object-cover border-4 border-red-500"
+                             src="{{ asset('storage/' . $user->activeAvatar->path) }}"
+                             alt="Avatar">
+                    @else
+                        <svg viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" class="w-full h-full rounded-full border-4 border-red-500">
+                            <circle r="25" cx="75" cy="50" stroke="black" stroke-width="8" fill="none" />
+                            <path stroke="black" stroke-width="8" d="M0 150 C 30 70, 120 70, 150 150" fill="none" />
+                        </svg>
+                    @endif
+                </div>
+                <h2 class="mt-4 text-2xl font-bold text-gray-800">{{ $user->name }}</h2>
+            </div>
+        </div>
+    </div>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <p class="text-3xl font-bold text-center mt-4">Profile</p>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <div class="flex flex-row w-full px-16 gap-8 my-4">
+        <x-user-information-panel class="flex flex-col flex-1 gap-3 bg-white shadow-lg p-4 rounded-lg" :user="$user"/>
 
-    {{-- Favicon --}}
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
-</head>
-
-<body class="font-sans antialiased flex flex-col w-full h-screen overflow-hidden mb-1 bg-[#e5e5e5]">
-    <livewire:layout.navigation />
-
-    
-
-    @livewireScripts
-</body>
-</html>
+        <div class="flex-1 bg-white shadow-lg p-4 rounded-lg">
+            <livewire:components.user-image-carousel :user="$user" :editable="true"/>
+        </div>
+    </div>
+@endsection

@@ -51,11 +51,11 @@ class UserController extends Controller
     }
 
     public function visitUserProfile($id) {
-        $other = User::where('id', $id)->first();
+        $user = User::where('id', $id)->first();
 
-        if ($other) {
+        if ($user) {
             return view('layouts.user.others_user_details', [
-                'other' => $other,
+                'user' => $user,
             ]);
         } else {
             return view('layouts.user.others_user_details_not_found');
