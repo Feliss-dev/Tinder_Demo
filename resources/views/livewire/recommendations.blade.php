@@ -1,10 +1,10 @@
-<div class="h-full" id="recommendations-content">
+<div class="h-full">
     @if ($recommendations && count($recommendations) > 0)
         <ul class="space-y-2">
             @foreach ($recommendations as $recommendation)
                 @php($recommendedUser = \App\Models\User::where('id', $recommendation['user_id'])->first())
 
-                <a class="p-2.5 w-full h-16 bg-white flex flex-row" href="{{ route('users.profile', $recommendation['user_id'])  }}">
+                <a class="p-2.5 w-full bg-white hover:bg-gray-200 focus:bg-gray-400 flex flex-row h-full" href="{{ route('users.profile', $recommendation['user_id'])  }}">
                     <div class="flex flex-col items-center justify-center">
                         <x-avatar class="w-10 h-10" src="{{$recommendedUser->images}}" alt="{{$recommendedUser->name}}" />
                     </div>
@@ -19,20 +19,14 @@
     @elseif ($error)
         <div class="flex flex-col justify-center items-center h-full">
             <p class="text-center">Error: {{$error}}</p>
-            <button
-                wire:click="fetchRecommendations"
-                class="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-            >
+            <button wire:click="fetchRecommendations" class="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
                 Retry
             </button>
         </div>
     @else
         <div class="flex flex-col justify-center items-center h-full">
             <p class="text-center">Well this is awkward... Maybe you can request some recommendation from us.</p>
-            <button
-                wire:click="fetchRecommendations"
-                class="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-            >
+            <button wire:click="fetchRecommendations" class="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
                 Request Recommendations
             </button>
         </div>

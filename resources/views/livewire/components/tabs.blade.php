@@ -131,7 +131,7 @@
                 <livewire:recommendations />
             </div>
 
-            <div x-show="tab === 'suggest'" x-cloak class="px-2">
+            <div x-show="tab === 'suggest'" x-cloak class="px-2 h-full flex flex-col">
                 <livewire:suggestion />
             </div>
         </div>

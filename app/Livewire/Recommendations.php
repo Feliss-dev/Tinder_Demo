@@ -43,8 +43,6 @@ class Recommendations extends Component
     }
     public function render()
     {
-        return view('livewire.recommendations', [
-            'recommendations' => $this->recommendations,
-        ]);
+        return view('livewire.recommendations');
     }
 }

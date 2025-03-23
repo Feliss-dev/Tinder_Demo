@@ -41,6 +41,17 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->afterLoadingEnvironment(function() use ($app) {
+    $rootPath = $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__);
+    $environment = env('APP_ENV');
+    $envPath = $rootPath . '.env';
+
+    if ($environment && file_exists($envPath)) {
+        $dotenv = \DotEnv\Dotenv::createMutable($envPath);
+        $dotenv->load();
+    }
+});
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
