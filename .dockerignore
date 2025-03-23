@@ -1,6 +1,7 @@
 **/.git
 .env.example
 Dockerfile
+*.dockerfile
 .gitignore
 .gitattributes
 .env.local

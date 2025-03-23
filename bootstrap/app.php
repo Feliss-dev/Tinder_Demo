@@ -43,6 +43,22 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
+| Developing utilities.
+|--------------------------------------------------------------------------
+*/
+
+if (Illuminate\Support\Facades\App::environment('local')) {
+    $dotenv = Dotenv\Dotenv::createImmutable(base_path(), '.env.local');
+
+    try {
+        $dotenv->load();
+    } catch (\Dotenv\Exception\InvalidPathException $e) {
+        // No custom .env file found for this domain
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
 | Return The Application
 |--------------------------------------------------------------------------
 |
