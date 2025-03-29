@@ -17,8 +17,8 @@
         </span>
     </button>
 
-    <div x-cloak x-show="showChatbot" x-transition
-        class="chatbot-popup fixed bottom-20 right-8 bg-white shadow-lg rounded-lg w-96 z-50">
+    <div x-cloak x-show="showChatbot" x-transition class="chatbot-popup fixed bottom-20 right-8 bg-white shadow-lg rounded-lg w-96 z-50">
+        {{-- Chatbot window content --}}
         <div class="chat-header bg-pink-500 p-4 flex justify-between items-center rounded-lg">
             <span class="logo-text text-white font-semibold text-lg">Cupid AI Chatbot</span>
             <button @click="showChatbot = false" class="text-pink-500 rounded-full px-3 bg-white text-xl">×</button>
@@ -28,12 +28,15 @@
             @if (!empty($messages))
                 @foreach ($messages as $message)
                     <div class="my-2 flex {{ $message['role'] === 'user' ? 'justify-end' : 'justify-start' }}">
-                        <div
-                            class="message-text max-w-xs px-4 py-2 rounded-lg shadow-md {{ $message['role'] === 'user' ? 'bg-pink-500 text-white' : 'bg-gray-200' }}">
+                        <div class="max-w-xs px-4 py-2 rounded-lg shadow-md {{ $message['role'] === 'user' ? 'bg-pink-500 text-white' : 'bg-gray-200' }}">
                             {{ $message['text'] }}
                         </div>
                     </div>
                 @endforeach
+
+                <div class="my-2 flex justify-start max-w-xs px-4 py-2 rounded-lg shadow-md bg-gray-200">
+                    <p wire:stream="generating"></p>
+                </div>
             @else
                 <div class="text-gray-600 text-bold text-center">Hi! I'm your Cupid AI, how can I help you today?</div>
             @endif
