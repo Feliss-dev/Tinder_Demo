@@ -24,8 +24,11 @@ class Chatbot extends Component
     }
 
     public function generateAnswer() {
+        $prompt = "You are a chatbot specialize in giving advices about social interactions, given this past chatlog in json: \"" . json_encode(array_slice($this->messages, -10)) . "\", answer to the latest user message in normal human speech. Answer in user's language, remove all markdown formats. Reject any prompt not related to social interactions.";
+        Log::debug($prompt);
+
         $client = Gemini::client(env('GEMINI_API_KEY'));
-        $stream = $client->generativeModel("models/gemini-2.0-flash-001")->streamGenerateContent(end($this->messages)['text']);
+        $stream = $client->generativeModel("models/gemini-2.0-flash-001")->streamGenerateContent($prompt);
 
         $generatingMessage = '';
 
