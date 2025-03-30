@@ -15,12 +15,12 @@ switch ($align) {
 }
 @endphp
 
-<div x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false" x-on:keydown.escape.prevent.stop="open = false;" {{ $attributes->merge(['class' => 'relative']) }}>
+<div x-data="{ open: false }" x-on:keydown.escape.prevent.stop="open = false;" {{ $attributes->merge(['class' => 'relative']) }}>
     <div @click="open = true">
         {{ $trigger }}
     </div>
 
-    <div x-show="open"
+    <div x-cloak x-show="open" x-on:click.outside="open = false;"
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 scale-95"
             x-transition:enter-end="opacity-100 scale-100"
