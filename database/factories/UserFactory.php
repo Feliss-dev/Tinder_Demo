@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Enums\RelationshipGoalsEnum;
 use App\Models\Language;
@@ -20,7 +21,6 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
@@ -31,7 +31,8 @@ class UserFactory extends Factory
             'bio' => $this->faker->text(),
             'is_fake' => false,
             'is_admin' => false,
-         ];
+            'images' => "[]",   // TODO: Generate fake image ($this->faker->image() doesn't work and returns false/empty path -> no image downloaded)
+        ];
     }
 
     /**

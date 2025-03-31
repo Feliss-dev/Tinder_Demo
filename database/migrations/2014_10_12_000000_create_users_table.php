@@ -21,7 +21,7 @@ return new class extends Migration
 
             $table->text('bio')->nullable();
 
-            $table->string('images')->nullable();
+            $table->json('images')->nullable();
             $table->boolean('is_fake')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
@@ -39,7 +39,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('user_preferences');
-        Schema::dropIfExists('user_images');
         Schema::dropIfExists('users');
     }
 };

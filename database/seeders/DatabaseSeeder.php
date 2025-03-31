@@ -18,11 +18,9 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
 
-
-
     public function run(): void
     {
-        // Seed data cho các bảng liên quan
+        // Run these seeder classes.
         $this->call([
             GenderSeeder::class,
             DatingGoalSeeder::class,
@@ -31,15 +29,15 @@ class DatabaseSeeder extends Seeder
             DesiredGenderSeeder::class,
         ]);
 
-        // Tạo người dùng giả với thông tin đầy đủ
-        $users = User::factory(200)->state(new Sequence(fn (Sequence $sequence) => [
+        // Create fake users.
+        $users = User::factory(50)->state(new Sequence(fn (Sequence $sequence) => [
             'birth_date' => Carbon::createFromTimestamp(rand(Carbon::now()->subYears(60)->timestamp, Carbon::now()->subYears(20)->timestamp))
         ]))->create([
             'is_fake' => true,
             'is_admin' => false,
         ]);
 
-        // Seed người dùng test và admin test
+        // Create test user and admin usr.
         $testUser = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -52,7 +50,6 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true,
         ]);
 
-        // Gán các thuộc tính khác cho từng người dùng sau khi tạo
         foreach ($users as $user) {
             // Gán Gender (vào bảng pivot gender_user)
             $gender = \App\Models\Gender::inRandomOrder()->first()->id;
