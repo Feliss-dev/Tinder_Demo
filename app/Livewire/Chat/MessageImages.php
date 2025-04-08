@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class MessageImages extends Component
 {
-    public Message $message;
+    public string $images;
     public string $side;
 
     public function render()

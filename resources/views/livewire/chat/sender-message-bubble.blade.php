@@ -43,7 +43,7 @@
                 </div>
 
                 @if (!empty(json_decode($message->files)))
-                    <livewire:chat.message-images :$message :side="'sender'"/>
+                    <livewire:chat.message-images :images="$message->files" :side="'sender'"/>
                 @endif
             </div>
         @endif

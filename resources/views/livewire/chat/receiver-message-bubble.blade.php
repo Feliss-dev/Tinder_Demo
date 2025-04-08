@@ -25,7 +25,7 @@
                 </div>
 
                 @if (!empty(json_decode($message->files)))
-                    <livewire:chat.message-images :$message :side="'receiver'"/>
+                    <livewire:chat.message-images :images="$message->files" :side="'receiver'"/>
                 @endif
             </div>
 

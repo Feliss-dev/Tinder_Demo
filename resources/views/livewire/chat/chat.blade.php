@@ -134,7 +134,7 @@
                     id="conversation"
                     class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-scroll flex-grow overflow-x-hidden w-full my-auto" style="flex: 1 1 0;">
 
-                    <livewire:chat.conversation-container :$conversation/>
+                    <livewire:chat.conversation-container :$conversation :$receiver/>
 
                     <div x-cloak x-show="imagePreview.openModal" class="fixed inset-0 flex items-center justify-center z-50">
                         <div class="bg-black bg-opacity-75 w-full h-full" x-on:click.self="imagePreview.openModal = false">

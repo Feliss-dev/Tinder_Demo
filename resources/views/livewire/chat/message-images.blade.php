@@ -1,6 +1,5 @@
 @php
-$images = json_decode($message->files, true);
-$displayImages = array_slice($images, 0, 4, true);
+$displayImages = array_slice(json_decode($images, true), 0, 4, true);
 @endphp
 
 <div class="relative" style="width: {{200 + (count($displayImages) - 1) * 25}}px; height: {{200 + (count($displayImages) - 1) * 25}}px;">
@@ -10,7 +9,7 @@ $displayImages = array_slice($images, 0, 4, true);
                 src="{{ asset('storage/' . $displayImage) }}"
                 class="object-cover cursor-pointer w-full h-full absolute rounded-xl"
 
-                x-on:click="imagePreview = { openModal: true, images: {{ $message->files }}, index: {{$index}} }"
+                x-on:click="imagePreview = { openModal: true, images: {{ $images }}, index: {{$index}} }"
             />
         </div>
     @endforeach
