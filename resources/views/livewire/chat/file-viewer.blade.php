@@ -5,7 +5,7 @@
             <div class="relative h-full aspect-square border-2 border-gray-500 rounded-xl p-1 grid-flow-col" x-data="{ displayExtra: false }" @mouseleave="displayExtra = false;" @mouseover="displayExtra = true;">
                 <div class="w-full h-full overflow-hidden flex flex-col">
                     <div class="overflow-hidden" style="flex: 1 1 auto">
-                        <img src="{{$file->temporaryUrl()}}" alt="{{$file->getClientOriginalName()}}}" class="h-full mx-auto object-fit-contain" style="flex: 0 1 auto" />
+                        <img src="{{$file->temporaryUrl()}}" alt="{{$file->getClientOriginalName()}}}" class="h-full mx-auto object-cover" style="flex: 0 1 auto" />
                     </div>
                     <p style="flex: 0 1 1rem">{{$file->getClientOriginalName()}}</p>
                 </div>

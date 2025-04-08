@@ -147,7 +147,7 @@
                         <p @class(['text-xs text-gray-500', 'ml-auto' => $lastMessage->sender_id == auth()->id()])>Sent at {{ $lastMessage->created_at }}</p>
                     @endif
 
-                    <div x-show="imagePreview.openModal" class="fixed inset-0 flex items-center justify-center z-50">
+                    <div x-cloak x-show="imagePreview.openModal" class="fixed inset-0 flex items-center justify-center z-50">
                         <div class="bg-black bg-opacity-75 w-full h-full" x-on:click.self="imagePreview.openModal = false">
                             <div class="absolute inset-0 flex justify-center items-center">
                                 <template x-for="(image, index) in imagePreview.images" :key="index">
@@ -179,7 +179,7 @@
                         </div>
                     </div>
 
-                    <div x-show="messageDelete.openModal" class="fixed inset-0 flex items-center justify-center z-50" x-cloak>
+                    <div x-cloak x-show="messageDelete.openModal" class="fixed inset-0 flex items-center justify-center z-50">
                         <div class="bg-black bg-opacity-65 w-full h-full flex justify-center items-center" x-on:click.self="openDeleteModal = false">
                             <div class="bg-gray-700 p-8 rounded-xl">
                                 <h1 class="text-white font-bold text-xl">Delete Message</h1>

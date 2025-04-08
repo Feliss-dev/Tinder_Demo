@@ -8,7 +8,7 @@ use Livewire\Component;
 class MessageImages extends Component
 {
     public Message $message;
-    public string $alignment;
+    public string $side;
 
     public function render()
     {

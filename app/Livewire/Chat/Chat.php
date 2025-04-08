@@ -5,6 +5,7 @@ namespace App\Livewire\Chat;
 use App\Events\ConversationMessageSent;
 use App\Models\Swipe;
 use App\Models\Message;
+use App\Models\User;
 use Livewire\Component;
 use App\Models\SwipeMatch;
 use Livewire\Attributes\On;
@@ -18,11 +19,11 @@ class Chat extends Component
     const PAGINATE_STEP = 25;
 
     public $chat;
-    public $conversation;
-    public $receiver;
+    public Conversation $conversation;
+    public User $receiver;
 
     public $loadedMessages;
-    public $loadAmount = self::PAGINATE_STEP;
+    public int $loadAmount = self::PAGINATE_STEP;
 
     #[On('echo-private:conversation.{conversation.id},.conversation-sent')]
     function listenBroadcastedMessage($event) {

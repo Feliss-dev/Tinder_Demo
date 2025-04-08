@@ -1,7 +1,7 @@
 <div class="w-[85%] mr-auto" x-data="{ hover: false, openDropdown: false }" @mouseover="hover = true" @mouseleave="hover = false;">
     <div class="flex flex-row items-center justify-start">
         @if ($message->delete_status == 1)
-            <div class='rounded-2xl w-fit border-dashed border-2 border-black mr-auto'>
+            <div class='rounded-2xl w-fit border-dashed border-2 border-black mr-auto select-none'>
                 <p class="p-2 text-black">Deleted!</p>
             </div>
         @else
@@ -24,8 +24,8 @@
                     @endif
                 </div>
 
-                @if (!empty($message->files))
-                    <livewire:chat.message-images :$message :alignment="'mr-auto'"/>
+                @if (!empty(json_decode($message->files)))
+                    <livewire:chat.message-images :$message :side="'receiver'"/>
                 @endif
             </div>
 
