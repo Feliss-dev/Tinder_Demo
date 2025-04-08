@@ -92,7 +92,7 @@
             {{-- Expand Modal --}}
             <div x-cloak x-show="modalImageIndex != -1" class="fixed top-0 left-0 w-screen h-screen bg-[#212121D0] z-[200] overflow-auto">
                 <button class="absolute top-2 right-2 rounded-full size-8 bg-[#1A1A1AD0] p-2" @click="modalImageIndex = -1">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
                         <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
                     </svg>
                 </button>

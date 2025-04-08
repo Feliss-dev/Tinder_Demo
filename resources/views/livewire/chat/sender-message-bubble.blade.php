@@ -13,7 +13,7 @@
                 </button>
 
                 <div x-cloak x-show="openDropdown" x-on:click.outside="openDropdown = false" class="absolute top-4 right-6 min-w-48 rounded-lg shadow-sm mt-2 z-10 bg-white p-1.5 outline-none border border-gray-200">
-                    <button @click="openDeleteModal = true; openDropdown = false; deleteMessageID = {{$message->id}}" class="p-2 w-full flex items-center rounded-md text-left text-red-500 hover:bg-gray-200">
+                    <button @click="messageDelete = { openModal: true, id: {{$message->id}} }; openDropdown = false;" class="p-2 w-full flex items-center rounded-md text-left text-red-500 hover:bg-gray-200">
                         Delete
                     </button>
 
@@ -47,58 +47,9 @@
                         $filenames = json_decode($message->files, true);
                     @endphp
 
-                    @foreach ($filenames as $file)
-                        <div class="pt-1 ml-auto" x-data="{ showPreviewModal: false }">
-                            <img
-                                src="{{ asset('storage/' . $file) }}"
-                                alt="{{$file}}"
-                                class="object-cover cursor-pointer max-h-[220px] w-auto ml-auto"
-
-                                x-on:click="showPreviewModal = true"
-                            />
-
-                            <!-- Zooming Modal -->
-                            <div x-show="showPreviewModal"
-                                 class="fixed inset-0 flex items-center justify-center z-50"
-
-                                 x-transition:enter="ease-out duration-300"
-                                 x-transition:enter-start="opacity-0 scale-90"
-                                 x-transition:enter-end="opacity-100 scale-100"
-                                 x-transition:leave="ease-in duration-200"
-                                 x-transition:leave-start="opacity-100 scale-100"
-                                 x-transition:leave-end="opacity-0 scale-90">
-                                <div class="bg-black bg-opacity-75 w-full h-full flex justify-center items-center"
-                                     x-on:click.self="showPreviewModal = false">
-                                    <img src="{{ asset('storage/' . $file) }}"
-                                         alt="Zoomed Image"
-                                         class="max-w-full max-h-full object-contain"
-                                    />
-
-                                    <button x-on:click="showPreviewModal = false"
-                                            class="absolute top-2 right-2 text-white text-2xl cursor-pointer bg-rose-600 bg-opacity-50 p-2 rounded-full focus:outline-none hover:bg-opacity-75">
-                                        &times;
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+                    <livewire:chat.message-images :$message :alignment="'ml-auto'"/>
                 @endif
             </div>
         @endif
     </div>
-
-{{--    <div x-show="openDeleteModal" class="fixed inset-0 flex items-center justify-center z-50" x-cloak>--}}
-{{--        <div class="bg-black bg-opacity-65 w-full h-full flex justify-center items-center" x-on:click.self="openDeleteModal = false">--}}
-{{--            <div class="bg-gray-700 p-8 rounded-xl">--}}
-{{--                <h1 class="text-white font-bold text-xl">Delete Message</h1>--}}
-
-{{--                <p class="text-white mt-4">Are you sure you want to delete this message? This action cannot be reverted on normal circumstance.</p>--}}
-
-{{--                <div class="flex justify-end gap-6 mt-4">--}}
-{{--                    <button class="bg-red-500 hover:bg-red-700 rounded-md px-6 py-2 text-white" @click="openDeleteModal = false" wire:click="delete">Delete</button>--}}
-{{--                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="openDeleteModal = false">Cancel</button>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
 </div>

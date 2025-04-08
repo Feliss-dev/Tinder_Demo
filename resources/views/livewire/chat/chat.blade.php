@@ -67,7 +67,6 @@
                        </span>
                    </div>
 
-
                     <div class="ml-auto flex items-center gap-2  px-2">
                         <x-dropdown align="left">
                             <x-slot name="trigger">
@@ -99,7 +98,24 @@
                     </div>
                 </header>
 
-                <section x-data="{ openDeleteModal: false, deleteMessageID: -1 }"
+                <section x-data="{
+                    messageDelete: {
+                        openModal: false,
+                        id: -1
+                    },
+                    imagePreview: {
+                        openModal: false,
+                        images: [],
+                        index: 0,
+                    },
+
+                    previousImage() {
+                        this.imagePreview.index = (this.imagePreview.index + 1) % this.imagePreview.images.length;
+                    },
+
+                    nextImage() {
+                        this.imagePreview.index = (this.imagePreview.index - 1 + this.imagePreview.images.length) % this.imagePreview.images.length;
+                    }}"
                     @scroll="
                     scrollTop = $el.scrollTop;
 
@@ -131,7 +147,39 @@
                         <p @class(['text-xs text-gray-500', 'ml-auto' => $lastMessage->sender_id == auth()->id()])>Sent at {{ $lastMessage->created_at }}</p>
                     @endif
 
-                    <div x-show="openDeleteModal" class="fixed inset-0 flex items-center justify-center z-50" x-cloak>
+                    <div x-show="imagePreview.openModal" class="fixed inset-0 flex items-center justify-center z-50">
+                        <div class="bg-black bg-opacity-75 w-full h-full" x-on:click.self="imagePreview.openModal = false">
+                            <div class="absolute inset-0 flex justify-center items-center">
+                                <template x-for="(image, index) in imagePreview.images" :key="index">
+                                    <img x-cloak x-show="index == imagePreview.index" class="max-w-full max-h-full object-contain" x-bind:src="'{{asset('storage')}}/' + image" alt="Preview Image"/>
+                                </template>
+                            </div>
+
+                            {{-- Navigation buttons --}}
+                            <div x-cloak x-show="imagePreview.images.length > 1">
+                                <button type="button" class="absolute left-3 top-1/2 z-20 flex rounded-full -translate-y-1/2 bg-[#3F3F3FD0] hover:bg-[#212121D0]" x-on:click="previousImage()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="size-10">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M 19 10 l -6 6 l 6 6" stroke="white" stroke-width="3" fill="none"/>
+                                    </svg>
+                                </button>
+
+                                {{-- Next --}}
+                                <button type="button" class="absolute right-3 top-1/2 z-20 flex rounded-full -translate-y-1/2 bg-[#3F3F3FD0] hover:bg-[#212121D0]" x-on:click="nextImage()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="size-10">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M 13 10 l 6 6 l -6 6" stroke="white" stroke-width="3" fill="none"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <button class="absolute top-2 right-2 rounded-full size-8 bg-[#1A1A1AD0] p-2" x-on:click="imagePreview.openModal = false">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div x-show="messageDelete.openModal" class="fixed inset-0 flex items-center justify-center z-50" x-cloak>
                         <div class="bg-black bg-opacity-65 w-full h-full flex justify-center items-center" x-on:click.self="openDeleteModal = false">
                             <div class="bg-gray-700 p-8 rounded-xl">
                                 <h1 class="text-white font-bold text-xl">Delete Message</h1>
@@ -139,8 +187,8 @@
                                 <p class="text-white mt-4">Are you sure you want to delete this message? This action cannot be reverted on normal circumstance.</p>
 
                                 <div class="flex justify-end gap-6 mt-4">
-                                    <button class="bg-red-500 hover:bg-red-700 rounded-md px-6 py-2 text-white" @click="openDeleteModal = false" wire:click="delete(`${deleteMessageID}`)">Delete</button>
-                                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="openDeleteModal = false">Cancel</button>
+                                    <button class="bg-red-500 hover:bg-red-700 rounded-md px-6 py-2 text-white" @click="messageDelete.openModal = false" wire:click="delete(`${messageDelete.id}`)">Delete</button>
+                                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="messageDelete.openModal = false">Cancel</button>
                                 </div>
                             </div>
                         </div>

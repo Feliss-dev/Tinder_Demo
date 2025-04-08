@@ -3,7 +3,6 @@
 namespace App\Livewire\Chat;
 
 use App\Events\ConversationMessageSent;
-use Log;
 use App\Models\Swipe;
 use App\Models\Message;
 use Livewire\Component;
