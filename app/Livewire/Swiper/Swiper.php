@@ -24,7 +24,7 @@ class Swiper extends Component
     public $ageTo;
     public $gender;
     public $users;
-    public $filtersApplied = false; // Theo dõi trạng thái bộ lọc có được áp dụng hay chưa
+    public $filtersApplied = false;
     public $matchedUser;
     public $user;
     public $selectedLanguages = [];

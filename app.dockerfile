@@ -1,6 +1,6 @@
 FROM php:8.3-fpm AS php
 
-# Move workdirectory
+# Move working directory
 WORKDIR /var/www/html/Tinder_Demo
 
 # Update apt-get.
@@ -17,6 +17,7 @@ RUN groupadd -g 1000 web && useradd -m -u 1000 -g web webuser
 
 # Copy the project source
 COPY --chown=webuser:web . /var/www/html/Tinder_Demo/
+RUN mv .env.production .env
 
 # Switch to non-rooted user to install composer libraries (as recommendation)
 USER webuser

@@ -4,7 +4,6 @@
     {
         height: 0,
         conversationElement:document.getElementById('conversation')
-
     }"
 
     x-init="
@@ -16,14 +15,9 @@
     });
 
       // Listen for user status update from Livewire event
-        Echo.channel('user-status')
-            .listen('UserOnlineStatusUpdated', (event) => {
-             console.log(event);
-
-            });
-
-
-
+    Echo.channel('user-status').listen('UserOnlineStatusUpdated', (event) => {
+        console.log(event);
+    });
     "
 
     @scroll-bottom.window="
@@ -140,7 +134,6 @@
 
                         <p @class(['text-xs text-gray-500', 'ml-auto' => $lastMessage->sender_id == auth()->id()])>Sent at {{ $lastMessage->created_at }}</p>
                     @endif
-
                 </section>
 
                 <footer class="sticky bottom inset-x-0 p-1 border border-t-gray-400">
