@@ -8,7 +8,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class FileViewer extends Component
 {
-    protected $listeners = [ 'refresh-display' => 'refreshFiles', 'refreshComponent' => '$refresh' ];
+    protected $listeners = [ 'refresh-display' => 'refreshFiles', 'refresh-component' => '$refresh' ];
 
     public array $files = [];
 
@@ -16,7 +16,7 @@ class FileViewer extends Component
         if (!TemporaryUploadedFile::canUnserialize($serializedFiles)) return;
 
         $this->files = TemporaryUploadedFile::unserializeFromLivewireRequest($serializedFiles);
-        $this->dispatch('refreshComponent');
+        $this->dispatch('refresh-component');
     }
 
     public function deleteFile(int $fileIndex) {

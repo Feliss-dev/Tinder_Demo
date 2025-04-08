@@ -25,14 +25,13 @@ class Chat extends Component
     public $loadedMessages;
     public $loadAmount = self::PAGINATE_STEP;
 
-    protected $listeners = [ 'user-send-message' => 'userSendMessage' ];
-
-    function listenBroadcastedMessage(int $messageID){
+    #[On('echo-private:conversation.{conversation.id},.conversation-sent')]
+    function listenBroadcastedMessage($event) {
         $this->dispatch('scroll-bottom');
 
-        $newMessage = Message::find($messageID);
+        $newMessage = Message::find($event['message_id']);
 
-        #push messagge
+        #push message
         $this->loadedMessages->push($newMessage);
 
         #mark message as read
@@ -43,6 +42,7 @@ class Chat extends Component
         $this->dispatch('new-message-created');
     }
 
+    #[On('user-send-message')]
     function userSendMessage(int $messageId) {
         #push the message
         $this->loadedMessages->push(Message::where('id', $messageId)->first());
@@ -68,6 +68,18 @@ class Chat extends Component
                                             ->skip($count - $this->loadAmount)
                                             ->take($this->loadAmount)
                                             ->get();
+    }
+
+    public function delete($deleteMessageID) {
+        $message = Message::where('id', $deleteMessageID)->first();
+
+        // Ensure the message is from the user.
+        if ($message->sender_id != auth()->id()) return;
+
+        $message->delete_status = 1;
+        $message->save();
+
+        $this->dispatch("refresh-message.{$deleteMessageID}");
     }
 
     function mount($chat){

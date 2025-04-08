@@ -10,11 +10,7 @@
     height = conversationElement.scrollHeight;
     $nextTick(() => conversationElement.scrollTop=height);
 
-    Echo.private('conversation.{{ $conversation->id  }}').listen('.conversation-sent', function(e) {
-        $wire.listenBroadcastedMessage(e.message_id);
-    });
-
-      // Listen for user status update from Livewire event
+    // Listen for user status update from Livewire event
     Echo.channel('user-status').listen('UserOnlineStatusUpdated', (event) => {
         console.log(event);
     });
@@ -103,7 +99,7 @@
                     </div>
                 </header>
 
-                <section x-data="{ openDeleteModal: false }"
+                <section x-data="{ openDeleteModal: false, deleteMessageID: -1 }"
                     @scroll="
                     scrollTop = $el.scrollTop;
 
@@ -143,7 +139,7 @@
                                 <p class="text-white mt-4">Are you sure you want to delete this message? This action cannot be reverted on normal circumstance.</p>
 
                                 <div class="flex justify-end gap-6 mt-4">
-                                    <button class="bg-red-500 hover:bg-red-700 rounded-md px-6 py-2 text-white" @click="openDeleteModal = false" wire:click="delete">Delete</button>
+                                    <button class="bg-red-500 hover:bg-red-700 rounded-md px-6 py-2 text-white" @click="openDeleteModal = false" wire:click="delete(`${deleteMessageID}`)">Delete</button>
                                     <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="openDeleteModal = false">Cancel</button>
                                 </div>
                             </div>
