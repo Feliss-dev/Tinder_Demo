@@ -73,7 +73,13 @@ class InputFields extends Component
         $this->dispatch('refresh-display', TemporaryUploadedFile::serializeMultipleForLivewireResponse([]));
 
         #broadcast out message
+        // $this->js('$wire.broadcastMessage(' . $createdMessage->id . ')');
         broadcast(new ConversationMessageSent($createdMessage, $this->conversation->id))->toOthers();
+    }
+
+    public function broadcastMessage($messageId) {
+        Log::debug("broadcastMessage(" . $messageId . ')');
+        broadcast(new ConversationMessageSent(Message::where('id', $messageId)->first(), $this->conversation->id))->toOthers();
     }
 
     public function updatedFiles() {
