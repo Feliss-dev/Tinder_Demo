@@ -134,18 +134,7 @@
                     id="conversation"
                     class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-scroll flex-grow overflow-x-hidden w-full my-auto" style="flex: 1 1 0;">
 
-                    @foreach ($loadedMessages as $message)
-                        {{-- Fuck Livewire --}}
-                        <livewire:chat.message-bubble :$message :key="$message->id"/>
-                    @endforeach
-
-                    @if (count($loadedMessages) !== 0)
-                        @php
-                            $lastMessage = $loadedMessages[count($loadedMessages) - 1];
-                        @endphp
-
-                        <p @class(['text-xs text-gray-500', 'ml-auto' => $lastMessage->sender_id == auth()->id()])>Sent at {{ $lastMessage->created_at }}</p>
-                    @endif
+                    <livewire:chat.conversation-container :$conversation/>
 
                     <div x-cloak x-show="imagePreview.openModal" class="fixed inset-0 flex items-center justify-center z-50">
                         <div class="bg-black bg-opacity-75 w-full h-full" x-on:click.self="imagePreview.openModal = false">

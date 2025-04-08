@@ -16,59 +16,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Chat extends Component
 {
-    const PAGINATE_STEP = 25;
-
     public $chat;
     public Conversation $conversation;
     public User $receiver;
-
-    public $loadedMessages;
-    public int $loadAmount = self::PAGINATE_STEP;
-
-    #[On('echo-private:conversation.{conversation.id},.conversation-sent')]
-    function listenBroadcastedMessage($event) {
-        $this->dispatch('scroll-bottom');
-
-        $newMessage = Message::find($event['message_id']);
-
-        #push message
-        $this->loadedMessages->push($newMessage);
-
-        #mark message as read
-        $newMessage->read_at = now();
-        $newMessage->save();
-
-        #refresh chatlist
-        $this->dispatch('new-message-created');
-    }
-
-    #[On('user-send-message')]
-    function userSendMessage(int $messageId) {
-        #push the message
-        $this->loadedMessages->push(Message::where('id', $messageId)->first());
-
-        #scroll bottom
-        $this->dispatch('scroll-bottom');
-    }
-
-    #[On('loadMore')]
-    function loadMore(){
-        $this->loadAmount += self::PAGINATE_STEP;
-
-        $this->reloadMessages();
-        $this->dispatch('update-height');
-    }
-
-    function reloadMessages() {
-        #get count
-        $count = Message::where('conversation_id', $this->conversation->id)->count();
-
-        // skip and query
-        $this->loadedMessages = Message::where('conversation_id', $this->conversation->id)
-                                            ->skip($count - $this->loadAmount)
-                                            ->take($this->loadAmount)
-                                            ->get();
-    }
 
     public function delete($deleteMessageID) {
         $message = Message::where('id', $deleteMessageID)->first();
@@ -106,12 +56,11 @@ class Chat extends Component
         #set receiver
         $this->receiver = $this->conversation->getReceiver();
 
-        $this->reloadMessages();
+        $this->dispatch('reload-messages');
     }
 
     #[Layout('layouts.chat')]
     public function render() {
-        $this->reloadMessages();
         return view('livewire.chat.chat');
     }
 }

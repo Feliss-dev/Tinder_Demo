@@ -1,4 +1,4 @@
-<div>
+<div class="my-1">
     @if ($message->sender_id == auth()->id())
         <livewire:chat.sender-message-bubble :$message />
     @else
