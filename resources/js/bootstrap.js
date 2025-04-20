@@ -17,6 +17,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import Pusher from 'pusher-js';
 import Echo from 'laravel-echo';
+import Chart from 'chart.js/auto'
 
 Pusher.logToConsole = true;
 
@@ -33,3 +34,4 @@ window.Echo = new Echo({
     enabledTransports: ['ws', 'wss'],
 });
 
+window.Chart = Chart;

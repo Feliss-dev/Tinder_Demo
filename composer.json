@@ -9,6 +9,7 @@
         "barryvdh/laravel-dompdf": "^3.0",
         "google-gemini-php/laravel": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
+        "icehouse-ventures/laravel-chartjs": "^4.2",
         "laravel/framework": "^10",
         "laravel/sanctum": "^3.2",
         "laravel/socialite": "^5.16",

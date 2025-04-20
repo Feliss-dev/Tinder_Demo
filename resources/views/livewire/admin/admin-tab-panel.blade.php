@@ -5,15 +5,7 @@
 <div class="w-full h-full overflow-y-auto">
     <div class="p-3 overflow-y-hidden">
         <div x-show="selectedTab === 'management_users'">
-            <button wire:click="downloadUsersPDF" class=" float-end bg-blue-500 p-3 rounded-full text-white">
-                <i class='bx bxs-cloud-download'></i>
-                <span class="text">Download PDF</span>
-            </button>
-
-            <h1 class="font-bold text-3xl">User Management</h1>
-            <p class="text-gray-800 mt-2 mb-5">Manage user registering information.</p>
-
-            <livewire:admin.user-table/>
+            <livewire:admin.user-management-panel/>
         </div>
 
         <div x-show="selectedTab === 'management_conversations'">
@@ -46,7 +38,7 @@
         </div>
 
         <div x-show="selectedTab === 'application_analytics'">
-            Application -> Analytics
+
         </div>
     </div>
 </div>

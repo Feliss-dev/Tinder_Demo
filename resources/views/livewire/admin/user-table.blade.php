@@ -23,11 +23,7 @@
 
     <!-- User Table Section -->
     <div class="flex flex-row justify-between items-center">
-        <h1 class="font-medium text-xl">
-            All users
-
-            <span class="ml-2 text-gray-600 text-2xl">{{ User::count() }}</span>
-        </h1>
+        <p class="font-semibold text-xl">Registered users</p>
 
         <div class="flex">
             <span
@@ -72,8 +68,9 @@
                                     <button class="bg-blue-500 text-white py-1 px-4 rounded focus:outline-none hover:bg-blue-600" @click="open = true">
                                         Send Notification
                                     </button>
+
                                     <!-- Notification Modal -->
-                                    <div x-show="open" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                                    <div x-cloak x-show="open" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
                                         <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
                                             <h2 class="text-xl font-semibold mb-4">Send Notification</h2>
                                             <textarea wire:model="message" class="w-full h-24 p-3 border rounded focus:ring-2 focus:ring-blue-400" placeholder="Enter your message..."></textarea>
@@ -116,18 +113,18 @@
             </thead>
             <tbody class="divide-y divide-gray-200">
                 @foreach($deletedUsers as $deletedUser)
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 text-justify">{{ $deletedUser->name }}</td>
-                    <td class="px-6 py-4">{{ $deletedUser->email }}</td>
-                    <td class="px-6 py-4 text-left">{{ Carbon::parse($deletedUser->birth_date)->format('Y-m-d') }}</td>
-                    <td class="px-6 py-4"> {{ Carbon::parse($deletedUser->deleted_at)->format('Y-m-d H:i') }}</td>
-                    <td class="px-6 py-4 ">
-                        <button class="bg-green-500 text-white py-1 px-4 rounded hover:bg-green-600 focus:outline-none"
-                                @click="$wire.restoreUser({{ $deletedUser->id }})">
-                            Restore Account
-                        </button>
-                    </td>
-                </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 text-justify">{{ $deletedUser->name }}</td>
+                        <td class="px-6 py-4">{{ $deletedUser->email }}</td>
+                        <td class="px-6 py-4 text-left">{{ Carbon::parse($deletedUser->birth_date)->format('Y-m-d') }}</td>
+                        <td class="px-6 py-4"> {{ Carbon::parse($deletedUser->deleted_at)->format('Y-m-d H:i') }}</td>
+                        <td class="px-6 py-4 ">
+                            <button class="bg-green-500 text-white py-1 px-4 rounded hover:bg-green-600 focus:outline-none"
+                                    @click="$wire.restoreUser({{ $deletedUser->id }})">
+                                Restore Account
+                            </button>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>

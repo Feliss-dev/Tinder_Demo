@@ -128,7 +128,6 @@ class UserTable extends Component
 
         $users = $query->paginate($this->perPage);
 
-
         // Retrieve deleted users from deleted_users table
         $deletedUsers = FacadesDB::table('deleted_users')->get();
 

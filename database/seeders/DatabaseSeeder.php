@@ -30,8 +30,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create fake users.
-        $users = User::factory(50)->state(new Sequence(fn (Sequence $sequence) => [
-            'birth_date' => Carbon::createFromTimestamp(rand(Carbon::now()->subYears(60)->timestamp, Carbon::now()->subYears(20)->timestamp))
+        $users = User::factory(200)->state(new Sequence(fn (Sequence $sequence) => [
+            'birth_date' => Carbon::createFromTimestamp(rand(Carbon::now()->subYears(60)->timestamp, Carbon::now()->subYears(20)->timestamp)),
+            'created_at' => Carbon::createFromTimestamp(rand(Carbon::now()->subMonths(2)->timestamp, Carbon::now()->subMonths(50)->timestamp)),
         ]))->create([
             'is_fake' => true,
             'is_admin' => false,
