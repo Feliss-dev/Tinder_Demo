@@ -113,7 +113,7 @@ class UserController extends Controller
     public function deleteImage(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        $images = json_decode($user->images, true);
+        $images = json_decode($user->images, false);
 
         $imageToDelete = $request->input('image');
         $updatedImages = array_filter($images, fn($img) => $img !== $imageToDelete);
@@ -127,5 +127,4 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Image deleted successfully.']);
     }
-
 }

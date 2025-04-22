@@ -72,10 +72,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(DatingGoal::class, 'dating_goal_users', 'user_id', 'dating_goal_id');
     }
-    public function images()
-    {
-        return $this->hasMany(UserImage::class);
-    }
     public function desiredGenders()
     {
         return $this->belongsToMany(Gender::class, 'desired_gender_users', 'user_id', 'desired_gender_id');

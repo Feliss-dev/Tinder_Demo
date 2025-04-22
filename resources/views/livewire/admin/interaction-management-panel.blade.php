@@ -1,10 +1,5 @@
-@php
-    use App\Models\User;
-    use Carbon\Carbon;
-@endphp
-
 <div>
-    <p class="font-semibold text-3xl text-center mt-4 mb-6">User Management Dashboard</p>
+    <p class="font-semibold text-3xl text-center mt-4 mb-6">Interaction Management Dashboard</p>
 
     <section class="flex flex-row gap-2 mb-0" x-data="{year: @entangle('analyzingYear')}">
         <div class="flex flex-col gap-2 flex-1">
@@ -102,18 +97,4 @@
             </footer>
         </section>
     </section>
-
-    <section class="rounded-xl border-2 bg-white p-4 mt-2">
-        <livewire:admin.user-table/>
-    </section>
-
-    {{--    <button wire:click="downloadUsersPDF" class=" float-end bg-blue-500 p-3 rounded-full text-white">--}}
-    {{--        <i class='bx bxs-cloud-download'></i>--}}
-    {{--        <span class="text">Download PDF</span>--}}
-    {{--    </button>--}}
-
-    {{--    <h1 class="font-bold text-3xl">User Management</h1>--}}
-    {{--    <p class="text-gray-800 mt-2 mb-5">Manage user registering information.</p>--}}
-
-    {{--    <livewire:admin.user-table/>--}}
 </div>

@@ -264,7 +264,7 @@
                         class="relative overflow-hidden w-full h-full rounded-xl bg-cover bg-white">
 
                         @php
-                            $userImages = $user->images()->pluck('image_path')->toArray();
+                            $userImages = json_decode($user->images, false);
                             $isFakeUser = $user->isFake();
 
                             $slides = !empty($userImages)
@@ -448,7 +448,7 @@
                         class="absolute inset-0 overflow-y-auto overflow-hidden overscroll-contain border rounded-xl bg-white space-y-4">
 
                         @php
-                            $userImages = $user->images()->pluck('image_path')->toArray();
+                            $userImages = json_decode($user->images);
                             $isFakeUser = $user->isFake();
                             $slides = !empty($userImages)
                                 ? $userImages
