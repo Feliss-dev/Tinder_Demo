@@ -6,46 +6,46 @@
             <section class="rounded-xl border-2 bg-white p-4 flex-grow-0 flex-shrink">
                 <header class="font-semibold text-xl mb-3">Overall</header>
 
-                <table class="w-full">
-                    <tr>
-                        <td class="font-semibold">Total users count:</td>
-                        <td>{{User::count()}}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">New users today:</td>
-                        <td>{{User::whereDate('created_at', Carbon::today())->count()}}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">New users this month:</td>
-                        <td>{{User::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->count()}}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">New users this year:</td>
-                        <td>{{User::whereYear('created_at', Carbon::now()->year)->count()}}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Online today:</td>
-                        <td>{{User::whereDate('last_seen_at', Carbon::today())->count()}}</td>
-                    </tr>
-                </table>
+{{--                <table class="w-full">--}}
+{{--                    <tr>--}}
+{{--                        <td class="font-semibold">Total users count:</td>--}}
+{{--                        <td>{{User::count()}}</td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <td class="font-semibold">New users today:</td>--}}
+{{--                        <td>{{User::whereDate('created_at', Carbon::today())->count()}}</td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <td class="font-semibold">New users this month:</td>--}}
+{{--                        <td>{{User::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->count()}}</td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <td class="font-semibold">New users this year:</td>--}}
+{{--                        <td>{{User::whereYear('created_at', Carbon::now()->year)->count()}}</td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <td class="font-semibold">Online today:</td>--}}
+{{--                        <td>{{User::whereDate('last_seen_at', Carbon::today())->count()}}</td>--}}
+{{--                    </tr>--}}
+{{--                </table>--}}
             </section>
 
             <section class="rounded-xl border-2 bg-white p-4 flex-grow-0 flex-shrink align-top">
                 <header class="font-semibold text-xl mb-3">In {{$analyzingYear}}</header>
 
-                <table class="w-full">
-                    @php
-                        $userRegistrationCount = User::whereYear('created_at', $analyzingYear)->count();
-                    @endphp
-                    <tr>
-                        <td class="font-semibold">New users registration:</td>
-                        <td>{{$userRegistrationCount}}</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">New registration per month (AVG):</td>
-                        <td>{{number_format($userRegistrationCount / 12.0, 2, '.', '')}}</td>
-                    </tr>
-                </table>
+{{--                <table class="w-full">--}}
+{{--                    @php--}}
+{{--                        $userRegistrationCount = User::whereYear('created_at', $analyzingYear)->count();--}}
+{{--                    @endphp--}}
+{{--                    <tr>--}}
+{{--                        <td class="font-semibold">New users registration:</td>--}}
+{{--                        <td>{{$userRegistrationCount}}</td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <td class="font-semibold">New registration per month (AVG):</td>--}}
+{{--                        <td>{{number_format($userRegistrationCount / 12.0, 2, '.', '')}}</td>--}}
+{{--                    </tr>--}}
+{{--                </table>--}}
             </section>
         </div>
 

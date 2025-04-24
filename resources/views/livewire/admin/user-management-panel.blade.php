@@ -39,16 +39,13 @@
                 <header class="font-semibold text-xl mb-3">In {{$analyzingYear}}</header>
 
                 <table class="w-full">
-                    @php
-                        $userRegistrationCount = User::whereYear('created_at', $analyzingYear)->count();
-                    @endphp
                     <tr>
                         <td class="font-semibold">New users registration:</td>
-                        <td>{{$userRegistrationCount}}</td>
+                        <td>{{$stats['sum']}}</td>
                     </tr>
                     <tr>
                         <td class="font-semibold">New registration per month (AVG):</td>
-                        <td>{{number_format($userRegistrationCount / 12.0, 2, '.', '')}}</td>
+                        <td>{{number_format($stats['sum'] / 12.0, 2, '.', '')}}</td>
                     </tr>
                 </table>
             </section>
@@ -106,14 +103,4 @@
     <section class="rounded-xl border-2 bg-white p-4 mt-2">
         <livewire:admin.user-table/>
     </section>
-
-    {{--    <button wire:click="downloadUsersPDF" class=" float-end bg-blue-500 p-3 rounded-full text-white">--}}
-    {{--        <i class='bx bxs-cloud-download'></i>--}}
-    {{--        <span class="text">Download PDF</span>--}}
-    {{--    </button>--}}
-
-    {{--    <h1 class="font-bold text-3xl">User Management</h1>--}}
-    {{--    <p class="text-gray-800 mt-2 mb-5">Manage user registering information.</p>--}}
-
-    {{--    <livewire:admin.user-table/>--}}
 </div>

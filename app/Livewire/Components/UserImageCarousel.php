@@ -16,7 +16,6 @@ class UserImageCarousel extends Component
         $image = json_decode($this->user->images, false)[$index];
 
         return response()->download(Storage::disk('public')->path($image));
-        // return response()->download(storage_path('app/public/' . $image));
     }
 
     public function render()

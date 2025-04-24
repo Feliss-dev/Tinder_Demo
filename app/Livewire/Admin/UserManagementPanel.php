@@ -12,6 +12,7 @@ use Livewire\Component;
 class UserManagementPanel extends Component {
     public array $datasets;
     public int $analyzingYear;
+    public array $stats;
 
     public function mount() {
         $this->getChartData(Carbon::now()->year);
@@ -40,6 +41,11 @@ class UserManagementPanel extends Component {
                             'display' => true,
                             'text' => 'User count'
                         ],
+                        'ticks' => [
+                            'stepSize' => 1,
+                            'suggestedMin' => 'min-int-value',
+                            'suggestedMax' => 'max-int-value'
+                        ]
                     ]
                 ],
                 'plugins' => [
@@ -61,21 +67,23 @@ class UserManagementPanel extends Component {
             'year' => $year,
         ]);
 
-        $dict = [];
+        $this->stats = [];
 
         if ($response->ok()) {
-            $dict = $response->json();
+            $this->stats = $response->json();
         } else {
+            $this->stats['sum'] = 0;
+
             foreach (range(1, 12) as $month) {
-                $dict[$month] = 0;
+                $this->stats['months'][$month] = 0;
             }
         }
 
         $labels = array_map(function ($month) {
             return Carbon::create(null, $month)->format('F');
-        }, array_keys($dict));
+        }, array_keys($this->stats['months']));
 
-        $data = array_values($dict);
+        $data = array_values($this->stats['months']);
 
         $this->datasets = [
             'datasets' => [
