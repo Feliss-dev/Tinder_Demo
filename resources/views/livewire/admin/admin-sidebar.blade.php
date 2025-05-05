@@ -18,6 +18,14 @@
         Conversation
     </button>
 
+    <button class="admin-sidebar-tab-btn" :class="selectedTab === 'management_swipe' ? 'bg-gray-200' : ''" @click="selectedTab = 'management_swipe'">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 16 16" class="mr-4 h-7 w-7">
+            <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
+        </svg>
+
+        Swipe and Match
+    </button>
+
     <button class="admin-sidebar-tab-btn" :class="selectedTab === 'management_reports' ? 'bg-gray-200' : ''" @click="selectedTab = 'management_reports'">
         <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 16 16" class="mr-4 h-7 w-7">
             <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>

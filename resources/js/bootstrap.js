@@ -18,6 +18,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 import Pusher from 'pusher-js';
 import Echo from 'laravel-echo';
 import Chart from 'chart.js/auto'
+import annotationPlugin from 'chartjs-plugin-annotation';
 
 Pusher.logToConsole = true;
 
@@ -35,3 +36,4 @@ window.Echo = new Echo({
 });
 
 window.Chart = Chart;
+Chart.register(annotationPlugin)

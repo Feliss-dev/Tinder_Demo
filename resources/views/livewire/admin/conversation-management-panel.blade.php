@@ -13,19 +13,19 @@
 
                 <table class="w-full">
                     <tr>
-                        <td class="font-semibold">Total conversations count:</td>
+                        <td class="font-semibold w-[75%]">Total (all time):</td>
                         <td>{{Conversation::count()}}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">New conversations today:</td>
+                        <td class="font-semibold w-[75%]">Total (today):</td>
                         <td>{{Conversation::whereDate('created_at', Carbon::today())->count()}}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">New conversations this month:</td>
+                        <td class="font-semibold w-[75%]">Total (this month):</td>
                         <td>{{Conversation::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->count()}}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">New conversations this year:</td>
+                        <td class="font-semibold w-[75%]">Total (this year):</td>
                         <td>{{Conversation::whereYear('created_at', Carbon::now()->year)->count()}}</td>
                     </tr>
                 </table>
@@ -36,12 +36,12 @@
 
                 <table class="w-full">
                     <tr>
-                        <td class="font-semibold">Conversation count (SUM):</td>
-                        <td>{{$stats['sum']}}</td>
+                        <td class="font-semibold w-[75%]">Total:</td>
+                        <td>{{$analyzingYearStats['sum']}}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">Conversation count (AVG):</td>
-                        <td>{{number_format($stats['sum'] / 12.0, 2, '.', '')}}</td>
+                        <td class="font-semibold w-[75%]">Average:</td>
+                        <td>{{number_format($analyzingYearStats['avg'], 2, '.', '')}}</td>
                     </tr>
                 </table>
             </section>

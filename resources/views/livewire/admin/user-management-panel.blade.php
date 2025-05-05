@@ -13,23 +13,23 @@
 
                 <table class="w-full">
                     <tr>
-                        <td class="font-semibold">Total users count:</td>
+                        <td class="font-semibold w-[75%]">Total (all time):</td>
                         <td>{{User::count()}}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">New users today:</td>
+                        <td class="font-semibold w-[75%]">Total (today):</td>
                         <td>{{User::whereDate('created_at', Carbon::today())->count()}}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">New users this month:</td>
+                        <td class="font-semibold w-[75%]">Total (this month):</td>
                         <td>{{User::whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->count()}}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">New users this year:</td>
+                        <td class="font-semibold w-[75%]">Total (this year):</td>
                         <td>{{User::whereYear('created_at', Carbon::now()->year)->count()}}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">Online today:</td>
+                        <td class="font-semibold w-[75%]">Online (today):</td>
                         <td>{{User::whereDate('last_seen_at', Carbon::today())->count()}}</td>
                     </tr>
                 </table>
@@ -40,12 +40,12 @@
 
                 <table class="w-full">
                     <tr>
-                        <td class="font-semibold">New users registration:</td>
-                        <td>{{$stats['sum']}}</td>
+                        <td class="font-semibold w-[75%]">Total:</td>
+                        <td>{{$analyzingYearStats['sum']}}</td>
                     </tr>
                     <tr>
-                        <td class="font-semibold">New registration per month (AVG):</td>
-                        <td>{{number_format($stats['sum'] / 12.0, 2, '.', '')}}</td>
+                        <td class="font-semibold w-[75%]">Average:</td>
+                        <td>{{number_format($analyzingYearStats['avg'], 2, '.', '')}}</td>
                     </tr>
                 </table>
             </section>
