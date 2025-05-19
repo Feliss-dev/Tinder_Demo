@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Swipe;
 use App\Models\Gender;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use App\Models\Interest;
 use App\Models\Language;
@@ -16,16 +17,13 @@ use App\Models\Conversation;
 use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\Auth;
 
-class Swiper extends Component
-{
-
+class Swiper extends Component {
     public $searchTerm;
     public $ageFrom;
     public $ageTo;
     public $gender;
     public $users;
     public $filtersApplied = false;
-    public $matchedUser;
     public $user;
     public $selectedLanguages = [];
     public $selectedInterests =[];
@@ -33,19 +31,12 @@ class Swiper extends Component
 
     public $profiles = false; // Property to store profile visibility status
 
-    #[Locked]
-    public $currentMatchId;
-
-    #[Locked]
-    public $swipedUserId;
-
     #[On('swipedright')]
     public function swipedRight(User $user)
     {
         //make user user is authenticated
         abort_unless(auth()->check(), 401);
 
-        #create Swipe Right
         $this->createSwipe($user, 'right');
     }
 
@@ -55,7 +46,6 @@ class Swiper extends Component
         //make user user is authenticated
         abort_unless(auth()->check(), 401);
 
-        #create Swipe Right
         $this->createSwipe($user, 'left');
     }
 
@@ -65,42 +55,31 @@ class Swiper extends Component
         //make user user is authenticated
         abort_unless(auth()->check(), 401);
 
-        #create Swipe Right
         $this->createSwipe($user, 'up');
     }
 
-    public function mount(){
-        $currentUser = auth()->user();
-
-        $this->matchedUser = $currentUser->matches()->latest()->first()?->swipedUser;
-    }
-
-    protected function createSwipe($user, $type)
+    protected function createSwipe($swipedUser, $type)
     {
-
-        //reset properties
-        $this->reset('swipedUserId', 'currentMatchId');
-
-        #return null if auth user has already swiped with  $user
-        if (auth()->user()->hasSwiped($user)) {
+        #return null if auth user has already swiped with this person
+        if (auth()->user()->hasSwiped($swipedUser)) {
             return null;
         }
 
         #create Swipe
         $swipe =  Swipe::create([
             'user_id' => auth()->id(),
-            'swiped_user_id' => $user->id,
+            'swiped_user_id' => $swipedUser->id,
             'type' => $type,
         ]);
 
-        #before creating match we want to make sure auth user swiped Right or  Up
+        #before creating match we want to make sure auth user swiped Right or Up
         if ($type == 'up' || $type == 'right') {
             #creating Match
             $authUserId = auth()->id();
-            $this->swipedUserId = $user->id;
+            $swipedUserId = $swipedUser->id;
 
-            #Now Also check if swiped user  has swipe match with authenticated user.
-            $matchingSwipe =  Swipe::where('user_id', $this->swipedUserId)
+            #Now Also check if swiped user has swipe match with authenticated user.
+            $matchingSwipe =  Swipe::where('user_id', $swipedUserId)
                 ->where('swiped_user_id', $authUserId)
                 ->whereIn('type', ['up', 'right'])
                 ->first();
@@ -110,87 +89,65 @@ class Swiper extends Component
                 $match = SwipeMatch::create([
                     'swipe_id_1' => $swipe->id,
                     'swipe_id_2' => $matchingSwipe->id,
-                    'user_id_1' => min($authUserId, $this->swipedUserId), // Ensure consistent ordering
-                    'user_id_2' => max($authUserId, $this->swipedUserId),
+                    'user_id_1' => min($authUserId, $swipedUserId), // Ensure consistent ordering
+                    'user_id_2' => max($authUserId, $swipedUserId),
                 ]);
 
-                //Show match found alert
-                $this->dispatch('match-found');
-
-                $this->currentMatchId = $match->id;
+                $this->dispatch('match-found', matchedUser: $swipedUser, matchId: $match->id);
             }
         }
     }
 
     public function applyFilters()
-{
-    $this->filtersApplied = true; // Đánh dấu rằng bộ lọc đã được áp dụng
-    $query = User::query()
-        ->whereNotSwiped() // Điều kiện tùy chỉnh
-        ->where('id', '<>', auth()->id()); // Loại bỏ người dùng hiện tại
-
-    // Lọc theo độ tuổi
-    if ($this->ageFrom) {
-        $query->where('birth_date', '<=', now()->subYears($this->ageFrom));
-    }
-    if ($this->ageTo) {
-        $query->where('birth_date', '>=', now()->subYears($this->ageTo));
-    }
-
-    // Lọc theo giới tính
-    if (!empty($this->gender)) {
-        $query->whereHas('genders', function ($q) {
-            $q->where('gender_id', $this->gender);
-        });
-    }
-
-    // Lọc theo sở thích
-    if (!empty($this->selectedInterests)) {
-        $query->whereHas('interests', function ($q) {
-            $q->whereIn('interest_id', $this->selectedInterests);
-        });
-    }
-
-    // Lọc theo ngôn ngữ
-    if (!empty($this->selectedLanguages)) {
-        $query->whereHas('languages', function ($q) {
-            $q->whereIn('language_id', $this->selectedLanguages);
-        });
-    }
-
-    // Lọc theo mục tiêu hẹn hò
-    if (!empty($this->selectedDatingGoals)) {
-        $query->whereHas('datingGoals', function ($q) {
-            $q->whereIn('dating_goal_id', $this->selectedDatingGoals);
-        });
-    }
-
-    // Lọc theo tên người dùng
-    if ($this->searchTerm) {
-        $query->where('name', 'like', '%' . $this->searchTerm . '%');
-    }
-
-    // Lấy danh sách người dùng theo các tiêu chí lọc
-    $this->users = $query->limit(10)->get();
-}
-
-
-    public function createConversation()
     {
-        $conversation = Conversation::create([
-            'sender_id' => auth()->id(),
-            'receiver_id' => $this->swipedUserId,
-            'match_id' => $this->currentMatchId,
-        ]);
+        $this->filtersApplied = true; // Đánh dấu rằng bộ lọc đã được áp dụng
+        $query = User::query()
+            ->whereNotSwiped() // Điều kiện tùy chỉnh
+            ->where('id', '<>', auth()->id()); // Loại bỏ người dùng hiện tại
 
-        // dispatch an event
-        $this->dispatch('close-match-modal');
+        // Lọc theo độ tuổi
+        if ($this->ageFrom) {
+            $query->where('birth_date', '<=', now()->subYears($this->ageFrom));
+        }
+        if ($this->ageTo) {
+            $query->where('birth_date', '>=', now()->subYears($this->ageTo));
+        }
 
-        //reset properties
-        $this->reset('swipedUserId', 'currentMatchId');
+        // Lọc theo giới tính
+        if (!empty($this->gender)) {
+            $query->whereHas('genders', function ($q) {
+                $q->where('gender_id', $this->gender);
+            });
+        }
 
-        //redirect to conversation
-        $this->redirect(route('chat', $conversation->id), navigate: true);
+        // Lọc theo sở thích
+        if (!empty($this->selectedInterests)) {
+            $query->whereHas('interests', function ($q) {
+                $q->whereIn('interest_id', $this->selectedInterests);
+            });
+        }
+
+        // Lọc theo ngôn ngữ
+        if (!empty($this->selectedLanguages)) {
+            $query->whereHas('languages', function ($q) {
+                $q->whereIn('language_id', $this->selectedLanguages);
+            });
+        }
+
+        // Lọc theo mục tiêu hẹn hò
+        if (!empty($this->selectedDatingGoals)) {
+            $query->whereHas('datingGoals', function ($q) {
+                $q->whereIn('dating_goal_id', $this->selectedDatingGoals);
+            });
+        }
+
+        // Lọc theo tên người dùng
+        if ($this->searchTerm) {
+            $query->where('name', 'like', '%' . $this->searchTerm . '%');
+        }
+
+        // Lấy danh sách người dùng theo các tiêu chí lọc
+        $this->users = $query->limit(10)->get();
     }
 
     public function render()
@@ -205,7 +162,6 @@ class Swiper extends Component
 
         return view('livewire.swiper.swiper', ['users' => $this->users,
             'currentUser' => Auth::user(),
-            'matchedUser' => $this->matchedUser,
             'genders' => Gender::all(),
             'interests' => Interest::all(),
             'languages' => Language::all(),

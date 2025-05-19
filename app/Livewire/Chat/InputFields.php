@@ -86,7 +86,6 @@ class InputFields extends Component
     }
 
     public function broadcastMessage($messageId) {
-        Log::debug("broadcastMessage(" . $messageId . ')');
         broadcast(new ConversationMessageSent(Message::where('id', $messageId)->first(), $this->conversation->id))->toOthers();
     }
 

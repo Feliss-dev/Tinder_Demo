@@ -27,17 +27,6 @@
         <div class="col-span-4">
             <main class="w-full h-full grow border flex flex-col relative">
                 <header class="flex items-center gap-2.5 p-2 border">
-                    {{-- TODO: fix whatever this is --}}
-{{--                    <a class="sm:hidden" wire:navigate href="{{ route('chat.index') }}">--}}
-{{--                        <span>--}}
-{{--                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"--}}
-{{--                                 class=" h-6 w-6 bi bi-chevron-left text-gray-500" viewBox="0 0 16 16">--}}
-{{--                                <path fill-rule="evenodd"--}}
-{{--                                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />--}}
-{{--                            </svg>--}}
-{{--                        </span>--}}
-{{--                    </a>--}}
-
                     <span>
                         <x-avatar class="rounded-full h-10 w-10 ring ring-pink-500/40" :user="$receiver" alt="Matched User Avatar" />
                     </span>
