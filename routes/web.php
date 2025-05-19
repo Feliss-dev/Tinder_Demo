@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/filter', Swiper::class)->name('filter');
 
     // Chatting
-    Route::get('/dashboard/chat', Index::class)->name('chat.index');
+//    Route::get('/dashboard/chat', Index::class)->name('chat.index');
     Route::get('/dashboard/chat/{chat}', Chat::class)->name('chat');
 
     // Routes for admins

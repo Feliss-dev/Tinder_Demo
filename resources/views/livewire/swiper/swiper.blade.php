@@ -724,44 +724,25 @@
                     <!-- Main -->
                     <main class="relative w-auto flex flex-col gap-y-9">
                         <div class="mx-auto flex flex-col gap-2 items-center justify-center">
-                            <!-- Tinder logo -->
-                            <div class="mx-auto">
-                                <svg class="ml-5" fill="#000000" width="50px" height="50px"
-                                    viewBox="0 0 24 24" id="tinder" data-name="Flat Color"
-                                    xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
-                                    <path id="primary"
-                                        d="M11.39,2.08a1,1,0,0,0-1,.14,1,1,0,0,0-.35,1c.72,3.62.41,6.08-1,7.46A7.57,7.57,0,0,1,8,7.85a1,1,0,0,0-.68-.8,1,1,0,0,0-1,.24C6.16,7.43,3,10.62,3,14c0,5,3.36,8,9,8,3.23,0,7-2.09,7-8A13.17,13.17,0,0,0,11.39,2.08Z"
-                                        style="fill: rgb(237, 105, 129);"></path>
-                                </svg>
+                            <x-logo class="mx-auto" width="75" height="75"/>
 
-                            </div>
-                            <h5 class="font-bold text-3xl">
-                                It's a Match
-                            </h5>
+                            <h5 class="font-bold text-3xl">It's a Match</h5>
                         </div>
+
                         <div class="flex items-center justify-center gap-4 mx-">
                             <!-- Show the activating avatar of the user -->
-                            <span>
-                                @if ($currentUser && $currentUser->activeAvatar)
-                                    <img src="{{ asset('storage/' . $currentUser->activeAvatar->path) }}"
-                                        alt="Current User Avatar" class="rounded-full h-32 w-32 ring ring-rose-500">
-                                @else
-                                    <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg"
-                                        alt="Random User" class="rounded-full h-32 w-32 ring ring-rose-500">
-                                @endif
-                            </span>
+                            @if ($currentUser)
+                                <span>
+                                    <x-avatar class="rounded-full h-32 w-32 ring ring-rose-500" :user="$currentUser" alt="Current user"/>
+                                </span>
+                            @endif
 
                             <!-- Show the activating avatar of the matched user -->
-                            <span>
-                                @if ($matchedUser && $matchedUser->activeAvatar)
-                                    <img src="{{ asset('storage/' . $matchedUser->activeAvatar->path) }}"
-                                        alt="Matched User Avatar"
-                                        class="rounded-full h-32 w-32 ring ring-pink-500/40">
-                                @else
-                                    <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg"
-                                        alt="Random User" class="rounded-full h-32 w-32 ring ring-pink-500/40">
-                                @endif
-                            </span>
+                            @if ($matchedUser)
+                                <span>
+                                    <x-avatar class="rounded-full h-32 w-32 ring ring-pink-500/40" :user="$matchedUser" alt="Matched user"/>
+                                </span>
+                            @endif
                         </div>
 
                         <!-- Action -->

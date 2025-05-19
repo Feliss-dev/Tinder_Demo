@@ -1,9 +1,8 @@
 <div
-    wire:snapshot="...your snapshot..." wire:effects="..."
     x-data="
     {
         height: 0,
-        conversationElement:document.getElementById('conversation')
+        conversationElement: document.getElementById('conversation'),
     }"
 
     x-init="
@@ -24,28 +23,23 @@
     });"
     class="flex h-screen overflow-hidden">
 
-    <div class="grid grid-cols-6 overflow-hidden  w-full">
+    <div class="grid grid-cols-6 overflow-hidden w-full">
         <div class="col-span-4">
             <main class="w-full h-full grow border flex flex-col relative">
                 <header class="flex items-center gap-2.5 p-2 border">
-                    <a class="sm:hidden" wire:navigate href="{{ route('chat.index') }}">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 class=" h-6 w-6 bi bi-chevron-left text-gray-500" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
-                            </svg>
-                        </span>
-                    </a>
+                    {{-- TODO: fix whatever this is --}}
+{{--                    <a class="sm:hidden" wire:navigate href="{{ route('chat.index') }}">--}}
+{{--                        <span>--}}
+{{--                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"--}}
+{{--                                 class=" h-6 w-6 bi bi-chevron-left text-gray-500" viewBox="0 0 16 16">--}}
+{{--                                <path fill-rule="evenodd"--}}
+{{--                                      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />--}}
+{{--                            </svg>--}}
+{{--                        </span>--}}
+{{--                    </a>--}}
 
                     <span>
-                        @if ($receiver && $receiver->activeAvatar)
-                            <img src="{{ asset('storage/' .$receiver->activeAvatar->path) }}" alt="Matched User Avatar"
-                                 class="rounded-full h-10 w-10 ring ring-pink-500/40">
-                        @else
-                            <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User"
-                                 class="rounded-full h-12 w-12 ring ring-pink-500/40">
-                        @endif
+                        <x-avatar class="rounded-full h-10 w-10 ring ring-pink-500/40" :user="$receiver" alt="Matched User Avatar" />
                     </span>
 
                     <h5 class="font-bold text-gray-500 truncate">
@@ -108,6 +102,10 @@
                         images: [],
                         index: 0,
                     },
+                    imageValidation: {
+                        openModal: false,
+                        reason: '',
+                    },
 
                     previousImage() {
                         this.imagePreview.index = (this.imagePreview.index + 1) % this.imagePreview.images.length;
@@ -131,6 +129,17 @@
                         $el.scrollTop = newHeight - oldHeight;
                         height = newHeight;
                     })"
+
+                    @image-validation-forbidden.window="imageValidation = { openModal: true, reason: 'forbidden', }"
+
+                    @image-validation-failed.window="
+                    this.imageValidation = {
+                        openModal: true,
+                        reason: 'failed',
+                    };"
+
+                         x-init="console.log('Test')"
+
                     id="conversation"
                     class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-scroll flex-grow overflow-x-hidden w-full my-auto" style="flex: 1 1 0;">
 
@@ -169,7 +178,7 @@
                     </div>
 
                     <div x-cloak x-show="messageDelete.openModal" class="fixed inset-0 flex items-center justify-center z-50">
-                        <div class="bg-black bg-opacity-65 w-full h-full flex justify-center items-center" x-on:click.self="openDeleteModal = false">
+                        <div class="bg-black bg-opacity-65 w-full h-full flex justify-center items-center" x-on:click.self="messageDelete.openModal = false">
                             <div class="bg-gray-700 p-8 rounded-xl">
                                 <h1 class="text-white font-bold text-xl">Delete Message</h1>
 
@@ -178,6 +187,31 @@
                                 <div class="flex justify-end gap-6 mt-4">
                                     <button class="bg-red-500 hover:bg-red-700 rounded-md px-6 py-2 text-white" @click="messageDelete.openModal = false" wire:click="delete(`${messageDelete.id}`)">Delete</button>
                                     <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="messageDelete.openModal = false">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div x-cloak x-show="imageValidation.openModal" class="fixed inset-0 flex items-center justify-center z-50">
+                        <div class="bg-black bg-opacity-65 w-full h-full flex justify-center items-center" x-on:click.self="imageValidation.openModal = false">
+                            <div x-cloak x-show="imageValidation.reason === 'failed'" class="bg-gray-700 p-8 rounded-xl">
+                                <h1 class="text-white font-bold text-xl">System Failure</h1>
+
+                                <p class="text-white mt-4">Our system is having an issue while validating the images you posted. Please try again later.</p>
+
+                                <div class="flex justify-end gap-6 mt-4">
+                                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="imageValidation.openModal = false">Ok</button>
+                                </div>
+                            </div>
+
+                            <div x-cloak x-show="imageValidation.reason === 'forbidden'" class="bg-gray-700 p-8 rounded-xl">
+                                <h1 class="text-white font-bold text-xl">Forbidden Content Detected</h1>
+
+                                <p class="text-white mt-4">Our system detected that you are trying to post contents that are not allowed on our website.</p>
+                                <p class="text-white mt-4">If you believe this is an error, please contact with moderators.</p>
+
+                                <div class="flex justify-end gap-6 mt-4">
+                                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="imageValidation.openModal = false">Ok</button>
                                 </div>
                             </div>
                         </div>

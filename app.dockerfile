@@ -1,7 +1,7 @@
 FROM php:8.3-fpm AS php
 
 # Move working directory
-WORKDIR /var/www/html/Tinder_Demo
+WORKDIR /app
 
 # Update apt-get.
 RUN apt-get update && apt-get install -y git curl libonig-dev libxml2-dev libpng-dev zip unzip
@@ -16,7 +16,7 @@ COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 RUN groupadd -g 1000 web && useradd -m -u 1000 -g web webuser
 
 # Copy the project source
-COPY --chown=webuser:web . /var/www/html/Tinder_Demo/
+COPY --chown=webuser:web . /app
 RUN mv .env.production .env
 
 # Switch to non-rooted user to install composer libraries (as recommendation)

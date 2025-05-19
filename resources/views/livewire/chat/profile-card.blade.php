@@ -1,7 +1,7 @@
 <div class="w-full h-full overflow-auto">
     <div style="contain: content" class=" inset-0 overflow-y-auto overflow-hidden overscroll-contain w-full  bg-white space-y-4">
         @php
-            $slides = [
+            $slides = !empty($user->images) ? $user->images : [
                 'https://picsum.photos/seed/' . rand() . '/500/300',
                 'https://picsum.photos/seed/' . rand() . '/500/300',
                 'https://picsum.photos/seed/' . rand() . '/500/300',
@@ -52,7 +52,7 @@
             </button>
         </section>
 
-       
+
 
         {{-- Profile Info --}}
         <section class="grid gap-4 p-3">

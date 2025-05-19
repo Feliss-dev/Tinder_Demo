@@ -6,7 +6,7 @@
                     bg-gradient-to-r from-[#266DD3] to-[#17BEBB]
                     flex flex-row">
             <div class="flex flex-col items-center justify-center">
-                <x-avatar class="w-10 h-10" src="{{$user->images}}" alt="{{$user->name}}" />
+                <x-avatar class="w-10 h-10 rounded-full" :user="$user"/>
             </div>
 
             <div class="ml-2 h-full flex-auto flex-shrink-0">

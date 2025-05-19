@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Faker\RandomUserProvider;
+use App\Models\Avatar;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Enums\RelationshipGoalsEnum;

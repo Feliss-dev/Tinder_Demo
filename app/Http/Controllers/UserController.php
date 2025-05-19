@@ -35,9 +35,7 @@ class UserController extends Controller
 
     public function userDashboard()
     {
-        return view('layouts.app', [
-            'userId' => auth()->user()->id,
-        ]);
+        return view('layouts.app');
     }
 
     public function userProfile()

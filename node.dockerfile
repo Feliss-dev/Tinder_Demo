@@ -1,8 +1,8 @@
-FROM node:22.14.0-slim
+FROM node:24.0.2-slim
 
-WORKDIR /var/www/html/Tinder_Demo
+WORKDIR /home/node/app
 
-COPY . /var/www/html/Tinder_Demo/
+COPY package*.json /home/node/app/
 
 RUN npm install
 

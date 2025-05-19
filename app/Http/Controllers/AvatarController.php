@@ -19,7 +19,7 @@ class AvatarController extends Controller
         // |--- avatar
 
         $filePath = $request->file('avatar')->storeAs('avatar',
-            time() . '.' . $request->file('avatar')->getClientOriginalExtension(),  // Name the image.
+            $user->id . '_' . time() . '.' . $request->file('avatar')->getClientOriginalExtension(),  // Name the image.
             'public'  // Save to 'public'
         );
 

@@ -1,8 +1,12 @@
 **/.git
+.env
 .env.example
 Dockerfile
 *.dockerfile
 .gitignore
 .gitattributes
 .env.local
-.env
+**/node_modules/
+.dockerignore
+npm-debug.log
+public/storage

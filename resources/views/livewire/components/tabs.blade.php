@@ -1,5 +1,5 @@
 <section
-    x-data="{ tab: {{request()->routeIs('chat.index') || request()->routeIs('chat') ? '"messages"' : '"matches"'}}}"
+    x-data="{ tab: {{request()->routeIs('chat') || request()->routeIs('chat') ? '"messages"' : '"matches"'}}}"
     @match-found.window="$wire.$refresh()"
     x-init="Echo.private('users.{{auth()->id()}}')
             .notification((notification) => {
@@ -45,6 +45,10 @@
         <div class="flex-grow overflow-y-scroll webkit-small-scrollbar">
             <div x-show="tab == 'matches'" class="grid grid-cols-3 gap-2 p-2">
                 @foreach ($matches as $i=> $match)
+                    @php
+                        $partner = $match->swipe1->user_id==auth()->id() ? $match->swipe2->user : $match->swipe1->user;
+                    @endphp
+
                     <div wire:click="createConversation('{{$match->id}}')" class="relative cursor-pointer">
                         <!-- Dot -->
                         <span class="absolute -top-1 -right-0.5">
@@ -53,10 +57,10 @@
                             </svg>
                         </span>
 
-                        <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="image" class="h-36 rounded-lg object-cover">
+                        <x-avatar class="h-36 rounded-lg object-cover" :user="$partner" alt="Matched user"/>
 
                         <h5 class="absolute rounded-lg left-2 bottom-2 text-white bg-black/60 p-2 font-bold text-[10px]">
-                            {{$match->swipe1->user_id==auth()->id()?$match->swipe2->user->name:$match->swipe1->user->name}}
+                            {{$partner->name}}
                         </h5>
                     </div>
                 @endforeach
@@ -91,13 +95,7 @@
                                     </span>
 
                                     <span>
-                                        @if ($conversation->getReceiver()->activeAvatar)
-                                            <img src="{{ asset('storage/' . $conversation->getReceiver()->activeAvatar->path) }}" alt="Matched User Avatar"
-                                                 class="rounded-full h-10 w-10 ring ring-pink-500/40">
-                                        @else
-                                            <img src="https://randomuser.me/api/portraits/women/{{ rand(0, 99) }}.jpg" alt="Random User" class="rounded-full h-12 w-12 ring ring-pink-500/40">
-
-                                        @endif
+                                        <x-avatar class="rounded-full w-10 h-10 ring ring-pink-500/40" :user="$conversation->getReceiver()" alt="Matched User Avatar"/>
                                     </span>
                                 </div>
 

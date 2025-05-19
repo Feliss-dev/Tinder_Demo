@@ -6,6 +6,7 @@ use App\Events\ConversationMessageSent;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -36,6 +37,32 @@ class InputFields extends Component
             'body' => 'nullable|string',
         ]);
 
+        if (!empty($this->allFiles)) {
+            foreach ($this->allFiles as $file) {
+                $response = Http::post(env("IMAGE_DETECTOR_URL"), [
+                    'image_content' => base64_encode($file->get()),
+                ]);
+
+                if ($response->ok()) {
+                    $jsonResponse = $response->json();
+
+                    if ($jsonResponse['label'] == 'cat') {
+                        Log::debug("Forbidden");
+
+                        $this->resetMessaging();
+                        $this->dispatch('image-validation-forbidden');
+                        return;
+                    }
+                } else {
+                    Log::debug("Failed");
+
+                    $this->resetMessaging();
+                    $this->dispatch('image-validation-failed');
+                    return;
+                }
+            }
+        }
+
         $payload = [
             'created_at' => date("Y-m-d H:i:s"),
             'receiver_id' => $this->receiver->id,
@@ -44,53 +71,18 @@ class InputFields extends Component
             'reply_id' => $this->replyingMessage?->id,
         ];
 
+        $this->resetMessaging();
+
+        $this->dispatch('user-send-message', $payload);
+    }
+
+    private function resetMessaging() {
         $this->reset('body');
         $this->reset('files');
 
         $this->allFiles = [];
         $this->replyingMessage = null;
         $this->dispatch('refresh-display', TemporaryUploadedFile::serializeMultipleForLivewireResponse([]));
-
-        $this->dispatch('user-send-message', $payload);
-
-//        $fileLocations = [];
-//
-//        # store files first.
-//        if (!empty($this->allFiles)) {
-//            foreach ($this->allFiles as $file) {
-//                $fileLocations[] = $file->storeAs('chat/' . $this->conversation->id, date('YmdHis', time()) . '_' . $file->getClientOriginalName(), 'public');
-//            }
-//        }
-//
-//        #create message
-//        $createdMessage = Message::create([
-//            'conversation_id' => $this->conversation->id,
-//            'sender_id' => auth()->id(),
-//            'receiver_id' => $this->receiver->id,
-//            'body' => $this->body,
-//            'files' => json_encode($fileLocations),
-//            'reply_id' => $this->replyingMessage?->id,
-//        ]);
-//
-//        $this->reset('body');
-//        $this->reset('files');
-//
-//        $this->allFiles = [];
-//        $this->replyingMessage = null;
-//
-//        #update the conversation model
-//        $this->conversation->updated_at = now();
-//        $this->conversation->save();
-//
-//        # dispatch event
-//        $this->dispatch('new-message-created');
-//        $this->dispatch('user-send-message', $createdMessage->id);
-//
-//        # dispatch refresh-files event with empty array value to FileViewer so that it hide the small previewing container
-//        $this->dispatch('refresh-display', TemporaryUploadedFile::serializeMultipleForLivewireResponse([]));
-//
-//        #broadcast out message
-//        broadcast(new ConversationMessageSent($createdMessage, $this->conversation->id))->toOthers();
     }
 
     public function broadcastMessage($messageId) {

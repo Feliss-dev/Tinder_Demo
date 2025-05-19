@@ -6,7 +6,7 @@
 
                 <a class="p-2.5 w-full bg-white hover:bg-gray-200 focus:bg-gray-400 flex flex-row h-full" href="{{ route('users.profile', $recommendation['user_id'])  }}">
                     <div class="flex flex-col items-center justify-center">
-                        <x-avatar class="w-10 h-10" src="{{$recommendedUser->images}}" alt="{{$recommendedUser->name}}" />
+                        <x-avatar class="w-10 h-10 rounded-full" :user="$recommendedUser" alt="{{$recommendedUser->name}}'s Avatar" />
                     </div>
 
                     <div class="ml-2 h-full flex-grow-0">
