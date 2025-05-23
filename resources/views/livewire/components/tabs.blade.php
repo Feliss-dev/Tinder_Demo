@@ -12,41 +12,45 @@
     <div class="flex flex-col h-full bg-white">
         {{-- Tab Buttons --}}
         <header class="flex flex-row max-w-full overflow-x-auto overflow-y-hidden whitespace-nowrap px-4 py-3 gap-5 items-center webkit-small-scrollbar flex-grow-0 flex-shrink-0 basis-14">
-            <button @click="tab = 'matches'" :class="tab === 'matches' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5" >
+            <button @click="tab = 'matches'" :class="tab === 'matches' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 basis-0 flex-grow">
                 Matches
 
-                @if (auth()->user()->matches()->count() > 0)
+                @php
+                    $matchesCount = auth()->user()->matches()->count();
+                @endphp
+
+                @if ($matchesCount > 0)
                     <span class="rounded-full text-xs p-1 px-2 font-bold text-white bg-tinder">
-                        {{auth()->user()->matches()->count()}}
+                        {{$matchesCount}}
                     </span>
                 @endif
             </button>
 
-            <button @click="tab='messages'" :class="tab === 'messages' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5" >
+            <button @click="tab='messages'" :class="tab === 'messages' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 basis-0 flex-grow">
                 Messages
 
-                @if (auth()->user()->unReadMessagesCount()> 0)
+                @php
+                    $unreadMessageCount = auth()->user()->unReadMessagesCount()
+                @endphp
+
+                @if ($unreadMessageCount > 0)
                     <span class="rounded-full text-xs p-1 px-2 font-bold text-white bg-tinder">
-                        {{auth()->user()->unReadMessagesCount()}}
+                        {{$unreadMessageCount}}
                     </span>
                 @endif
             </button>
 
-            <button @click="tab='recommend'" :class="tab === 'recommend' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5" >
+            <button @click="tab='recommend'" :class="tab === 'recommend' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 basis-0 flex-grow">
                 Recommends
-            </button>
-
-            <button @click="tab='suggest'" :class="tab === 'suggest' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5" >
-                Suggests
             </button>
         </header>
 
         {{-- Tab Panel --}}
         <div class="flex-grow overflow-y-scroll webkit-small-scrollbar">
             <div x-show="tab == 'matches'" class="grid grid-cols-3 gap-2 p-2">
-                @foreach ($matches as $i=> $match)
+                @foreach ($matches as $i => $match)
                     @php
-                        $partner = $match->swipe1->user_id==auth()->id() ? $match->swipe2->user : $match->swipe1->user;
+                        $partner = $match->swipe1->user_id == auth()->id() ? $match->swipe2->user : $match->swipe1->user;
                     @endphp
 
                     <div wire:click="createConversation('{{$match->id}}')" class="relative cursor-pointer">
@@ -68,7 +72,7 @@
 
             <div x-show="tab === 'messages'" x-cloak class="px-2">
                 <ul>
-                    @foreach ($conversations as $i=> $conversation)
+                    @foreach ($conversations as $i => $conversation)
                         @php
                             $lastMessage = $conversation->messages()?->latest()->first();
                         @endphp
@@ -127,10 +131,6 @@
 
             <div x-show="tab === 'recommend'" x-cloak class="px-2 h-full flex flex-col">
                 <livewire:recommendations />
-            </div>
-
-            <div x-show="tab === 'suggest'" x-cloak class="px-2 h-full flex flex-col">
-                <livewire:suggestion />
             </div>
         </div>
     </div>

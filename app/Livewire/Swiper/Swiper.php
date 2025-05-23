@@ -26,7 +26,7 @@ class Swiper extends Component {
     public $filtersApplied = false;
     public $user;
     public $selectedLanguages = [];
-    public $selectedInterests =[];
+    public $selectedInterests = [];
     public $selectedDatingGoals = [];
 
     public $profiles = false; // Property to store profile visibility status

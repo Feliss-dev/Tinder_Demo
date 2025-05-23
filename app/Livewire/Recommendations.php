@@ -5,10 +5,13 @@ namespace App\Livewire;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Recommendations extends Component
 {
+    const int REQUEST_LIMIT = 10;
+
     public $recommendations = [];
     public $error = null;
 
@@ -16,20 +19,21 @@ class Recommendations extends Component
         $this->fetchRecommendations();
     }
 
+    #[On("recommendation-request")]
+    public function requestRecommendations() {
+        $this->fetchRecommendations();
+    }
+
     public function fetchRecommendations() {
         $userId = auth()->user()->id;
         try {
-            $response = Http::post(env('AI_RECOMMEND_URL'), [
+            $response = Http::post(env('MATCHING_AI_REQUEST_URL'), [
                 'user_id' => $userId,
+                'limit' => static::REQUEST_LIMIT,
             ]);
 
-            if (App::environment('local')) {
-                Log::info('Sending request to FastAPI', ['user_id' => $userId]);
-                Log::info('API response: ' . $response->body());
-            }
-
             if ($response->ok()) {
-                $this->recommendations = $response->json();
+                $this->recommendations = $response->json()['recommendations'];
                 $this->error = null;
             } else {
                 $this->recommendations = [];

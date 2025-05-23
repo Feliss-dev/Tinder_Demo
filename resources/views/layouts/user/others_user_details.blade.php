@@ -28,7 +28,7 @@
         <x-user-information-panel class="flex flex-col flex-1 gap-3 bg-white shadow-lg p-4 rounded-lg" :user="$user"/>
 
         <div class="flex-1 bg-white shadow-lg p-4 rounded-lg">
-            <livewire:components.user-image-carousel :user="$user" :editable="true"/>
+            <livewire:components.user-image-carousel :user="$user" :editable="false"/>
         </div>
     </div>
 @endsection
