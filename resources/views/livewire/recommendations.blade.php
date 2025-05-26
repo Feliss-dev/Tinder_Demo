@@ -1,4 +1,4 @@
-<div class="h-full" x-data="{ openModal: false }">
+<div class="h-full">
     @if ($recommendations && count($recommendations) > 0)
         <ul class="space-y-2">
             @foreach ($recommendations as $recommendation)

@@ -41,15 +41,17 @@ class DatabaseSeeder extends Seeder
         $faker->addProvider(new PicsumPhotoProvider($faker));
 
         // Create fake users.
-        $users = User::factory(25)->state(new Sequence(function (Sequence $sequence) use ($faker) {
+        $users = User::factory(20)->state(new Sequence(function (Sequence $sequence) use ($faker) {
             $images = [];
 
             for ($i = 0; $i < 3; $i++) {
-                $content = file_get_contents($faker->picsumUrl(500, 300));
-                $storagePath = 'user_images/' . ((string)Str::uuid()) . '.jpg';
+                try {
+                    $content = file_get_contents($faker->picsumUrl(500, 300));
+                    $storagePath = 'user_images/' . ((string)Str::uuid()) . '.jpg';
 
-                Storage::disk("public")->put($storagePath, $content);
-                $images[] = $storagePath;
+                    Storage::disk("public")->put($storagePath, $content);
+                    $images[] = $storagePath;
+                } catch (\ErrorException) {}
             }
 
             return [
@@ -63,7 +65,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Assign fake avatars.
-        Avatar::factory(25)->state(new Sequence(
+        Avatar::factory(User::count())->state(new Sequence(
             function (Sequence $sequence) use ($faker) {
                 $storagePath = 'avatar/' . ($sequence->index + 1) . '_' . time() . '.jpg';
                 $content = file_get_contents($faker->randomUserUrl("women"));
@@ -113,8 +115,20 @@ class DatabaseSeeder extends Seeder
             $interests = \App\Models\Interest::inRandomOrder()->take(rand(1, 5))->pluck('id');
             $user->interests()->sync($interests);
 
-            // Tạo một số Swipe cho mỗi user
-            Swipe::factory()->create(['user_id' => $user->id, 'swiped_user_id' => $testUser->id]);
+            $unswiped = User::whereNotIn('id', Swipe::where('swiped_user_id', $user->id)->pluck('swiped_user_id'))->inRandomOrder()->take(rand(1, 10))->pluck('id');
+            Swipe::factory($unswiped->count())->state(new Sequence(function (Sequence $sequence) use ($unswiped) {
+                return [
+                    'swiped_user_id' => $unswiped[$sequence->index],
+                ];
+            }))->create([
+                'user_id' => $user->id,
+            ]);
+
+            // Gán swipe với test user
+            Swipe::factory()->create([
+                'user_id' => $user->id,
+                'swiped_user_id' => $testUser->id
+            ]);
         }
     }
 }

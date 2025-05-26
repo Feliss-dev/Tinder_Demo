@@ -1,7 +1,5 @@
-<div x-cloak x-show="openModal" @click.outside="openModal = false" class="fixed top-0 left-0 w-screen h-screen bg-[#212121D0] z-[200] overflow-auto flex flex-col justify-center items-center">
-    {{-- href="{{ route('users.profile', $recommendation['user_id'])  }}" --}}
-
-    <section class="rounded-xl bg-white w-[40%] p-2">
+<div x-cloak x-show="$wire.show" class="fixed top-0 left-0 w-screen h-screen bg-[#212121D0] z-[200] overflow-auto flex flex-col justify-center items-center">
+    <section x-on:click.outside="$wire.show = false;" class="rounded-xl bg-white w-[40%] p-2">
         @if ($user != null)
             <header class="flex flex-row overflow-hidden">
                 <div class="flex flex-col flex-grow-0 flex-shrink-0 basis-24">
@@ -62,22 +60,25 @@
 
             <hr class="my-3"/>
 
-            <footer class="flex flex-row justify-end">
-                <a @click="openModal = false; $dispatch('recommendation-info-modal-close')" class="p-3 bg-red-500 text-white font-bold rounded-lg cursor-pointer">Cancel</a>
-                <a class="ml-3 p-3 bg-violet-500 text-white font-bold rounded-lg cursor-pointer" href="{{ route('users.profile', $infos['user_id']) }}">Visit Profile</a>
-                <button class="ml-3 p-3 bg-blue-500 text-white font-bold rounded-lg" @click="openModal = false; $dispatch('recommendation-info-modal-close'); $dispatch('swipedright', { user: '{{$infos['user_id']}}' }); $dispatch('recommendation-request')">Swipe Right</button>
-            </footer>
-        @else
-            <div class="w-full flex flex-row justify-center items-center">
-                <section>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" class="size-12 fill-neutral-600 motion-safe:animate-spin mx-auto">
-                        <path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" />
-                        <path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" />
+            <footer class="flex flex-row justify-evenly">
+                <button class="ml-3 p-3 bg-red-500 text-white font-bold rounded-lg flex flex-row items-center" @click="openModal = false; $dispatch('recommendation-info-modal-close'); $dispatch('swipedleft', { user: '{{$infos['user_id']}}' }); $dispatch('recommendation-request')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="mr-2" fill="white" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
                     </svg>
 
-                    <p class="mt-3">Loading information...</p>
-                </section>
-            </div>
+                    Swipe Left
+                </button>
+
+                <a class="ml-3 p-3 bg-violet-500 text-white font-bold rounded-lg cursor-pointer" href="{{ route('users.profile', $infos['user_id']) }}">Visit Profile</a>
+
+                <button class="ml-3 p-3 bg-blue-500 text-white font-bold rounded-lg flex flex-row items-center" @click="openModal = false; $dispatch('recommendation-info-modal-close'); $dispatch('swipedright', { user: '{{$infos['user_id']}}' }); $dispatch('recommendation-request')">
+                    Swipe Right
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="ml-2" fill="white" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                    </svg>
+                </button>
+            </footer>
         @endif
     </section>
 </div>
