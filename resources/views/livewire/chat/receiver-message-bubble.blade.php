@@ -40,6 +40,12 @@
                     <button wire:click="reply" @click="openDropdown = false" class="p-2 w-full flex items-center rounded-md text-left text-gray-800 hover:bg-gray-200">
                         Reply
                     </button>
+
+                    <hr/>
+
+                    <button @click="messageReport.id = {{$message->id}}" class="p-2 w-full flex items-center rounded-md text-left text-red-500 hover:bg-gray-200">
+                        Report
+                    </button>
                 </div>
             </div>
         @endif

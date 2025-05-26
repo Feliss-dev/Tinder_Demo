@@ -6,6 +6,7 @@ use App\Events\ConversationMessageSent;
 use App\Models\Swipe;
 use App\Models\Message;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use App\Models\SwipeMatch;
 use Livewire\Attributes\On;
@@ -20,16 +21,37 @@ class Chat extends Component
     public Conversation $conversation;
     public User $receiver;
 
-    public function delete($deleteMessageID) {
+    public function deleteMessage($deleteMessageID) {
+        abort_unless(auth()->check(), 401);
+
         $message = Message::where('id', $deleteMessageID)->first();
 
-        // Ensure the message is from the user.
+        // Ensure the message is not from the user.
         if ($message->sender_id != auth()->id()) return;
 
         $message->delete_status = 1;
         $message->save();
 
         $this->dispatch("refresh-message.{$deleteMessageID}");
+    }
+
+    public function reportMessage($messageID) {
+        abort_unless(auth()->check(), 401);
+
+        $message = Message::where('id', $messageID)->first();
+
+        // Ensure the message is not from the user.
+        if ($message->sender_id == auth()->id()) return;
+
+        try {
+
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            $this->dispatch("report-message-failed");
+        }
+
+        $this->dispatch("report-message-success");
     }
 
     function mount($chat){

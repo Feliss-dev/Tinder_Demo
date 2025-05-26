@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Database\Seeders\LanguageSeeder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -21,10 +22,6 @@ use function Illuminate\Filesystem\join_paths;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-
     public function run(): void
     {
         // Run these seeder classes.
@@ -34,50 +31,35 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             InterestSeeder::class,
             DesiredGenderSeeder::class,
+            AvatarSeeder::class,
+            UserImageSeeder::class,
+            MessageReportReasonSeeder::class,
         ]);
 
-        $faker = \Faker\Factory::create();
-        $faker->addProvider(new RandomUserProvider($faker));
-        $faker->addProvider(new PicsumPhotoProvider($faker));
+        $userImageFiles = Storage::disk("public")->allFiles('user_images');
 
-        // Create fake users.
-        $users = User::factory(20)->state(new Sequence(function (Sequence $sequence) use ($faker) {
-            $images = [];
-
-            for ($i = 0; $i < 3; $i++) {
-                try {
-                    $content = file_get_contents($faker->picsumUrl(500, 300));
-                    $storagePath = 'user_images/' . ((string)Str::uuid()) . '.jpg';
-
-                    Storage::disk("public")->put($storagePath, $content);
-                    $images[] = $storagePath;
-                } catch (\ErrorException) {}
-            }
+        // Seed fake users.
+        $users = User::factory(20)->state(new Sequence(function (Sequence $sequence) use ($userImageFiles) {
+            Storage::disk("public")->allFiles('user_images');
 
             return [
                 'birth_date' => Carbon::createFromTimestamp(rand(Carbon::now()->subYears(60)->timestamp, Carbon::now()->subYears(20)->timestamp)),
                 'created_at' => Carbon::createFromTimestamp(rand(Carbon::now()->subMonths(2)->timestamp, Carbon::now()->subMonths(50)->timestamp)),
-                'images' => json_encode($images),
+                'images' => json_encode(collect($userImageFiles)->shuffle()->take(rand(3, 8))),
             ];
         }))->create([
             'is_fake' => true,
             'is_admin' => false,
         ]);
 
-        // Assign fake avatars.
-        Avatar::factory(User::count())->state(new Sequence(
-            function (Sequence $sequence) use ($faker) {
-                $storagePath = 'avatar/' . ($sequence->index + 1) . '_' . time() . '.jpg';
-                $content = file_get_contents($faker->randomUserUrl("women"));
-
-                Storage::disk("public")->put($storagePath, $content);
-
-                return [
-                    'user_id' => $sequence->index + 1,
-                    'path' => $storagePath,
-                ];
-            }
-        ))->create([
+        // Seed avatars.
+        $avatarFiles = Storage::disk("public")->allFiles("avatar");
+        Avatar::factory(User::count())->state(new Sequence(function (Sequence $sequence) use ($avatarFiles) {
+            return [
+                'user_id' => $sequence->index + 1,
+                'path' => $avatarFiles[rand(0, count($avatarFiles) - 1)],
+            ];
+        }))->create([
             'is_active' => 1,
         ]);
 

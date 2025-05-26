@@ -17,7 +17,11 @@ class Message extends Model
         return $this->belongsTo(Conversation::class);
     }
 
-    public function isRead():bool {
-        return $this->read_at!=null;
+    public function reports() {
+        return $this->belongsToMany(MessageReportReason::class, 'message_report_reason_messages', 'message_id', 'reason_id');
+    }
+
+    public function isRead() : bool {
+        return $this->read_at != null;
     }
 }

@@ -86,6 +86,12 @@
                         openModal: false,
                         id: -1
                     },
+
+                    messageReport: {
+                        id: -1,
+                        status: ''
+                    },
+
                     imagePreview: {
                         openModal: false,
                         images: [],
@@ -127,7 +133,8 @@
                         reason: 'failed',
                     };"
 
-                         x-init="console.log('Test')"
+                    @report-message-success.window="messageReport.status = 'success'"
+                    @report-message-failed.window="messageReport.status = 'failed'"
 
                     id="conversation"
                     class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-scroll flex-grow overflow-x-hidden w-full my-auto" style="flex: 1 1 0;">
@@ -174,36 +181,67 @@
                                 <p class="text-white mt-4">Are you sure you want to delete this message? This action cannot be reverted on normal circumstance.</p>
 
                                 <div class="flex justify-end gap-6 mt-4">
-                                    <button class="bg-red-500 hover:bg-red-700 rounded-md px-6 py-2 text-white" @click="messageDelete.openModal = false" wire:click="delete(`${messageDelete.id}`)">Delete</button>
-                                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="messageDelete.openModal = false">Cancel</button>
+                                    <button class="bg-red-500 hover:bg-red-600 active:bg-red-700 rounded-md px-6 py-2 text-white" @click="messageDelete.openModal = false" wire:click="deleteMessage(`${messageDelete.id}`)">Delete</button>
+                                    <button class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 rounded-md px-6 py-2 text-black" @click="messageDelete.openModal = false">Cancel</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div x-cloak x-show="imageValidation.openModal" class="fixed inset-0 flex items-center justify-center z-50">
-                        <div class="bg-black bg-opacity-65 w-full h-full flex justify-center items-center" x-on:click.self="imageValidation.openModal = false">
-                            <div x-cloak x-show="imageValidation.reason === 'failed'" class="bg-gray-700 p-8 rounded-xl">
-                                <h1 class="text-white font-bold text-xl">System Failure</h1>
+                    <div x-cloak x-show="imageValidation.openModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-65">
+                        <section x-cloak x-show="imageValidation.reason === 'failed'" class="bg-gray-700 p-8 rounded-xl">
+                            <h1 class="text-white font-bold text-xl">System Failure</h1>
 
-                                <p class="text-white mt-4">Our system is having an issue while validating the images you posted. Please try again later.</p>
+                            <p class="text-white mt-4">Our system is having an issue while validating the images you posted. Please try again later.</p>
 
-                                <div class="flex justify-end gap-6 mt-4">
-                                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="imageValidation.openModal = false">Ok</button>
-                                </div>
+                            <div class="flex justify-end gap-6 mt-4">
+                                <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="imageValidation.openModal = false">Ok</button>
                             </div>
+                        </section>
 
-                            <div x-cloak x-show="imageValidation.reason === 'forbidden'" class="bg-gray-700 p-8 rounded-xl">
-                                <h1 class="text-white font-bold text-xl">Forbidden Content Detected</h1>
+                        <div x-cloak x-show="imageValidation.reason === 'forbidden'" class="bg-gray-700 p-8 rounded-xl">
+                            <h1 class="text-white font-bold text-xl">Forbidden Content Detected</h1>
 
-                                <p class="text-white mt-4">Our system detected that you are trying to post contents that are not allowed on our website.</p>
-                                <p class="text-white mt-4">If you believe this is an error, please contact with moderators.</p>
+                            <p class="text-white mt-4">Our system detected that you are trying to post contents that are not allowed on our website.</p>
+                            <p class="text-white mt-4">If you believe this is an error, please contact with moderators.</p>
 
-                                <div class="flex justify-end gap-6 mt-4">
-                                    <button class="bg-blue-300 hover:bg-blue-400 rounded-md px-6 py-2 text-black" @click="imageValidation.openModal = false">Ok</button>
-                                </div>
+                            <div class="flex justify-end gap-6 mt-4">
+                                <button class="bg-blue-400 hover:bg-blue-500 active:bg-blue-600 rounded-md px-6 py-2 text-white" @click="imageValidation.openModal = false">Ok</button>
                             </div>
                         </div>
+                    </div>
+
+                    <div x-cloak x-show="messageReport.id > 0" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-65">
+                        <section class="bg-gray-700 p-8 rounded-xl">
+                            <h1 class="text-white font-bold text-xl">Report Message</h1>
+
+                            <p class="text-white mt-4">Do you want to report the message of this user to the moderators?</p>
+
+                            <div class="flex justify-end gap-6 mt-4">
+                                <button class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 rounded-md px-6 py-2 text-white" @click="messageReport.id = -1;" wire:click="reportMessage(`${messageReport.id}`)">Report</button>
+                                <button class="bg-red-500 hover:bg-red-600 active:bg-red-700 rounded-md px-6 py-2 text-white" @click="messageReport.id = -1">Cancel</button>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div x-cloak x-show="messageReport.status !== ''" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-65">
+                        <section class="bg-gray-700 p-8 rounded-xl">
+                            <div x-cloak x-show="messageReport.status === 'success'">
+                                <h1 class="text-white font-bold text-xl">Message Report Successfully</h1>
+
+                                <p class="text-white mt-4">Your report has been recorded, our moderator team will handle it sooner or later.</p>
+                            </div>
+
+                            <div x-cloak x-show="messageReport.status === 'failed'">
+                                <h1 class="text-white font-bold text-xl">Message Report Failed</h1>
+
+                                <p class="text-white mt-4">Your report has not been recorded due to system error, please try again later.</p>
+                            </div>
+
+                            <div class="flex justify-end gap-6 mt-4">
+                                <button class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 rounded-md px-6 py-2 text-white" @click="messageReport.status = ''">Ok</button>
+                            </div>
+                        </section>
                     </div>
                 </section>
 
