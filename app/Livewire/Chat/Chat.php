@@ -3,6 +3,8 @@
 namespace App\Livewire\Chat;
 
 use App\Events\ConversationMessageSent;
+use App\Models\MessageReport;
+use App\Models\MessageReportReason;
 use App\Models\Swipe;
 use App\Models\Message;
 use App\Models\User;
@@ -35,8 +37,11 @@ class Chat extends Component
         $this->dispatch("refresh-message.{$deleteMessageID}");
     }
 
-    public function reportMessage($messageID) {
+    public function reportMessage($messageID, string $reasonsString, string $extra) {
         abort_unless(auth()->check(), 401);
+
+        // reasons get passed in form of 1,2,3,4,... despite being declared as array in alpine for some reason...
+        if (strlen($reasonsString) == 0) return;
 
         $message = Message::where('id', $messageID)->first();
 
@@ -44,7 +49,20 @@ class Chat extends Component
         if ($message->sender_id == auth()->id()) return;
 
         try {
+            $reasons = array_filter(array_map(function ($reason) {
+                return (int)$reason;
+            }, explode(',', $reasonsString)), function ($reasonID) {
+                return MessageReportReason::where('id', $reasonID)->exists();
+            });
 
+            $report = MessageReport::create([
+                'extra' => $extra
+            ]);
+            $report->reasons()->sync($reasons);
+
+            $message->reports()->save($report);
+
+            Log::debug("Report message ID " . $messageID . " reasons: " . $reasons);
         } catch (\Exception $e) {
             Log::error($e);
 

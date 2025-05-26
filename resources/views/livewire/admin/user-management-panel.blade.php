@@ -4,7 +4,7 @@
 @endphp
 
 <div>
-    <p class="font-semibold text-3xl text-center mt-4 mb-6">User Management Dashboard</p>
+    <h1 class="font-semibold text-3xl text-center mt-4 mb-6">User Management Dashboard</h1>
 
     <section class="flex flex-row gap-2 mb-0" x-data="{year: @entangle('analyzingYear')}">
         <div class="flex flex-col gap-2 flex-1">

@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('message_report_reason_messages', function (Blueprint $table) {
+        Schema::create('message_reports', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('message_id')->constrained('messages')->cascadeOnDelete();
-            $table->foreignId('reason_id')->constrained('message_report_reasons')->cascadeOnDelete();
-            $table->string('extra', 255)->nullable();
-
+            $table->text('extra')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('message_report_reason_messages');
+        Schema::dropIfExists('message_reports');
     }
 };
