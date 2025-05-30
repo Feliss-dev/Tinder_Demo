@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('swiped_user_id')->constrained('users');
-            $table->enum('type',['left', 'right', 'up']);
+            $table->enum('type', ['left', 'right', 'up']);
 
             $table->timestamps();
         });

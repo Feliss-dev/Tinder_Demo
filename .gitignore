@@ -6,9 +6,7 @@ node_modules/
 /storage/*.key
 /vendor
 .env
-.env.local
-.env.backup
-.env.production
+.env.*
 Homestead.json
 Homestead.yaml
 auth.json

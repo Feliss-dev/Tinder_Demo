@@ -88,13 +88,17 @@ class ConversationManagementPanel extends Component
     }
 
     public function getChartData(int $year) {
-        $response = Http::get(env('STATISTICS_URL') . 'conversation', [
-            'year' => $year,
-        ]);
+        try {
+            $response = Http::get(env('STATISTICS_URL') . 'conversation', [
+                'year' => $year,
+            ]);
 
-        if ($response->ok()) {
-            $this->analyzingYearStats['monthly_count'] = $response->json();
-        } else {
+            if ($response->ok()) {
+                $this->analyzingYearStats['monthly_count'] = $response->json();
+            } else {
+                $this->analyzingYearStats['monthly_count'] = array_fill(0, 12, 0);
+            }
+        } catch (\Illuminate\Http\Client\ConnectionException) {
             $this->analyzingYearStats['monthly_count'] = array_fill(0, 12, 0);
         }
 

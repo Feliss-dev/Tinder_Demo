@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('report_id')->constrained('message_reports')->cascadeOnDelete();
             $table->foreignId('reason_id')->constrained('message_report_reasons')->cascadeOnDelete();
 
+            $table->unique(['report_id', 'reason_id']);
+
             $table->timestamps();
         });
     }

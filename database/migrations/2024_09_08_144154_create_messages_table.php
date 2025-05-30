@@ -26,6 +26,9 @@ return new class extends Migration
             $table->text('body')->nullable();
             $table->json('files')->nullable();
 
+            $table->foreignId('reply_id')->nullable()->constrained('messages');
+            $table->boolean('delete_status')->default(false);
+
             $table->timestamps();
         });
     }

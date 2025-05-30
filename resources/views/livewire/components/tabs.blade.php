@@ -46,7 +46,7 @@
         </header>
 
         {{-- Tab Panel --}}
-        <div class="flex-grow overflow-y-scroll webkit-small-scrollbar">
+        <main class="flex-grow overflow-y-scroll webkit-small-scrollbar">
             <div x-show="tab == 'matches'" class="grid grid-cols-3 gap-2 p-2">
                 @foreach ($matches as $i => $match)
                     @php
@@ -132,6 +132,6 @@
             <div x-show="tab === 'recommend'" x-cloak class="px-2 h-full flex flex-col">
                 <livewire:recommendations />
             </div>
-        </div>
+        </main>
     </div>
 </section>

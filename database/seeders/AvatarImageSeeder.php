@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 
-class AvatarSeeder extends Seeder
+class AvatarImageSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -24,7 +24,7 @@ class AvatarSeeder extends Seeder
         $faker->addProvider(new RandomUserProvider($faker));
         $faker->addProvider(new PicsumPhotoProvider($faker));
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $storagePath = 'avatar/' . ((string)Str::uuid()) . '.jpg';
 
             $content = file_get_contents($faker->randomUserUrl("women"));

@@ -20,7 +20,7 @@ class UserImageSeeder extends Seeder
         $faker->addProvider(new RandomUserProvider($faker));
         $faker->addProvider(new PicsumPhotoProvider($faker));
 
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             try {
                 $content = file_get_contents($faker->picsumUrl(500, 300));
                 $storagePath = 'user_images/' . ((string)Str::uuid()) . '.jpg';

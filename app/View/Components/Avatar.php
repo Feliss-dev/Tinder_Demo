@@ -12,7 +12,7 @@ class Avatar extends Component
         public User $user,
     ) {}
 
-    public function render(): View
+    public function render()
     {
         return view('components.avatar');
     }

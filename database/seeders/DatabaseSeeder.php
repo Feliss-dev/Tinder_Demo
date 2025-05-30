@@ -7,7 +7,9 @@ namespace Database\Seeders;
 use App\Faker\PicsumPhotoProvider;
 use App\Faker\RandomUserProvider;
 use App\Models\Avatar;
+use App\Models\Conversation;
 use App\Models\Interest;
+use App\Models\SwipeMatch;
 use App\Models\User;
 use App\Models\Swipe;
 use Carbon\Carbon;
@@ -31,86 +33,40 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             InterestSeeder::class,
             DesiredGenderSeeder::class,
-            AvatarSeeder::class,
-            UserImageSeeder::class,
             MessageReportReasonSeeder::class,
-        ]);
 
-        $userImageFiles = Storage::disk("public")->allFiles('user_images');
-
-        // Seed fake users.
-        $users = User::factory(20)->state(new Sequence(function (Sequence $sequence) use ($userImageFiles) {
-            Storage::disk("public")->allFiles('user_images');
-
-            return [
-                'birth_date' => Carbon::createFromTimestamp(rand(Carbon::now()->subYears(60)->timestamp, Carbon::now()->subYears(20)->timestamp)),
-                'created_at' => Carbon::createFromTimestamp(rand(Carbon::now()->subMonths(2)->timestamp, Carbon::now()->subMonths(50)->timestamp)),
-                'images' => json_encode(collect($userImageFiles)->shuffle()->take(rand(3, 8))),
-            ];
-        }))->create([
-            'is_fake' => true,
-            'is_admin' => false,
-        ]);
-
-        // Seed avatars.
-        $avatarFiles = Storage::disk("public")->allFiles("avatar");
-        Avatar::factory(User::count())->state(new Sequence(function (Sequence $sequence) use ($avatarFiles) {
-            return [
-                'user_id' => $sequence->index + 1,
-                'path' => $avatarFiles[rand(0, count($avatarFiles) - 1)],
-            ];
-        }))->create([
-            'is_active' => 1,
+            AvatarImageSeeder::class,
+            UserImageSeeder::class,
+            UserSeeder::class,
+            AvatarSeeder::class,
         ]);
 
         // Create test user and admin usr.
-        $testUser = User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'is_admin' => false,
+        $testUser = User::factory()->createMany([
+            [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'is_admin' => false,
+            ],
+            [
+                'name' => 'Admin User',
+                'email' => 'admin@example.com',
+                'is_admin' => true,
+            ]
+        ])[0];
+
+        $this->call([
+            GenderUserSeeder::class,
+            DesiredGenderUserSeeder::class,
+            DatingGoalUserSeeder::class,
+            LanguageUserSeeder::class,
+            InterestUserSeeder::class,
         ]);
 
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'is_admin' => true,
+        $this->call(SwipeSeeder::class, false, ['testUser' => $testUser]);
+
+        $this->call([
+            MessageSeeder::class,
         ]);
-
-        foreach ($users as $user) {
-            // Gán Gender (vào bảng pivot gender_user)
-            $gender = \App\Models\Gender::inRandomOrder()->first()->id;
-            $user->genders()->sync([$gender]);
-
-            // Gán DatingGoal (vào bảng pivot dating_goal_user)
-            $datingGoal = \App\Models\DatingGoal::inRandomOrder()->first()->id;
-            $user->datingGoals()->sync([$datingGoal]);
-
-            // Gán DesiredGender (vào bảng pivot desired_gender_user)
-            $desiredGender = \App\Models\DesiredGender::inRandomOrder()->first()->id;
-            $user->desiredGenders()->sync([$desiredGender]);
-
-            // Gán Languages (nhiều ngôn ngữ vào bảng pivot language_user)
-            $languages = \App\Models\Language::inRandomOrder()->take(rand(1, 3))->pluck('id');
-            $user->languages()->sync($languages);
-
-            // Gán Interests (nhiều sở thích vào bảng pivot interest_user)
-            $interests = \App\Models\Interest::inRandomOrder()->take(rand(1, 5))->pluck('id');
-            $user->interests()->sync($interests);
-
-            $unswiped = User::whereNotIn('id', Swipe::where('swiped_user_id', $user->id)->pluck('swiped_user_id'))->inRandomOrder()->take(rand(1, 10))->pluck('id');
-            Swipe::factory($unswiped->count())->state(new Sequence(function (Sequence $sequence) use ($unswiped) {
-                return [
-                    'swiped_user_id' => $unswiped[$sequence->index],
-                ];
-            }))->create([
-                'user_id' => $user->id,
-            ]);
-
-            // Gán swipe với test user
-            Swipe::factory()->create([
-                'user_id' => $user->id,
-                'swiped_user_id' => $testUser->id
-            ]);
-        }
     }
 }

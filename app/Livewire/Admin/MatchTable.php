@@ -10,13 +10,13 @@ class MatchTable extends Component
 {
     use WithPagination;
 
-    public $perPage = 10;
+    const int ITEMS_PER_PAGE = 10;
 
     public function render()
     {
         $query = SwipeMatch::query();
 
-        $matches = $query->paginate($this->perPage);
+        $matches = $query->paginate(static::ITEMS_PER_PAGE);
 
         return view('livewire.admin.match-table', [
             'matches' => $matches,

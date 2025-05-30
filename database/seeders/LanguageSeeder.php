@@ -13,7 +13,7 @@ class LanguageSeeder extends Seeder
      */
     public function run(): void
     {
-        $languages = [
+        Language::factory()->createMany([
             ['name' => 'English'],
             ['name' => 'Spanish'],
             ['name' => 'French'],
@@ -24,11 +24,6 @@ class LanguageSeeder extends Seeder
             ['name' => 'Italian'],
             ['name' => 'Russian'],
             ['name' => 'Arabic'],
-        ];
-
-        // Insert languages into the database
-        foreach ($languages as $language) {
-            Language::create($language);
-        }
+        ]);
     }
 }

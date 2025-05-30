@@ -1,7 +1,3 @@
-@php
-    use App\Models\SwipeMatch;
-@endphp
-
 <div class="w-full h-full overflow-y-auto">
     <div class="p-3 overflow-y-hidden">
         <div x-show="selectedTab === 'management_users'">

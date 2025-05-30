@@ -98,13 +98,19 @@ class SwipeManagementPanel extends Component
     }
 
     public function getChartData(int $year) {
-        $response = Http::get(env('STATISTICS_URL') . 'swipe', [
-            'year' => $year,
-        ]);
+        try {
+            $response = Http::get(env('STATISTICS_URL') . 'swipe', [
+                'year' => $year,
+            ]);
 
-        if ($response->ok()) {
-            $this->analyzingYearStats['monthly_count'] = $response->json();
-        } else {
+            if ($response->ok()) {
+                $this->analyzingYearStats['monthly_count'] = $response->json();
+            } else {
+                $this->analyzingYearStats['monthly_count']['left'] = array_fill(0, 12, 0);
+                $this->analyzingYearStats['monthly_count']['right'] = array_fill(0, 12, 0);
+                $this->analyzingYearStats['monthly_count']['up'] = array_fill(0, 12, 0);
+            }
+        } catch (\Illuminate\Http\Client\ConnectionException) {
             $this->analyzingYearStats['monthly_count']['left'] = array_fill(0, 12, 0);
             $this->analyzingYearStats['monthly_count']['right'] = array_fill(0, 12, 0);
             $this->analyzingYearStats['monthly_count']['up'] = array_fill(0, 12, 0);

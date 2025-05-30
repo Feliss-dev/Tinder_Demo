@@ -13,7 +13,7 @@ class ConversationTable extends Component
 {
     use WithPagination, WithoutUrlPagination;
 
-    public $perPage = 10; // Default items per page
+    const int ITEMS_PER_PAGE = 10;
 
     public $searchTerm = '';
 
@@ -26,7 +26,7 @@ class ConversationTable extends Component
                   ->orWhereRelation('receiver', 'name', 'like', '%' . $this->searchTerm . '%');
         }
 
-        $conversations = $query->paginate($this->perPage);
+        $conversations = $query->paginate(static::ITEMS_PER_PAGE);
 
         return view('livewire.admin.conversation-table', [
             'conversations' => $conversations,

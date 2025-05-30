@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Message extends Model
 {
     use HasFactory;
 
-    protected $guarded =[];
+    protected $guarded = [];
 
     protected $date = ['read_at'];
 
@@ -19,8 +20,12 @@ class Message extends Model
         return $this->belongsTo(Conversation::class);
     }
 
-    public function reports() : BelongsToMany {
-        return $this->belongsToMany(MessageReport::class, 'message_message_reports', 'message_id', 'report_id')->withTimestamps();
+    public function reports() : HasMany {
+        return $this->hasMany(MessageReport::class, 'id', 'message_id');
+    }
+
+    public function sender() : BelongsTo {
+        return $this->belongsTo(User::class, 'sender_id', 'id');
     }
 
     public function isRead() : bool {

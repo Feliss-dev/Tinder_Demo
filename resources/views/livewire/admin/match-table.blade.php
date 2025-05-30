@@ -23,8 +23,8 @@
         </div>
     </div>
 
-    <div class="table-data">
-        <div class="order bg-white shadow-md rounded-lg p-2">
+    <div>
+        <div class="bg-white shadow-md rounded-lg p-2">
             <div class="overflow-x-auto">
                 <table class="min-w-full table-auto border-collapse">
                     <thead>

@@ -11,7 +11,7 @@ class UserInformationPanel extends Component
 {
     public function __construct(public User $user) {}
 
-    public function render(): View|Closure|string
+    public function render()
     {
         return view('components.user-information-panel');
     }

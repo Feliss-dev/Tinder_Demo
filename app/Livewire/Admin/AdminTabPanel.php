@@ -40,7 +40,7 @@ class AdminTabPanel extends Component
         }, 'conversation_informations.pdf');
     }
 
-    public function render(): View|Closure|string
+    public function render()
     {
         return view('livewire.admin.admin-tab-panel');
     }

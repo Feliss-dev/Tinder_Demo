@@ -20,9 +20,7 @@ class SwipeMatchFactory extends Factory
     public function definition(): array
     {
         return [
-            //
-            'swipe_id_1' => Swipe::factory(),
-            'swipe_id_2' => Swipe::factory(),
+
         ];
     }
 }

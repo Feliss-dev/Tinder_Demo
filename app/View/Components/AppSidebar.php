@@ -13,7 +13,7 @@ class AppSidebar extends Component
     {
     }
 
-    public function render(): View|Closure|string
+    public function render()
     {
         return view('components.app-sidebar');
     }

@@ -19,7 +19,8 @@ class UserTable extends Component
 {
     use WithPagination, WithoutUrlPagination;
 
-    public $perPage = 10; // Default items per page
+    const int ITEMS_PER_PAGE = 10;
+
     public $searchTerm = '';
     public $message;
 
@@ -90,7 +91,6 @@ class UserTable extends Component
     }
 
     public function sendNotification($userId){
-
         $this->dispatch('notification-sent');
         $user = User::find($userId);
 
@@ -112,6 +112,10 @@ class UserTable extends Component
         session()->flash('success', 'Notification sent successfully!');
     }
 
+    public function updatedSearchTerm() {
+        $this->resetPage();
+    }
+
     public function render()
     {
         // If searchTerm is empty, show all users
@@ -119,14 +123,14 @@ class UserTable extends Component
 
         if(!empty($this->searchTerm)) {
             $query->where(function($q){
-            $q->where('name', 'like', '%' .$this->searchTerm. '%')
-            ->orWhere('email', 'like', '%' .$this->searchTerm. '%')
-            ->orWhere('id', 'like', '%' . $this->searchTerm . '%')
-            ->orWhere('birth_date', 'like', '%' . $this->searchTerm . '%');
+                $q->where('name', 'like', '%' .$this->searchTerm. '%')
+                ->orWhere('email', 'like', '%' .$this->searchTerm. '%')
+                ->orWhere('id', 'like', '%' . $this->searchTerm . '%')
+                ->orWhere('birth_date', 'like', '%' . $this->searchTerm . '%');
             });
         }
 
-        $users = $query->paginate($this->perPage);
+        $users = $query->paginate(static::ITEMS_PER_PAGE);
 
         // Retrieve deleted users from deleted_users table
         $deletedUsers = FacadesDB::table('deleted_users')->get();

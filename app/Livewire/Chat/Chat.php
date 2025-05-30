@@ -45,8 +45,8 @@ class Chat extends Component
 
         $message = Message::where('id', $messageID)->first();
 
-        // Ensure the message is not from the user.
-        if ($message->sender_id == auth()->id()) return;
+        // Ensure the message exists and is not from the user.
+        if (!$message || $message->sender_id == auth()->id()) return;
 
         try {
             $reasons = array_filter(array_map(function ($reason) {
@@ -56,13 +56,10 @@ class Chat extends Component
             });
 
             $report = MessageReport::create([
-                'extra' => $extra
+                'message_id' => $messageID,
+                'extra' => $extra,
             ]);
             $report->reasons()->sync($reasons);
-
-            $message->reports()->save($report);
-
-            Log::debug("Report message ID " . $messageID . " reasons: " . $reasons);
         } catch (\Exception $e) {
             Log::error($e);
 

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\DesiredGender;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,17 +13,12 @@ class DesiredGenderSeeder extends Seeder
      */
     public function run(): void
     {
-        $desiredGenders = [
+        DesiredGender::factory()->createMany([
             ['name' => 'Male'],
             ['name' => 'Female'],
             ['name' => 'Non-binary'],
             ['name' => 'Other'],
             ['name' => 'Prefer not to say'],
-        ];
-
-        // Insert genders into the database
-        foreach ($desiredGenders as $desiredGender) {
-            \App\Models\DesiredGender::create($desiredGender);
-        }
+        ]);
     }
 }
