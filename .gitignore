@@ -15,7 +15,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-storage/
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,laravel,visualstudio,visualstudiocode,jetbrains+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,laravel,visualstudio,visualstudiocode,jetbrains+all
