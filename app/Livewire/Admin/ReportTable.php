@@ -6,6 +6,7 @@ use App\Models\Message;
 use App\Models\MessageReport;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
@@ -24,7 +25,7 @@ class ReportTable extends Component
 
     public function render()
     {
-        $query = MessageReport::query()
+        $query = MessageReport::where('resolved', false)
             ->join('messages', 'messages.id', '=', 'message_reports.message_id')
             ->join('users', 'users.id', '=', 'messages.sender_id')
             ->groupBy('users.id')

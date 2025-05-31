@@ -20,7 +20,7 @@ class AdminTabPanel extends Component
     public function downloadUsersPDF() {
         $pdf = Pdf::loadView('livewire.admin.user_management_pdf', [
             'user_count' => User::count(),
-            'deleted_user_count' => DB::table('deleted_users')->count(),
+            'deleted_user_count' => User::onlyTrashed()->count(),
             'image_count' => count(Storage::files('public/user_images')) + count(Storage::files('public/avatars')),
         ]);
 

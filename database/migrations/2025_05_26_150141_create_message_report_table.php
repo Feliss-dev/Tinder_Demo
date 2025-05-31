@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('message_id')->constrained('messages')->cascadeOnDelete();
             $table->text('extra')->nullable();
+            $table->boolean('resolved')->default(false);
             $table->timestamps();
         });
     }

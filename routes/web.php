@@ -28,8 +28,8 @@ use Illuminate\Http\Request;
 Route::view('/', 'welcome')->name('home');
 // Route đăng xuất
 
-// Routes for user who has login and authenticated.
-Route::middleware('auth')->group(function () {
+// Routes for user who has login, authenticated and unbanned.
+Route::middleware(['auth', 'unbanned'])->group(function () {
     // User details
     Route::get('view_my_details', [UserController::class, 'viewMyDetails'])->name('view_my_details');
 

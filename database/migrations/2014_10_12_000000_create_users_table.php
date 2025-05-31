@@ -22,7 +22,14 @@ return new class extends Migration
             $table->text('bio')->nullable();
 
             $table->json('images')->nullable();
+
+            $table->timestamp('last_seen_at')->nullable();
+
             $table->boolean('is_fake')->default(false);
+
+            $table->unsignedInteger('warn_count')->default(0);
+            $table->boolean('is_banned')->default(false);
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
 
@@ -30,6 +37,7 @@ return new class extends Migration
 
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -1,4 +1,4 @@
-<div>
+<div @report-resolved.window="$wire.$refresh();">
     <div class="flex flex-row justify-between items-center">
         <p class="font-semibold text-xl">Users with reported messages</p>
 

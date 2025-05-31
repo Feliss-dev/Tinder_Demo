@@ -1,6 +1,12 @@
-<div x-cloak x-data="{ open: false }" x-show="open">
+<div x-cloak x-data="{ open: false, showSuccessMessage: false }" x-show="open" @report-resolved.window="showSuccessMessage = true; setTimeout(() => showSuccessMessage = false, 3000);">
+    @if (session('success'))
+        <div x-show="showSuccessMessage" class="fixed top-5 right-5 bg-green-500 text-white p-4 shadow-lg z-50">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div x-show="open" @open-report-info-modal.window="open = true;">
-        <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-65">
+        <div class="fixed inset-0 flex items-center justify-center z-40 bg-black bg-opacity-65">
             <section class="bg-white rounded-xl fixed inset-8 flex flex-col" @click.outside="open = false;">
                 <header class="flex flex-row justify-between border-b-2 border-b-gray-300 p-3 flex-initial">
                     <h1 class="text-black font-bold text-xl">User Message Reports</h1>
@@ -43,9 +49,28 @@
                                     <td>{{$user->last_seen_at == null ? "Never" : \Carbon\Carbon::parse($user->last_seen_at)->format('Y-m-d')}}</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-semibold">Report Count</td>
+                                    <td class="font-semibold">Unresolved Reports Count</td>
                                     <td>{{$reportIds->count()}}</td>
                                 </tr>
+                                <tr>
+                                    <td class="font-semibold">Warning Count</td>
+                                    <td>{{$user->warn_count}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Is Banned</td>
+                                    <td>{{$user->is_banned ? 'True' : 'False'}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-semibold">Is Soft Deleted</td>
+                                    <td>{{$user->trashed() ? 'True' : 'False'}}</td>
+                                </tr>
+
+                                @if ($user->trashed())
+                                    <tr>
+                                        <td class="font-semibold">Soft Deleted Time</td>
+                                        <td>{{\Carbon\Carbon::parse($user->deleted_at)->format('Y-m-d')}}</td>
+                                    </tr>
+                                @endif
                             </table>
                         </section>
 
@@ -77,10 +102,6 @@
                                 @if ($inspectingReport != null)
                                     <p class="font-semibold">Message Content</p>
 
-                                    @php
-                                    \Illuminate\Support\Facades\Log::debug("Message ID: " . $inspectingReport->message->id);
-                                    @endphp
-
                                     <livewire:chat.sender-message-bubble :message="$inspectingReport->message"/>
 
                                     <p class="font-semibold mt-2">Report Informations</p>
@@ -104,9 +125,9 @@
                                     <p class="font-semibold mt-2">Actions</p>
 
                                     <div class="grid grid-cols-2 grid-rows-2 gap-2 mt-2">
-                                        <button class="text-black bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 h-12 rounded-xl">Warn</button>
-                                        <button class="text-white bg-red-500 hover:bg-red-600 active:bg-red-700 h-12 rounded-xl">Ban</button>
-                                        <button class="col-span-2 text-white bg-green-400 hover:bg-green-500 active:bg-green-600 h-12 rounded-xl">Ignore</button>
+                                        <button class="text-black bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500 h-12 rounded-xl" wire:click="warnUser">Warn</button>
+                                        <button class="text-white bg-red-500 hover:bg-red-600 active:bg-red-700 h-12 rounded-xl" wire:click="banUser">Ban</button>
+                                        <button class="col-span-2 text-white bg-green-400 hover:bg-green-500 active:bg-green-600 h-12 rounded-xl" wire:click="ignoreReport">Ignore</button>
                                     </div>
                                 @else
                                     <div class="w-full h-full flex-auto flex flex-col justify-center items-center">

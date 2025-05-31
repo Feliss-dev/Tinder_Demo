@@ -19,10 +19,8 @@ class UserMessageReportInformations extends Component
 
     #[On('open-report-info-modal')]
     public function open(int $userId) {
-        $this->user = User::where('id', $userId)->firstOrFail();
-        $this->reportIds = MessageReport::with("message")->whereHas("message", function ($query) use ($userId) {
-            $query->where('sender_id', $userId);
-        })->pluck('id')->sort();
+        $this->user = User::withTrashed()->where('id', $userId)->firstOrFail();
+        $this->queryReports($userId);
     }
 
     public function loadReport(int $id) {
@@ -41,6 +39,60 @@ class UserMessageReportInformations extends Component
         $this->reportIds = null;
         $this->inspectingReportId = 0;
         $this->inspectingReport = null;
+    }
+
+    public function warnUser() {
+        if ($this->user != null) {
+            $this->user->increment('warn_count');
+
+            $this->inspectingReport->update([
+                'resolved' => true,
+            ]);
+            $this->inspectingReportId = 0;
+            $this->inspectingReport = null;
+            $this->queryReports($this->user->id);
+
+            session()->flash('success', 'User has been warned.');
+            $this->dispatch('report-resolved');
+        } else {
+            session()->flash('error', 'User is null.');
+        }
+    }
+
+    public function banUser() {
+        if ($this->user != null) {
+            $this->user->is_banned = true;
+
+            $this->inspectingReport->update([
+                'resolved' => true,
+            ]);
+            $this->inspectingReportId = 0;
+            $this->inspectingReport = null;
+            $this->queryReports($this->user->id);
+
+            session()->flash('success', 'User has been banned.');
+            $this->dispatch('report-resolved');
+        } else {
+            session()->flash('error', 'User is null.');
+        }
+    }
+
+    public function ignoreReport() {
+        $this->inspectingReport->update([
+            'resolved' => true,
+        ]);
+        $this->inspectingReportId = 0;
+        $this->inspectingReport = null;
+        $this->queryReports($this->user->id);
+
+        session()->flash('success', 'Report has been ignored.');
+        $this->dispatch('report-resolved');
+    }
+
+    public function queryReports(int $userId) {
+        $this->reportIds = MessageReport::where('resolved', false)->with("message")->whereHas("message", function ($query) use ($userId) {
+            $query->where('sender_id', $userId);
+        })->pluck('id')->sort();
     }
 
     public function render() {
