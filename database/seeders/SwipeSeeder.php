@@ -23,6 +23,7 @@ class SwipeSeeder extends Seeder
             return [
                 'user_id' => $users[$sequence->index]->id,
                 'swiped_user_id' => $testUser->id,
+                'type' => 'right',
             ];
         })->create();
 
@@ -32,6 +33,7 @@ class SwipeSeeder extends Seeder
             return [
                 'user_id' => $testUser->id,
                 'swiped_user_id' => $candidates[$sequence->index]->id,
+                'type' => 'right'
             ];
         })->create();
 

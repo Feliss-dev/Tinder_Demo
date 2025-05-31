@@ -32,6 +32,8 @@
                         <span>
                             @if ($matchedUser != null)
                                 <x-avatar class="rounded-full h-32 w-32 ring ring-pink-500/40" :user="$matchedUser" alt="Matched user"/>
+                            @else
+                                <div class="w-32 h-32 ring ring-pink-500/40 rounded-full"></div>
                             @endif
                         </span>
                     </div>

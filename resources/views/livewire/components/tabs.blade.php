@@ -12,7 +12,7 @@
     <div class="flex flex-col h-full bg-white">
         {{-- Tab Buttons --}}
         <header class="flex flex-row max-w-full overflow-x-auto overflow-y-hidden whitespace-nowrap px-4 py-3 gap-5 items-center webkit-small-scrollbar flex-grow-0 flex-shrink-0 basis-14">
-            <button @click="tab = 'matches'" :class="tab === 'matches' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 basis-0 flex-grow">
+            <button @click="tab = 'matches'" :class="tab === 'matches' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 flex-auto">
                 Matches
 
                 @php
@@ -26,7 +26,7 @@
                 @endif
             </button>
 
-            <button @click="tab='messages'" :class="tab === 'messages' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 basis-0 flex-grow">
+            <button @click="tab='messages'" :class="tab === 'messages' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 flex-auto">
                 Messages
 
                 @php
@@ -40,7 +40,7 @@
                 @endif
             </button>
 
-            <button @click="tab='recommend'" :class="tab === 'recommend' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 basis-0 flex-grow">
+            <button @click="tab='recommend'" :class="tab === 'recommend' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 flex-auto">
                 Recommends
             </button>
         </header>

@@ -18,40 +18,40 @@ use Livewire\Attributes\Locked;
 use Illuminate\Support\Facades\Auth;
 
 class Swiper extends Component {
+    const int DISPLAY_AMOUNT = 3;
+
     public $searchTerm;
     public $ageFrom;
     public $ageTo;
     public $gender;
     public $users;
-    public $filtersApplied = false;
-    public $user;
     public $selectedLanguages = [];
     public $selectedInterests = [];
     public $selectedDatingGoals = [];
 
-    public $profiles = false; // Property to store profile visibility status
-
-    #[On('swipedright')]
     public function swipedRight(User $user)
     {
+        Log::debug("swiped right: " . $user->id);
+
         //make user user is authenticated
         abort_unless(auth()->check(), 401);
 
         $this->createSwipe($user, 'right');
     }
 
-    #[On('swipedleft')]
     public function swipedLeft(User $user)
     {
+        Log::debug("swiped left: " . $user->id);
+
         //make user user is authenticated
         abort_unless(auth()->check(), 401);
 
         $this->createSwipe($user, 'left');
     }
 
-    #[On('swipedup')]
     public function swipedUp(User $user)
     {
+        Log::debug("swiped up: " . $user->id);
         //make user user is authenticated
         abort_unless(auth()->check(), 401);
 
@@ -61,12 +61,10 @@ class Swiper extends Component {
     protected function createSwipe($swipedUser, $type)
     {
         #return null if auth user has already swiped with this person
-        if (auth()->user()->hasSwiped($swipedUser)) {
-            return null;
-        }
+        if (auth()->user()->hasSwiped($swipedUser)) return;
 
         #create Swipe
-        $swipe =  Swipe::create([
+        $swipe = Swipe::create([
             'user_id' => auth()->id(),
             'swiped_user_id' => $swipedUser->id,
             'type' => $type,
@@ -98,12 +96,15 @@ class Swiper extends Component {
         }
     }
 
-    public function applyFilters()
-    {
-        $this->filtersApplied = true; // Đánh dấu rằng bộ lọc đã được áp dụng
-        $query = User::query()
-            ->whereNotSwiped() // Điều kiện tùy chỉnh
-            ->where('id', '<>', auth()->id()); // Loại bỏ người dùng hiện tại
+    public function applyFilters() {
+        // $this->users = $this->getUserQueryBuilder()->limit(10)->get();
+        // Log::debug("applyFilters");
+    }
+
+    public function getUserQueryBuilder() {
+        $query = User::withoutTrashed()->withoutBanned()->whereNot('id', auth()->id())->whereNotIn('id', function ($subquery) {
+            $subquery->select('swiped_user_id')->from('swipes')->where('user_id', auth()->user()->id);
+        });
 
         // Lọc theo độ tuổi
         if ($this->ageFrom) {
@@ -146,28 +147,18 @@ class Swiper extends Component {
             $query->where('name', 'like', '%' . $this->searchTerm . '%');
         }
 
-        // Lấy danh sách người dùng theo các tiêu chí lọc
-        $this->users = $query->limit(10)->get();
+        return $query;
     }
 
     public function render()
     {
-        // Return all available users if the filters aren't applied.
-        if (!$this->filtersApplied) {
-            $this->users = User::limit(10)
-                ->whereNotSwiped()
-                ->where('id', '<>', auth()->id())
-                ->get();
-        }
+        $this->users = $this->getUserQueryBuilder()->limit(static::DISPLAY_AMOUNT)->get()->reverse();
 
-        return view('livewire.swiper.swiper', ['users' => $this->users,
-            'currentUser' => Auth::user(),
+        return view('livewire.swiper.swiper', [
             'genders' => Gender::all(),
             'interests' => Interest::all(),
             'languages' => Language::all(),
             'datingGoals' => DatingGoal::all(),
-            'user' => $this->user,
-            'profiles' => $this->profiles,
         ]);
     }
 }

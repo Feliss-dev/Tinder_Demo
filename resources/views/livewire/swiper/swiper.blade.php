@@ -115,14 +115,20 @@
         </form>
     </div>
 
-    {{-- Panel --}}
+    {{-- User Card Panel --}}
     <div class="relative h-full w-full md:w-96 m-auto flex items-center justify-center">
         @if ($users->isEmpty())
             <div class="col-span-full text-center ">
                 <p class="text-gray-500">Found no suitable match.</p>
             </div>
         @else
+            @
+
             @foreach ($users as $user)
+                @php
+                    \Illuminate\Support\Facades\Log::debug("Render user ID " . $user->id);
+                @endphp
+
                 <div wire:key="swipe-{{ $user->id }}"
                      x-data="{
                         profile: false,
@@ -244,13 +250,16 @@
 
                             if (event.deltaX > 20) {
                                 event.target.style.transform = 'translate(' + moveOutWidth + 'px, 10px)';
-                                $dispatch('swipedright', { user: '{{ $user->id }}' });
+                                // $dispatch('swipedright', { user: '{{ $user->id }}' });
+                                $wire.swipedRight({{$user->id}});
                             } else if (event.deltaX < -20) {
                                 event.target.style.transform = 'translate(' + -moveOutWidth + 'px, 10px)';
-                                $dispatch('swipedleft', { user: '{{ $user->id }}' });
+                                // $dispatch('swipedleft', { user: '{{ $user->id }}' });
+                                $wire.swipedLeft({{$user->id}});
                             } else if (event.deltaY < -50 && Math.abs(event.deltaX) < 20) {
                                 event.target.style.transform = 'translate(0px, ' + -moveOutHeight + 'px)';
-                                $dispatch('swipedup', { user: '{{ $user->id }}' });
+                                // $dispatch('swipedup', { user: '{{ $user->id }}' });
+                                $wire.swipedUp({{$user->id}});
                             }
 
                             event.target.remove();
