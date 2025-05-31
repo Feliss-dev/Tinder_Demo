@@ -35,7 +35,7 @@ class UserTable extends Component
                 $user->delete();
 
                 session()->flash('message', 'User ' . $user->name . ' has been soft deleted.');
-                $this->dispatch('userDeleted');
+                $this->dispatch('user-deleted');
             } else {
                 session()->flash('error', 'User is no longer alive.');
             }
@@ -44,26 +44,12 @@ class UserTable extends Component
         }
     }
 
-    public function restoreUser($userId)
-    {
-        $user = User::onlyTrashed()->where('id', $userId)->first();
+    public function sendNotification($userId) {
+        Log::debug("SendNotification to " . $userId);
 
-        if ($user) {
-            $user->status = 'alive';
-            $user->restore();
-
-            session()->flash('message', 'User has been restored successfully.');
-            $this->dispatch('userRestored');
-        } else {
-            session()->flash('error', 'User not found in deleted records.');
-        }
-    }
-
-    public function sendNotification($userId){
-        $this->dispatch('notification-sent');
         $user = User::find($userId);
 
-        if(!$user){
+        if (!$user) {
             session()->flash('error', 'User not found.');
             return;
         }
@@ -79,6 +65,7 @@ class UserTable extends Component
         // NewNotification::broadcast($this->message, $userId)->toOthers();
 
         session()->flash('success', 'Notification sent successfully!');
+        $this->dispatch('notification-sent');
     }
 
     public function updatedSearchTerm() {
@@ -90,7 +77,7 @@ class UserTable extends Component
         // If searchTerm is empty, show all users
         $query = User::query();
 
-        if(!empty($this->searchTerm)) {
+        if (!empty($this->searchTerm)) {
             $query->where(function($q){
                 $q->where('name', 'like', '%' .$this->searchTerm. '%')
                 ->orWhere('email', 'like', '%' .$this->searchTerm. '%')
@@ -101,12 +88,8 @@ class UserTable extends Component
 
         $users = $query->paginate(static::ITEMS_PER_PAGE);
 
-        // Retrieve deleted users
-        $deletedUsers = User::onlyTrashed();
-
         return view('livewire.admin.user-table', [
             'users' => $users,
-            'deletedUsers' => $deletedUsers,
         ]);
     }
 }

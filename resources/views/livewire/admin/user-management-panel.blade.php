@@ -103,4 +103,8 @@
     <section class="rounded-xl border-2 bg-white p-4 mt-2">
         <livewire:admin.user-table/>
     </section>
+
+    <section class="rounded-xl border-2 bg-white p-4 mt-2">
+        <livewire:admin.soft-deleted-user-table/>
+    </section>
 </div>

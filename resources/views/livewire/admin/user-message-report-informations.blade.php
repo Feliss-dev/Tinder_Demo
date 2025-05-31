@@ -42,11 +42,11 @@
                                 </tr>
                                 <tr>
                                     <td class="font-semibold">Join Date</td>
-                                    <td>{{\Carbon\Carbon::parse($user->created_at)->format('Y-m-d')}}</td>
+                                    <td>{{\Carbon\Carbon::parse($user->created_at)->format('Y-m-d H:i:s')}}</td>
                                 </tr>
                                 <tr>
                                     <td class="font-semibold">Last seen</td>
-                                    <td>{{$user->last_seen_at == null ? "Never" : \Carbon\Carbon::parse($user->last_seen_at)->format('Y-m-d')}}</td>
+                                    <td>{{$user->last_seen_at == null ? "Never" : \Carbon\Carbon::parse($user->last_seen_at)->format('Y-m-d H:i:s')}}</td>
                                 </tr>
                                 <tr>
                                     <td class="font-semibold">Unresolved Reports Count</td>
@@ -68,7 +68,7 @@
                                 @if ($user->trashed())
                                     <tr>
                                         <td class="font-semibold">Soft Deleted Time</td>
-                                        <td>{{\Carbon\Carbon::parse($user->deleted_at)->format('Y-m-d')}}</td>
+                                        <td>{{\Carbon\Carbon::parse($user->deleted_at)->format('Y-m-d H:i:s')}}</td>
                                     </tr>
                                 @endif
                             </table>
@@ -106,7 +106,7 @@
 
                                     <p class="font-semibold mt-2">Report Informations</p>
 
-                                    <p class="font-semibold mt-3">Date: <span class="font-normal ml-3">{{\Carbon\Carbon::parse($inspectingReport->created_at)->format('Y-m-d')}}</span></p>
+                                    <p class="font-semibold mt-3">Date: <span class="font-normal ml-3">{{\Carbon\Carbon::parse($inspectingReport->created_at)->format('Y-m-d H:i:s')}}</span></p>
 
                                     <p class="font-semibold mt-3">Reasons</p>
 
