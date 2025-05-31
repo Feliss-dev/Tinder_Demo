@@ -26,10 +26,15 @@ use Illuminate\Http\Request;
 
 // Route for homepage
 Route::view('/', 'welcome')->name('home');
-// Route đăng xuất
+// Route::view('/banned', 'banned')->name('banned.user');
 
-// Routes for user who has login, authenticated and unbanned.
-Route::middleware(['auth', 'unbanned'])->group(function () {
+Route::middleware(['auth', 'only-banned'])->group(function () {
+    Route::get('/banned', [UserController::class, 'showBan'])->name('banned.user');
+    // Route::view('/banned', 'banned')->name('banned');
+});
+
+// Routes for user who has login, authenticated and forbid banned user.
+Route::middleware(['auth', 'forbid-banned'])->group(function () {
     // User details
     Route::get('view_my_details', [UserController::class, 'viewMyDetails'])->name('view_my_details');
 

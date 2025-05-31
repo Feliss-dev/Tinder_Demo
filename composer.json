@@ -7,6 +7,7 @@
     "require": {
         "php": "8.3.*",
         "barryvdh/laravel-dompdf": "^3.0",
+        "cybercog/laravel-ban": "^4.10",
         "google-gemini-php/laravel": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "icehouse-ventures/laravel-chartjs": "^4.2",

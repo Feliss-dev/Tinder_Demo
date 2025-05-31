@@ -61,7 +61,7 @@ class UserMessageReportInformations extends Component
 
     public function banUser() {
         if ($this->user != null) {
-            $this->user->is_banned = true;
+            $this->user->ban();
 
             $this->inspectingReport->update([
                 'resolved' => true,

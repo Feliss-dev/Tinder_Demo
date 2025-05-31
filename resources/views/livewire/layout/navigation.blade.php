@@ -26,18 +26,24 @@ new class extends Component {
                             <x-logo width="48" height="48" />
                         </a>
 
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                            {{ __('Dashboard') }}
-                        </x-nav-link>
+                        @php
+                            $user = auth()->user();
+                        @endphp
 
-                        <x-nav-link :href="route('view_my_details')" :active="request()->routeIs('view_my_details')" wire:navigate>
-                            {{ __('View My Profile') }}
-                        </x-nav-link>
-
-                        @if (auth()->user()->is_admin)
-                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" wire:navigate>
-                                {{ __('Admin Dashboard') }}
+                        @if ($user->isNotBanned())
+                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
+                                {{ __('Dashboard') }}
                             </x-nav-link>
+
+                            <x-nav-link :href="route('view_my_details')" :active="request()->routeIs('view_my_details')" wire:navigate>
+                                {{ __('View My Profile') }}
+                            </x-nav-link>
+
+                            @if (auth()->user()->is_admin)
+                                <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" wire:navigate>
+                                    {{ __('Admin Dashboard') }}
+                                </x-nav-link>
+                            @endif
                         @endif
 
                         <livewire:components.notificationdropdown/>
@@ -65,9 +71,11 @@ new class extends Component {
                         </x-slot>
 
                         <x-slot name="content">
-                            <x-dropdown-link :href="route('profile')" wire:navigate>
-                                {{ __('Profile') }}
-                            </x-dropdown-link>
+                            @if (auth()->user()->isNotBanned())
+                                <x-dropdown-link :href="route('profile')" wire:navigate>
+                                    {{ __('Profile') }}
+                                </x-dropdown-link>
+                            @endif
 
                             <!-- Authentication -->
                             <button wire:click="logout" class="w-full text-start">

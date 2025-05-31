@@ -22,6 +22,10 @@ class UserController extends Controller
         return view('layouts.admin.dashboard');
     }
 
+    public function showBan() {
+        return view('layouts.banned');
+    }
+
     public function showProfileForm()
     {
         $languages = Language::all();

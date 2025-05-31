@@ -65,6 +65,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'isAdmin' => \App\Http\Middleware\isAdmin::class,
-        'unbanned' => \App\Http\Middleware\UnbannedUser::class,
+        'forbid-banned' => \Cog\Laravel\Ban\Http\Middleware\ForbidBannedUser::class,
+        'only-banned' => \App\Http\Middleware\OnlyBannedUser::class,
+        'logout-banned' => \Cog\Laravel\Ban\Http\Middleware\LogsOutBannedUser::class,
     ];
 }

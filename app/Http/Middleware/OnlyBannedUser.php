@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UnbannedUser
+class OnlyBannedUser
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class UnbannedUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(auth()->user() && auth()->user()->is_banned == 0) {
+        if(auth()->user() && auth()->user()->isBanned()){
             return $next($request);
         }
 

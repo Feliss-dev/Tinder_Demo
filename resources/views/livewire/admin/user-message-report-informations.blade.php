@@ -58,7 +58,7 @@
                                 </tr>
                                 <tr>
                                     <td class="font-semibold">Is Banned</td>
-                                    <td>{{$user->is_banned ? 'True' : 'False'}}</td>
+                                    <td>{{$user->isBanned() ? 'True' : 'False'}}</td>
                                 </tr>
                                 <tr>
                                     <td class="font-semibold">Is Soft Deleted</td>

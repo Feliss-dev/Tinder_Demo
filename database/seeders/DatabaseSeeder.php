@@ -55,6 +55,12 @@ class DatabaseSeeder extends Seeder
             ]
         ])[0];
 
+        User::factory()->create([
+            'name' => 'Test Banned User',
+            'email' => 'test-banned@example.com',
+            'is_admin' => false,
+        ])->ban();
+
         $this->call([
             GenderUserSeeder::class,
             DesiredGenderUserSeeder::class,
