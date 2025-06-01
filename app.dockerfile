@@ -3,7 +3,7 @@ FROM php:8.3-fpm AS php
 # Install dependencies and libraries
 RUN apt-get update && apt-get install -y npm nodejs git curl libonig-dev libxml2-dev libpng-dev zip unzip
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
-	
+
 # Setup Composer
 COPY --from=composer:2.2.25 /usr/bin/composer /usr/local/bin/composer
 
@@ -23,6 +23,8 @@ RUN composer install --prefer-dist
 RUN npm install
 RUN npm run build
 
+# Expose port 8000
 EXPOSE 8000
 
+# Execute entrypoint
 CMD [ "./start.bash" ]
