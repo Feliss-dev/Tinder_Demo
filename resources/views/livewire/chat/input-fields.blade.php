@@ -14,6 +14,8 @@
                     previewUrl: URL.createObjectURL(files[i]),
                     file: files[i],
                 });
+
+                console.log('Pushed new URL: ' + this.uploadingImages[this.uploadingImages.length - 1].previewUrl + '. Current length: ' + this.uploadingImages.length);
             }
         },
 
@@ -40,28 +42,25 @@
         },
      }">
 
-    <div class="h-48" :class="{ 'hidden': uploadingImages.length === 0 }">
+    <section :class="{ 'hidden': uploadingImages.length === 0 }">
         <div class="flex flex-row max-w-full h-full overflow-x-auto overflow-y-hidden whitespace-nowrap p-1 gap-2">
             <template x-for="(item, index) in uploadingImages" :key="index">
-                <div class="relative h-full aspect-square border-2 border-gray-500 rounded-xl p-1 grid-flow-col" x-data="{ displayExtra: false }" @mouseleave="displayExtra = false;" @mouseover="displayExtra = true;">
-                    <div class="w-full h-full overflow-hidden flex flex-col">
-                        <div class="overflow-hidden" style="flex: 1 1 auto">
-                            <img x-bind:src="item.previewUrl" x-bind:alt="item.file.name" class="h-full mx-auto object-cover" style="flex: 0 1 auto" />
-                        </div>
+                <div class="relative" x-data="{ displayExtra: false }" @mouseleave="displayExtra = false;" @mouseover="displayExtra = true;">
+                    <div class="relative h-[3rem] gap-2 items-center pr-1 border-2 border-gray-500 rounded-tr-full rounded-br-full overflow-hidden flex flex-row flex-shrink-0">
+                        <img x-bind:src="item.previewUrl" x-bind:alt="item.file.name" class="h-full aspect-square mx-auto object-cover flex-initial"/>
+                        <p x-text="item.file.name" class="max-w-56 truncate"></p>
 
-                        <p style="flex: 0 1 1rem" x-text="item.file.name"></p>
                     </div>
 
-                    <button type="button" class="bg-white border-2 border-gray-500 rounded-md absolute -top-1.5 -right-2.5 p-1" @click="deletePreviewImage(index)">
-                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 16 16">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    <button type="button" x-show="displayExtra" class="bg-white hover:bg-gray-200 active:bg-gray-300 border-2 border-gray-500 rounded-full absolute top-0 right-0 p-[0.125rem]" @click="deletePreviewImage(index)">
+                        <svg class="w-[0.7rem] h-[0.7rem]" xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 16 16">
+                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
                         </svg>
                     </button>
                 </div>
             </template>
         </div>
-    </div>
+    </section>
 
     @if ($replyingMessage != null)
         @php
@@ -95,7 +94,7 @@
                 <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54L1 12.5v-9a.5.5 0 0 1 .5-.5z"/>
             </svg>
 
-            <input type="file" class="hidden" multiple @change="addImages" accept="image/png, image/gif, image/jpeg">
+            <input type="file" class="hidden" multiple @change="addImages" onclick="this.value = null;" accept="image/png, image/gif, image/jpeg">
         </label>
 
         <input x-model="body" type="text" autocomplete="off" autofocus

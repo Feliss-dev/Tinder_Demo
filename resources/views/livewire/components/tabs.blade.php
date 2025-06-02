@@ -1,12 +1,14 @@
 <section
-    x-data="{ tab: {{request()->routeIs('chat') || request()->routeIs('chat') ? '"messages"' : '"matches"'}}}"
+    x-data="{
+        tab: '{{ \Illuminate\Support\Facades\Route::getCurrentRoute()->getName() === 'chat' ? 'messages' : 'matches' }}'
+    }"
     @match-found.window="$wire.$refresh()"
     x-init="Echo.private('users.{{auth()->id()}}')
             .notification((notification) => {
                 if (notification['type']=='App\\Notifications\\MessageSentNotification' ){
                     $wire.$refresh();
                 }
-            })"
+            });"
     class="h-full overflow-x-hidden relative flex flex-col">
 
     <div class="flex flex-col h-full bg-white">
@@ -26,7 +28,7 @@
                 @endif
             </button>
 
-            <button @click="tab='messages'" :class="tab === 'messages' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 flex-auto">
+            <button @click="tab = 'messages'" :class="tab === 'messages' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 flex-auto">
                 Messages
 
                 @php
@@ -40,14 +42,14 @@
                 @endif
             </button>
 
-            <button @click="tab='recommend'" :class="tab === 'recommend' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 flex-auto">
+            <button @click="tab = 'recommend'" :class="tab === 'recommend' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 flex-auto">
                 Recommends
             </button>
         </header>
 
         {{-- Tab Panel --}}
         <main class="flex-grow overflow-y-scroll webkit-small-scrollbar">
-            <div x-show="tab == 'matches'" class="grid grid-cols-3 gap-2 p-2">
+            <div x-show="tab === 'matches'" class="grid grid-cols-3 gap-2 p-2">
                 @foreach ($matches as $i => $match)
                     @php
                         $partner = $match->swipe1->user_id == auth()->id() ? $match->swipe2->user : $match->swipe1->user;
