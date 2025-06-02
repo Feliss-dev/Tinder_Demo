@@ -1,7 +1,8 @@
 <div class="w-full h-full overflow-auto">
     <div style="contain: content" class=" inset-0 overflow-y-auto overflow-hidden overscroll-contain w-full  bg-white space-y-4">
         @php
-            $slides = !empty($user->images) ? $user->images : [
+            $userImages = json_decode($user->images, false);
+            $slides = !empty($userImages) ? $userImages : [
                 'https://picsum.photos/seed/' . rand() . '/500/300',
                 'https://picsum.photos/seed/' . rand() . '/500/300',
                 'https://picsum.photos/seed/' . rand() . '/500/300',
@@ -9,7 +10,6 @@
         @endphp
 
         {{-- Carousel section --}}
-
         <section class="relative h-96" x-data="{ activeSlide: 1, slides: @js($slides) }">
 
             {{-- Sliders --}}

@@ -259,7 +259,7 @@
                     </div>
                 </section>
 
-                <footer class="sticky bottom inset-x-0 p-1 border border-t-gray-400">
+                <footer class="sticky bottom p-1 border border-t-gray-400">
                     <livewire:chat.input-fields :conversation="$conversation" :receiver="$receiver" />
                 </footer>
             </main>

@@ -18,16 +18,16 @@ class InputFields extends Component
 {
     use WithFileUploads;
 
-    protected $listeners = [ 'delete-file' => 'deleteFile', 'refresh-component' => '$refresh' ];
-
-    public $body;
+    public ?string $body = null;
     public Conversation $conversation;
     public User $receiver;
 
     public $files = [];
     public $allFiles = [];
 
-    public Message|null $replyingMessage = null;
+    public ?Message $replyingMessage = null;
+
+    public array $uploadingFiles = [];  // Used for Alpinejs Entanglement
 
     function sendMessage() {
         #check auth
@@ -81,6 +81,7 @@ class InputFields extends Component
         $this->reset('files');
 
         $this->allFiles = [];
+        $this->uploadingFiles = [];
         $this->replyingMessage = null;
         $this->dispatch('refresh-display', TemporaryUploadedFile::serializeMultipleForLivewireResponse([]));
     }
@@ -89,28 +90,40 @@ class InputFields extends Component
         broadcast(new ConversationMessageSent(Message::where('id', $messageId)->first(), $this->conversation->id))->toOthers();
     }
 
-    public function updatedFiles() {
+    public function uploadFiles($files) {
         $this->validate([
-            'files.*' => 'image|max:2048',
+            'uploadingFiles.*' => 'image|max:2048',
         ]);
 
-        $this->allFiles = array_merge($this->allFiles, $this->files);
 
-        $serializedFile = TemporaryUploadedFile::serializeMultipleForLivewireResponse($this->allFiles);
-        $this->dispatch('refresh-display', $serializedFile);
     }
 
-    public function deleteFile(int $index) {
-        array_splice($this->allFiles, $index, 1);
-
-        $serializedFile = TemporaryUploadedFile::serializeMultipleForLivewireResponse($this->allFiles);
-        $this->dispatch('refresh-display', $serializedFile);
-    }
+//    public function updatedFiles() {
+//        $this->validate([
+//            'files.*' => 'image|max:2048',
+//        ]);
+//
+//        $this->allFiles = array_merge($this->allFiles, $this->files);
+//        $this->uploadingFiles = array_merge($this->uploadingFiles, array_map(function ($file) {
+//            return [
+//                'url' => $file->temporaryUrl(),
+//                'name' => $file->getClientOriginalName(),
+//            ];
+//        }, $this->files));
+//    }
+//
+//    public function deleteFile(int $index) {
+//        array_splice($this->allFiles, $index, 1);
+//        array_splice($this->uploadingFiles, $index, 1);
+//    }
 
     #[On('reply-message')]
     public function reply(int $message_id) {
         $this->replyingMessage = Message::where('id', $message_id)->first();
-        $this->dispatch('refresh-component');
+    }
+
+    public function closeReplyingMessage() {
+        $this->replyingMessage = null;
     }
 
     public function render() {
