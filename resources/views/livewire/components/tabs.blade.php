@@ -17,13 +17,9 @@
             <button @click="tab = 'matches'" :class="tab === 'matches' ? 'border-b-2 border-red-500' : ''" class="font-bold text-sm px-2 pb-1.5 flex-auto">
                 Matches
 
-                @php
-                    $matchesCount = auth()->user()->matches()->count();
-                @endphp
-
-                @if ($matchesCount > 0)
+                @if ($matches->count() > 0)
                     <span class="rounded-full text-xs p-1 px-2 font-bold text-white bg-tinder">
-                        {{$matchesCount}}
+                        {{$matches->count()}}
                     </span>
                 @endif
             </button>
@@ -50,7 +46,7 @@
         {{-- Tab Panel --}}
         <main class="flex-grow overflow-y-scroll webkit-small-scrollbar">
             <div x-show="tab === 'matches'" class="grid grid-cols-3 gap-2 p-2">
-                @foreach ($matches as $i => $match)
+                @foreach ($matches as $match)
                     @php
                         $partner = $match->swipe1->user_id == auth()->id() ? $match->swipe2->user : $match->swipe1->user;
                     @endphp
@@ -74,7 +70,7 @@
 
             <div x-show="tab === 'messages'" x-cloak class="px-2">
                 <ul>
-                    @foreach ($conversations as $i => $conversation)
+                    @foreach ($conversations as $conversation)
                         @php
                             $lastMessage = $conversation->messages()?->latest()->first();
                         @endphp
@@ -84,21 +80,14 @@
                                 wire:navigate
                                 @class(['flex items-center gap-4 p-2 ', 'border-r-4 border-red-500 bg-white py-3'=>$selectedConversationId==$conversation->id])
                                 href="{{route('chat', $conversation->id)}}">
-                                <!-- make it change the sympathized when clicked -->
 
                                 <div class="relative">
-                                    <span class="inset-y-0 my-auto absolute -right-7">
-                                        <svg
-                                            @class([
-                                                'w-14 h-14 stroke-[0.3px] stroke-white',
-                                                'hidden'=> $i != 3,
-                                                'text-red-500' => true
-                                            ])
-
-                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot text-red-500 w-12 h-12" viewBox="0 0 16 16">
-                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
-                                          </svg>
-                                    </span>
+{{--                                    <span class="inset-y-0 my-auto absolute -right-7">--}}
+{{--                                        <svg class="w-14 h-14 stroke-[0.3px] stroke-white text-red-500"--}}
+{{--                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot text-red-500 w-12 h-12" viewBox="0 0 16 16">--}}
+{{--                                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>--}}
+{{--                                          </svg>--}}
+{{--                                    </span>--}}
 
                                     <span>
                                         <x-avatar class="rounded-full w-10 h-10 ring ring-pink-500/40" :user="$conversation->getReceiver()" alt="Matched User Avatar"/>
@@ -110,9 +99,9 @@
                                     <p
                                         @class([
                                             'text-gray-600 truncate truncate gap-2 flex items-center',
-                                            'font-semibold text-black'=>!$lastMessage?->isRead() && $lastMessage?->sender_id != auth()->id(),
-                                            'font-normal text-gray-600'=>$lastMessage?->isRead() && $lastMessage?->sender_id != auth()->id(),
-                                            'font-normal text-gray-600'=>!$lastMessage?->isRead() && $lastMessage?->sender_id == auth()->id(),
+                                            'font-semibold text-black' => !$lastMessage?->isRead() && $lastMessage?->sender_id != auth()->id(),
+                                            'font-normal text-gray-600' => $lastMessage?->isRead() && $lastMessage?->sender_id != auth()->id(),
+                                            'font-normal text-gray-600' => !$lastMessage?->isRead() && $lastMessage?->sender_id == auth()->id(),
                                         ])
                                     >
                                         @if ( $lastMessage?->sender_id != auth()->id())

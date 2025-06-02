@@ -4,11 +4,12 @@ namespace App\Livewire\Components;
 
 use App\Models\Conversation;
 use App\Models\SwipeMatch;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Tabs extends Component
 {
-
     protected $listeners = ['new-message-created' => '$refresh'];
     public $selectedConversationId;
 
@@ -37,6 +38,10 @@ class Tabs extends Component
     {
         $matches = auth()->user()->matches()->get();
         $conversations = auth()->user()->conversations()->latest('updated_at')->get();
-        return view('livewire.components.tabs', ['matches' => $matches, 'conversations' => $conversations]);
+
+        return view('livewire.components.tabs', [
+            'matches' => $matches,
+            'conversations' => $conversations
+        ]);
     }
 }
