@@ -22,19 +22,17 @@ class InputFields extends Component
     public Conversation $conversation;
     public User $receiver;
 
-    public $files = [];
-    public $allFiles = [];
-
     public ?Message $replyingMessage = null;
-
-    public array $uploadingFiles = [];  // Used for Alpinejs Entanglement
+    public array $images = [];
 
     function sendMessage() {
         #check auth
         abort_unless(auth()->check(),401);
+        abort_unless(!auth()->user()->isBanned(),401);
 
         $this->validate([
             'body' => 'nullable|string',
+            'images.*' => 'image|mimes:jpeg,jpg,png|max:2048',  // TODO: Dynamically read the ini variable to determine size.
         ]);
 
         if (!empty($this->allFiles)) {
@@ -47,15 +45,11 @@ class InputFields extends Component
                     $jsonResponse = $response->json();
 
                     if ($jsonResponse['label'] == 'cat') {
-                        Log::debug("Forbidden");
-
                         $this->resetMessaging();
                         $this->dispatch('image-validation-forbidden');
                         return;
                     }
                 } else {
-                    Log::debug("Failed");
-
                     $this->resetMessaging();
                     $this->dispatch('image-validation-failed');
                     return;
@@ -67,7 +61,7 @@ class InputFields extends Component
             'created_at' => date("Y-m-d H:i:s"),
             'receiver_id' => $this->receiver->id,
             'body' => $this->body,
-            'temporary_files' => TemporaryUploadedFile::serializeMultipleForLivewireResponse($this->allFiles),
+            'temporary_files' => TemporaryUploadedFile::serializeMultipleForLivewireResponse($this->images),
             'reply_id' => $this->replyingMessage?->id,
         ];
 
@@ -78,44 +72,14 @@ class InputFields extends Component
 
     private function resetMessaging() {
         $this->reset('body');
-        $this->reset('files');
+        $this->reset('images');
 
-        $this->allFiles = [];
-        $this->uploadingFiles = [];
         $this->replyingMessage = null;
-        $this->dispatch('refresh-display', TemporaryUploadedFile::serializeMultipleForLivewireResponse([]));
     }
 
     public function broadcastMessage($messageId) {
         broadcast(new ConversationMessageSent(Message::where('id', $messageId)->first(), $this->conversation->id))->toOthers();
     }
-
-    public function uploadFiles($files) {
-        $this->validate([
-            'uploadingFiles.*' => 'image|max:2048',
-        ]);
-
-
-    }
-
-//    public function updatedFiles() {
-//        $this->validate([
-//            'files.*' => 'image|max:2048',
-//        ]);
-//
-//        $this->allFiles = array_merge($this->allFiles, $this->files);
-//        $this->uploadingFiles = array_merge($this->uploadingFiles, array_map(function ($file) {
-//            return [
-//                'url' => $file->temporaryUrl(),
-//                'name' => $file->getClientOriginalName(),
-//            ];
-//        }, $this->files));
-//    }
-//
-//    public function deleteFile(int $index) {
-//        array_splice($this->allFiles, $index, 1);
-//        array_splice($this->uploadingFiles, $index, 1);
-//    }
 
     #[On('reply-message')]
     public function reply(int $message_id) {
