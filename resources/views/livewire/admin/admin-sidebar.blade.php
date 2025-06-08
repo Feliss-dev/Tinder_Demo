@@ -1,5 +1,5 @@
 <div class="h-full flex flex-col overflow-x-hidden overflow-y-auto bg-[#F0F0F0] border-r-gray-300 border-r-2">
-    <div class="font-bold mt-3 mb-3 ml-6">Managements</div>
+    <p class="font-bold mt-3 mb-3 ml-6">Managements</p>
 
     <button class="admin-sidebar-tab-btn" :class="selectedTab === 'management_users' ? 'bg-gray-200' : ''" @click="selectedTab = 'management_users'">
         <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 16 16" class="mr-4 h-7 w-7">
@@ -35,7 +35,7 @@
         Reports
     </button>
 
-    <div class="font-bold mt-3 mb-3 ml-6">Application</div>
+    <p class="font-bold mt-3 mb-3 ml-6">Application</p>
 
     <button class="admin-sidebar-tab-btn" :class="selectedTab === 'application_analytics' ? 'bg-gray-200' : ''" @click="selectedTab = 'application_analytics'">
         <svg xmlns="http://www.w3.org/2000/svg" fill="black" viewBox="0 0 16 16" class="mr-4 h-7 w-7">

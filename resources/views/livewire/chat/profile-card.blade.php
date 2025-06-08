@@ -44,8 +44,8 @@
             <div class="flex items-center text-3xl gap-3 text-wrap">
                 <h3 class="font-bold">{{ $user->name }}</h3>
                 <span class="font-semibold text-gray-800">
-                        {{ $user->age }}
-                    </span>
+                    {{ $user->age }}
+                </span>
             </div>
 
             <ul>
@@ -53,19 +53,18 @@
                     {{ $user->birth_date }}
                 </li>
                 <li class="items-center text-gray-6000 text-lg">
-                    <p class="mb-2 mr-4"><strong>Gender:</strong>
-                    @if ($user->genders->isNotEmpty())
-                        <div class="flex flex-wrap gap-2">
-                            @foreach ($user->genders as $gender)
-
-                                {{ $gender->name }}
-
-                            @endforeach
-                        </div>
-                    @else
-                        No data available
+                    <p class="mb-2 mr-4">
+                        <strong>Gender:</strong>
+                        @if ($user->genders->isNotEmpty())
+                            <div class="flex flex-wrap gap-2">
+                                @foreach ($user->genders as $gender)
+                                    {{ $gender->name }}
+                                @endforeach
+                            </div>
+                        @else
+                            No data available
                         @endif
-                        </p>
+                    </p>
                 </li>
                 <li class="items-center text-gray-6000 text-lg">
                     <p class="mb-2 mr-4"><strong>Interests:</strong>

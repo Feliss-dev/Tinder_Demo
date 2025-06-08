@@ -16,11 +16,11 @@ class ApplicationLanguageSeeder extends Seeder
         ApplicationLanguage::factory()->createMany([
             [
                 'code' => 'en',
-                'description' => 'languages.en'
+                'description' => 'languages.en.name'
             ],
             [
                 'code' => 'vi',
-                'description' => 'languages.vi'
+                'description' => 'languages.vi.name'
             ],
         ]);
     }
