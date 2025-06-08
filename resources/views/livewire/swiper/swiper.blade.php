@@ -2,31 +2,30 @@
     {{-- Filtering Panel --}}
     <div>
         <form wire:submit.prevent="applyFilters" class="bg-white p-8 rounded-3xl shadow-xl space-y-8 w-full max-w-4xl  border-pink-500 h-auto">
-            <h2 class="text-xl font-bold text-gray-800 text-center mb-6">Find Your Match</h2>
+            <h2 class="text-xl font-bold text-gray-800 text-center mb-6">{{__('swiper.filter.title')}}</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Cột 1 -->
                 <div class="space-y-6">
                     <div class="relative w-full">
-                        <label for="searchTerm" class="block text-sm font-semibold text-gray-600">Name</label>
+                        <label for="searchTerm" class="block text-sm font-semibold text-gray-600">{{__('swiper.filter.name')}}</label>
                         <input type="text" id="searchTerm" wire:model="searchTerm" placeholder="Enter name..."
                             class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
                     </div>
 
                     <div class="w-full">
-                        <label class="block font-semibold text-gray-600 text-sm mb-2">Age</label>
+                        <label class="block font-semibold text-gray-600 text-sm mb-2">{{__('swiper.filter.age')}}</label>
 
-                        <label for="ageFrom" class="block font-semibold text-gray-600 text-xs">From</label>
+                        <label for="ageFrom" class="block font-semibold text-gray-600 text-xs">{{__('swiper.filter.age.from')}}</label>
                         <input type="number" id="ageFrom" min="0" max="120" wire:model="ageFrom"
                             class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
 
-                        <label for="ageTo" class="block font-semibold text-gray-600 text-xs">To</label>
+                        <label for="ageTo" class="block font-semibold text-gray-600 text-xs">{{__('swiper.filter.age.to')}}</label>
                         <input type="number" id="ageTo" min="0" max="120" wire:model="ageTo"
                                class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
                     </div>
 
                     <div class="w-full">
-                        <label for="gender" class="block text-sm font-semibold text-gray-600">Gender</label>
+                        <label for="gender" class="block text-sm font-semibold text-gray-600">{{__('swiper.filter.gender')}}</label>
                         <select id="gender" wire:model="gender"
                             class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
                             <option value="">Any</option>
@@ -37,13 +36,11 @@
                     </div>
                 </div>
 
-                <!-- Cột 2 -->
                 <div class="space-y-6 mt-20">
-                    <!-- Interests Filter in Dropdown -->
                     <div x-data="{ open: false }" class="relative">
                         <button @click="open = !open" type="button"
                             class="w-full p-3 bg-gray-100 border rounded-lg focus:ring-2 focus:ring-pink-400">
-                            Select Interests
+                            {{__('swiper.filter.select_interests')}}
                         </button>
 
                         <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-1 bg-white border rounded-lg shadow-xl w-auto">
@@ -59,11 +56,10 @@
                         </div>
                     </div>
 
-                    <!-- Languages Filter in Dropdown -->
                     <div x-data="{ open: false }" class="relative">
                         <button @click="open = !open" type="button"
                             class="w-full p-3 bg-gray-100 border rounded-lg focus:ring-2 focus:ring-pink-400">
-                            Select Languages
+                            {{__('swiper.filter.select_languages')}}
                         </button>
                         <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-2 bg-white border rounded-lg shadow-xl w-auto">
                             <div class="p-3 grid grid-cols-[auto_auto] gap-2">
@@ -78,11 +74,10 @@
                         </div>
                     </div>
 
-                    <!-- Dating Goals Filter in Dropdown -->
                     <div x-data="{ open: false }" class="relative">
                         <button @click="open = !open" type="button"
                             class="w-full p-3 bg-gray-100 border rounded-lg focus:ring-2 focus:ring-pink-400">
-                            Select Dating Goals
+                            {{__('swiper.filter.select_dating_goals')}}
                         </button>
                         <div x-show="open" @click.outside="open = false" class="absolute z-10 mt-2 bg-white border rounded-lg shadow-xl w-auto">
                             <div class="p-3 grid grid-cols-[auto_auto] gap-2">
@@ -108,7 +103,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                         </svg>
-                        Apply Filters
+                        {{__('swiper.filter.apply_filter')}}
                     </span>
                 </button>
             </div>
@@ -125,10 +120,6 @@
             @
 
             @foreach ($users as $user)
-                @php
-                    \Illuminate\Support\Facades\Log::debug("Render user ID " . $user->id);
-                @endphp
-
                 <div wire:key="swipe-{{ $user->id }}"
                      x-data="{
                         profile: false,

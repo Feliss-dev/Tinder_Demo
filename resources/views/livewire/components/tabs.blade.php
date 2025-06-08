@@ -16,7 +16,7 @@
         <header class="flex flex-row max-w-full overflow-x-auto overflow-y-hidden whitespace-nowrap px-4 gap-5 items-center webkit-small-scrollbar flex-grow-0 flex-shrink-0 basis-auto">
             <button @click="tab = 'matches'" :class="tab === 'matches' ? 'border-b-2 border-red-500' : ''"
                     class="font-bold text-sm px-2 py-3 flex-auto">
-                Matches
+                {{__('sidebar.tabs.matches')}}
 
                 @if ($matches->count() > 0)
                     <span class="rounded-full text-xs p-1 px-2 font-bold text-white bg-tinder">
@@ -27,7 +27,7 @@
 
             <button @click="tab = 'messages'" :class="tab === 'messages' ? 'border-b-2 border-red-500' : ''"
                     class="font-bold text-sm px-2 py-3 flex-auto">
-                Messages
+                {{__('sidebar.tabs.messages')}}
 
                 @php
                     $unreadMessageCount = auth()->user()->unReadMessagesCount()
@@ -42,7 +42,7 @@
 
             <button @click="tab = 'recommend'" :class="tab === 'recommend' ? 'border-b-2 border-red-500' : ''"
                     class="font-bold text-sm px-2 py-3 flex-auto">
-                Recommends
+                {{__('sidebar.tabs.recommends')}}
             </button>
         </header>
 
@@ -113,7 +113,6 @@
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                   d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"/>
                                           </svg>
-
                                     </span>
                                 @endif
                                 {{$conversation->messages()?->latest()->first()?->body}}</p>

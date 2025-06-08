@@ -37,12 +37,12 @@ class Recommendations extends Component
                 $this->error = null;
             } else {
                 $this->recommendations = [];
-                $this->error = 'Failed to fetch recommendations. Server returned an error.';
+                $this->error = __('recommendation.error.error_response');
             }
         } catch (\Exception $e) {
             Log::error('Error fetching recommendations: ' . $e->getMessage());
             $this->recommendations = [];
-            $this->error = 'An error occurred while fetching recommendations.';
+            $this->error = __('recommendation.error.internal_error');
         }
     }
     public function render()

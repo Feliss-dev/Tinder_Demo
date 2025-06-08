@@ -11,23 +11,24 @@
 
                     <div class="ml-2 h-full flex-grow-0">
                         <p class="text-black text-lg">{{$recommendedUser->name}}</p>
-                        <p class="text-black text-sm">Similarity: {{ number_format($recommendation['combined_score'] * 100, 3) }}%</p>
+                        <p class="text-black text-sm">{{__('recommendation.similarity', ['percentage' => number_format($recommendation['combined_score'] * 100, 3) ])}}</p>
+{{--                        <p class="text-black text-sm">Similarity: {{ number_format($recommendation['combined_score'] * 100, 3) }}%</p>--}}
                     </div>
                 </a>
             @endforeach
         </ul>
     @elseif ($error)
         <div class="flex flex-col justify-center items-center h-full">
-            <p class="text-center">Error: {{$error}}</p>
-            <button wire:click="fetchRecommendations" class="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-                Retry
+            <p class="text-center">{{$error}}</p>
+            <button wire:click="fetchRecommendations" class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                {{__('recommendation.error.retry')}}
             </button>
         </div>
     @else
         <div class="flex flex-col justify-center items-center h-full">
-            <p class="text-center">Well this is awkward... Maybe you can request some recommendation from us.</p>
-            <button wire:click="fetchRecommendations" class="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-                Request Recommendations
+            <p class="text-center">{{__('recommendation.no_recommend')}}</p>
+            <button wire:click="fetchRecommendations" class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                {{__('recommendation.request')}}
             </button>
         </div>
     @endif
