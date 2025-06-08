@@ -52,8 +52,6 @@ class User extends Authenticatable implements MustVerifyEmail, BannableInterface
         'remember_token',
     ];
 
-
-
     public function isFake()
     {
         return $this->is_fake;
@@ -170,6 +168,10 @@ class User extends Authenticatable implements MustVerifyEmail, BannableInterface
     public function conversations()
     {
         return $this->hasMany(Conversation::class, 'sender_id')->orWhere('receiver_id', $this->id);
+    }
+
+    public function preferences() {
+        return $this->hasOne(UserPreference::class, 'user_id');
     }
 
     // Unread Messages count

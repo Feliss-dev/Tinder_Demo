@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\languages>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class LanguagesFactory extends Factory
+class ApplicationLanguageFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +18,6 @@ class LanguagesFactory extends Factory
     public function definition(): array
     {
         return [
-            //
         ];
     }
 }

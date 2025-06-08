@@ -1,6 +1,4 @@
-<div
-    x-data="
-    {
+<div x-data="{
         height: 0,
         conversationElement: document.getElementById('conversation'),
     }"
@@ -9,11 +7,9 @@
     height = conversationElement.scrollHeight;
     $nextTick(() => conversationElement.scrollTop=height);
 
-    // Listen for user status update from Livewire event
     Echo.channel('user-status').listen('UserOnlineStatusUpdated', (event) => {
         console.log(event);
-    });
-    "
+    });"
 
     @scroll-bottom.window="
     $nextTick(() => {
@@ -21,12 +17,12 @@
         conversationElement.scrollTop = conversationElement.scrollHeight;
         conversationElement.style.overflowY = 'auto';
     });"
-    class="flex h-screen overflow-hidden">
+    class="flex overflow-hidden h-full">
 
-    <div class="grid grid-cols-6 overflow-hidden w-full">
-        <div class="col-span-4">
+    <div class="grid grid-cols-3 overflow-hidden w-full">
+        <div class="col-span-2">
             <main class="w-full h-full grow border flex flex-col relative">
-                <header class="flex items-center gap-2.5 p-2 border">
+                <header class="flex items-center gap-2.5 p-2 border flex-initial">
                     <span>
                         <x-avatar class="rounded-full h-10 w-10 ring ring-pink-500/40" :user="$receiver" alt="Matched User Avatar" />
                     </span>
@@ -40,11 +36,9 @@
                         x-data="{
                             lastSeen: {{ $receiver->last_seen_at ? $receiver->last_seen_at->diffInSeconds(now()) : 999999 }},
                         }">
-                       <span class="h-3 w-3 rounded-full"
-                       :class="{
-                        'bg-green-500': lastSeen < 120,
-                        'bg-red-500': lastSeen >= 120
-                    }"></span>
+                       <span class="h-3 w-3 rounded-full" :class="{ 'bg-green-500': lastSeen < 120, 'bg-red-500': lastSeen >= 120 }">
+
+                       </span>
                        <span class="last-seen" x-ref="lastSeen">
                            {{ $receiver->last_seen_at ? 'Last seen: ' . $receiver->last_seen_at->diffForHumans() : 'Never' }}
                        </span>
@@ -110,9 +104,7 @@
                         this.imagePreview.index = (this.imagePreview.index - 1 + this.imagePreview.images.length) % this.imagePreview.images.length;
                     }}"
                     @scroll="
-                    scrollTop = $el.scrollTop;
-
-                    if (scrollTop <= 0){
+                    if ($el.scrollTop <= 0) {
                         @this.dispatch('loadMore');
                     }"
 
@@ -137,9 +129,9 @@
                     @report-message-failed.window="messageReport.status = 'failed'"
 
                     id="conversation"
-                    class="flex flex-col gap-2 overflow-auto h-full p-2.5 overflow-y-scroll flex-grow overflow-x-hidden w-full my-auto" style="flex: 1 1 0;">
+                    class="flex-auto flex flex-col overflow-auto h-full p-2.5 overflow-y-scroll flex-grow overflow-x-hidden w-full my-auto" style="flex: 1 1 0;">
 
-                    <livewire:chat.conversation-container :$conversation :$receiver/>
+                    <livewire:chat.conversation-container :$conversation :$receiver @class('flex-auto')/>
 
                     <div x-cloak x-show="imagePreview.openModal" class="fixed inset-0 flex items-center justify-center z-50">
                         <div class="bg-black bg-opacity-75 w-full h-full" x-on:click.self="imagePreview.openModal = false">
@@ -149,7 +141,7 @@
                                 </template>
                             </div>
 
-                            {{-- Navigation buttons --}}
+                             Navigation buttons
                             <div x-cloak x-show="imagePreview.images.length > 1">
                                 <button type="button" class="absolute left-3 top-1/2 z-20 flex rounded-full -translate-y-1/2 bg-[#3F3F3FD0] hover:bg-[#212121D0]" x-on:click="previousImage()">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="size-10">
@@ -157,7 +149,7 @@
                                     </svg>
                                 </button>
 
-                                {{-- Next --}}
+                                 Next
                                 <button type="button" class="absolute right-3 top-1/2 z-20 flex rounded-full -translate-y-1/2 bg-[#3F3F3FD0] hover:bg-[#212121D0]" x-on:click="nextImage()">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="size-10">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M 13 10 l 6 6 l -6 6" stroke="white" stroke-width="3" fill="none"/>
@@ -265,8 +257,6 @@
             </main>
         </div>
 
-        <div class="col-span-2 border overflow-y-auto ">
-            <livewire:chat.profile-card :user="$receiver" :conversation="$conversation" />
-        </div>
+        <livewire:chat.profile-card :user="$receiver" :conversation="$conversation" />
     </div>
 </div>

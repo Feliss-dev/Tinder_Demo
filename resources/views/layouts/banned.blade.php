@@ -1,5 +1,7 @@
 @extends('layouts.navigation-layout')
 
+@section('title', 'Banned')
+
 @section('content')
     @php
         $user = auth()->user();

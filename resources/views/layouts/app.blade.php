@@ -1,5 +1,7 @@
 @extends('layouts.navigation-layout')
 
+@section('title', 'Dashboard')
+
 @section('content')
     <div class="w-full h-full flex-auto overflow-hidden grid grid-cols-4 md:flex-row order-3 md:order-2 mt-4 md:mt-0">
         <x-app-sidebar/>

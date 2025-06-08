@@ -44,7 +44,11 @@ class UserController extends Controller
 
     public function userProfile()
     {
-        return view('profile');
+        return view('layouts.profile');
+    }
+
+    public function showSettings() {
+        return view('layouts.settings');
     }
 
     public function viewMyDetails()

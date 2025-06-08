@@ -2,25 +2,12 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
-use App\Faker\PicsumPhotoProvider;
-use App\Faker\RandomUserProvider;
-use App\Models\Avatar;
-use App\Models\Conversation;
-use App\Models\Interest;
-use App\Models\SwipeMatch;
+use App\Models\ApplicationLanguage;
 use App\Models\User;
-use App\Models\Swipe;
-use Carbon\Carbon;
+use App\Models\UserPreferences;
+use Database\Factories\UserPreferencesFactory;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
-use Database\Seeders\LanguageSeeder;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use function Illuminate\Filesystem\join_paths;
 
 class DatabaseSeeder extends Seeder
 {
@@ -28,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         // Run these seeder classes.
         $this->call([
+            ApplicationLanguageSeeder::class,
             GenderSeeder::class,
             DatingGoalSeeder::class,
             LanguageSeeder::class,
@@ -42,7 +30,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create test user and admin usr.
-        $testUser = User::factory()->createMany([
+        $users = User::factory()->createMany([
             [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
@@ -53,13 +41,28 @@ class DatabaseSeeder extends Seeder
                 'email' => 'admin@example.com',
                 'is_admin' => true,
             ]
-        ])[0];
+        ]);
 
-        User::factory()->create([
+        UserPreferences::factory($users->count())->sequence(function (Sequence $sequence) use ($users) {
+            return [
+                'user_id' => $users[$sequence->index]->id,
+            ];
+        })->create([
+            'language_id' => ApplicationLanguage::where('code', 'en')->pluck('id')->first(),
+        ]);
+
+        $banUser = User::factory()->create([
             'name' => 'Test Banned User',
             'email' => 'test-banned@example.com',
             'is_admin' => false,
-        ])->ban();
+        ]);
+
+        UserPreferences::factory()->create([
+            'user_id' => $banUser->id,
+            'language_id' => ApplicationLanguage::where('code', 'en')->pluck('id')->first(),
+        ]);
+
+        $banUser->ban();
 
         $this->call([
             GenderUserSeeder::class,
@@ -69,7 +72,9 @@ class DatabaseSeeder extends Seeder
             InterestUserSeeder::class,
         ]);
 
-        $this->call(SwipeSeeder::class, false, ['testUser' => $testUser]);
+        $this->call(SwipeSeeder::class, false, [
+            'testUser' => $users[0],
+        ]);
 
         $this->call([
             MessageSeeder::class,

@@ -26,5 +26,8 @@ RUN npm run build
 # Expose port 8000
 EXPOSE 8000
 
-# Execute entrypoint
-CMD [ "./start.bash" ]
+# Clear cache and link storage
+RUN php artisan config:clear && php artisan storage:link
+
+# Serve
+ENTRYPOINT php artisan serve --host 0.0.0.0

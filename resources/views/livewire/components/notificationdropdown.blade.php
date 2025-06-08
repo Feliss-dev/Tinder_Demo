@@ -1,8 +1,6 @@
 <div x-data="{ dropdownOpen: @entangle('dropdownOpen') }" class="relative my-4" x-init="
-     let userId = {{ auth()->id() }};
-    Echo.private('users.{{ auth()->id() }}')
-    .listen('.new-notification', (e) => {
-        Livewire.emit('newNotification', e.notification); // Gửi sự kiện đến Livewire khi nhận được thông báo
+    Echo.private('users.{{ auth()->id() }}').listen('.new-notification', (e) => {
+        Livewire.emit('newNotification', e.notification);
         $wire.$refresh();
     });">
     <!-- Bell Icon to Trigger the Dropdown -->

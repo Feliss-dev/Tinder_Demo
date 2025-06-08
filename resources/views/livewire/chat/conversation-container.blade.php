@@ -2,7 +2,7 @@
     use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 @endphp
 
-<div id="conversation-container">
+<div>
     @foreach ($loadedMessages as $message)
         <livewire:chat.message-bubble :$message :key="$message->id"/>
     @endforeach

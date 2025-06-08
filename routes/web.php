@@ -47,6 +47,8 @@ Route::middleware(['auth', 'forbid-banned'])->group(function () {
     Route::post('/info', [UserController::class, 'updateInfor'])->name('info.update');
     Route::delete('/user/{id}/image', [UserController::class, 'deleteImage'])->name('user.image.delete');
 
+    Route::get('/settings', [UserController::class, 'showSettings'])->name('settings');
+
     Route::post('/avatar', [AvatarController::class, 'store'])->name('avatar.store');
     Route::delete('/avatar/{avatar}', [AvatarController::class, 'destroy'])->name('avatar.destroy');
     Route::get('/avatar/{avatar}/set-active', [AvatarController::class, 'setActive'])->name('avatar.setActive');
