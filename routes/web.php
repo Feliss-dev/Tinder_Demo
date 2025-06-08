@@ -24,6 +24,14 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/locale/{code}', function ($code) {
+    if (\App\Models\ApplicationLanguage::where('code', $code)->pluck('code')->first() != null) {
+        \Illuminate\Support\Facades\Session::put('locale', $code);
+    }
+
+    return redirect()->back();
+})->name('locale');
+
 Route::middleware(['language'])->group(function () {
     // Route for homepage
     Route::view('/', 'welcome')->name('home');
