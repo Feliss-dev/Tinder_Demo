@@ -48,7 +48,7 @@ class UserController extends Controller
     }
 
     public function showSettings() {
-        return view('layouts.settings');
+        return view('livewire.settings');
     }
 
     public function viewMyDetails()

@@ -5,10 +5,10 @@
 @section('content')
     <div x-data="{ selectedTab: 'language' }" class="grid grid-cols-4 h-full">
         <section class="border-r-gray-300 border-r-2">
-            <p class="font-bold mt-3 mb-3 ml-6">Application settings</p>
+            <p class="font-bold mt-3 mb-3 ml-6">{{__('settings.tabs.appsettings.category')}}</p>
 
             <button class="admin-sidebar-tab-btn w-full" :class="selectedTab === 'language' ? 'bg-gray-200' : ''" @click="selectedTab = 'language'">
-                Languages
+                {{__('settings.tabs.appsettings.languages')}}
             </button>
         </section>
 

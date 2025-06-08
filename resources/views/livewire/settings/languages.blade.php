@@ -6,15 +6,18 @@ use Livewire\Volt\Component;
 
 new class extends Component {
     public function setUserLanguage(int $languageId) {
+        $localeCode = ApplicationLanguage::find($languageId)->code;
+
         auth()->user()->preferences->update(['language_id' => $languageId]);
-        App::setLocale(ApplicationLanguage::find($languageId)->code);
+        App::setLocale($localeCode);
+        session()->put('locale', $localeCode);
     }
 }
 ?>
 
 <div>
-    <p class="font-bold text-xl">Languages</p>
-    <p>Configurate application language here.</p>
+    <p class="font-bold text-xl">{{__('settings.languages.title')}}</p>
+    <p>{{__('settings.languages.description')}}</p>
 
     <hr class="my-4 border-t-gray-300 border-t-2"/>
 

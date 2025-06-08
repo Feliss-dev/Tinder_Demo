@@ -24,53 +24,55 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route for homepage
-Route::view('/', 'welcome')->name('home');
-// Route::view('/banned', 'banned')->name('banned.user');
+Route::middleware(['language'])->group(function () {
+    // Route for homepage
+    Route::view('/', 'welcome')->name('home');
+    // Route::view('/banned', 'banned')->name('banned.user');
 
-Route::middleware(['auth', 'only-banned'])->group(function () {
-    Route::get('/banned', [UserController::class, 'showBan'])->name('banned.user');
-    // Route::view('/banned', 'banned')->name('banned');
-});
-
-// Routes for user who has login, authenticated and forbid banned user.
-Route::middleware(['auth', 'forbid-banned'])->group(function () {
-    // User details
-    Route::get('view_my_details', [UserController::class, 'viewMyDetails'])->name('view_my_details');
-
-    // Visiting users' profile
-    Route::get('/users/{id}', [UserController::class, 'visitUserProfile'])->name('users.profile');
-
-    // Personal profiles
-    Route::get('/profile', [UserController::class, 'userProfile'])->name('profile');
-    Route::get('/info', [UserController::class, 'showProfileForm'])->name('info');
-    Route::post('/info', [UserController::class, 'updateInfor'])->name('info.update');
-    Route::delete('/user/{id}/image', [UserController::class, 'deleteImage'])->name('user.image.delete');
-
-    Route::get('/settings', [UserController::class, 'showSettings'])->name('settings');
-
-    Route::post('/avatar', [AvatarController::class, 'store'])->name('avatar.store');
-    Route::delete('/avatar/{avatar}', [AvatarController::class, 'destroy'])->name('avatar.destroy');
-    Route::get('/avatar/{avatar}/set-active', [AvatarController::class, 'setActive'])->name('avatar.setActive');
-
-    // User dashboard
-    Route::get('/dashboard', [UserController::class, 'userDashboard'])
-        ->middleware('verified')
-        ->name('dashboard');
-
-    // Swiper
-    Route::get('/filter', Swiper::class)->name('filter');
-
-    // Chatting
-//    Route::get('/dashboard/chat', Index::class)->name('chat.index');
-    Route::get('/dashboard/chat/{chat}', Chat::class)->name('chat');
-
-    // Routes for admins
-    Route::middleware('isAdmin')->group(function () {
-        Route::get('admin/dashboard', [UserController::class, 'admin_dashboard'])->name('admin.dashboard');
+    Route::middleware(['auth', 'only-banned', 'language'])->group(function () {
+        Route::get('/banned', [UserController::class, 'showBan'])->name('banned.user');
+        // Route::view('/banned', 'banned')->name('banned');
     });
 
-    // Route::post('/broadcasting/auth', [PusherController::class, 'pusherAuth']);
+    // Routes for user who has login, authenticated and forbid banned user.
+    Route::middleware(['auth', 'forbid-banned'])->group(function () {
+        // User details
+        Route::get('view_my_details', [UserController::class, 'viewMyDetails'])->name('view_my_details');
+
+        // Visiting users' profile
+        Route::get('/users/{id}', [UserController::class, 'visitUserProfile'])->name('users.profile');
+
+        // Personal profiles
+        Route::get('/profile', [UserController::class, 'userProfile'])->name('profile');
+        Route::get('/info', [UserController::class, 'showProfileForm'])->name('info');
+        Route::post('/info', [UserController::class, 'updateInfor'])->name('info.update');
+        Route::delete('/user/{id}/image', [UserController::class, 'deleteImage'])->name('user.image.delete');
+
+        Route::get('/settings', [UserController::class, 'showSettings'])->name('settings');
+
+        Route::post('/avatar', [AvatarController::class, 'store'])->name('avatar.store');
+        Route::delete('/avatar/{avatar}', [AvatarController::class, 'destroy'])->name('avatar.destroy');
+        Route::get('/avatar/{avatar}/set-active', [AvatarController::class, 'setActive'])->name('avatar.setActive');
+
+        // User dashboard
+        Route::get('/dashboard', [UserController::class, 'userDashboard'])
+            ->middleware('verified')
+            ->name('dashboard');
+
+        // Swiper
+        Route::get('/filter', Swiper::class)->name('filter');
+
+        // Chatting
+    //    Route::get('/dashboard/chat', Index::class)->name('chat.index');
+        Route::get('/dashboard/chat/{chat}', Chat::class)->name('chat');
+
+        // Routes for admins
+        Route::middleware('isAdmin')->group(function () {
+            Route::get('admin/dashboard', [UserController::class, 'admin_dashboard'])->name('admin.dashboard');
+        });
+
+        // Route::post('/broadcasting/auth', [PusherController::class, 'pusherAuth']);
+    });
 });
 
 Route::group(['middleware' => ['web']], function () {

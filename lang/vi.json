@@ -1,0 +1,9 @@
+{
+    "settings.tabs.appsettings.category": "Cài đặt ứng dụng",
+    "settings.tabs.appsettings.languages": "Ngôn ngữ",
+    "settings.languages.title": "Ngôn ngữ",
+    "settings.languages.description": "Cài đặt ngôn ngữ ở đây.",
+
+    "languages.en.name": "Tiếng Anh",
+    "languages.vi.name": "Tiếng Việt"
+}

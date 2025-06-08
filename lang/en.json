@@ -1,0 +1,9 @@
+{
+    "settings.tabs.appsettings.category": "Application Settings",
+    "settings.tabs.appsettings.languages": "Languages",
+    "settings.languages.title": "Languages",
+    "settings.languages.description": "Configurate application language here.",
+
+    "languages.en.name": "English",
+    "languages.vi.name": "Vietnamese"
+}

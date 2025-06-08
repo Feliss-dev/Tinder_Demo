@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'forbid-banned' => \Cog\Laravel\Ban\Http\Middleware\ForbidBannedUser::class,
         'only-banned' => \App\Http\Middleware\OnlyBannedUser::class,
         'logout-banned' => \Cog\Laravel\Ban\Http\Middleware\LogsOutBannedUser::class,
+        'language' => \App\Http\Middleware\LanguageMiddleware::class,
     ];
 }

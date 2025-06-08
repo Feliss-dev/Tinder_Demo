@@ -34,16 +34,16 @@ new class extends Component {
 
                         @if ($user->isNotBanned())
                             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                                {{ __('Dashboard') }}
+                                Dashboard
                             </x-nav-link>
 
                             <x-nav-link :href="route('view_my_details')" :active="request()->routeIs('view_my_details')" wire:navigate>
-                                {{ __('View My Profile') }}
+                                View My Profile
                             </x-nav-link>
 
                             @if (auth()->user()->is_admin)
                                 <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')" wire:navigate>
-                                    {{ __('Admin Dashboard') }}
+                                    Admin Dashboard
                                 </x-nav-link>
                             @endif
                         @endif
@@ -74,18 +74,18 @@ new class extends Component {
                         <x-slot name="content">
                             @if (auth()->user()->isNotBanned())
                                 <x-dropdown-link :href="route('profile')" wire:navigate>
-                                    {{ __('Profile') }}
+                                    Profile
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('settings')" wire:navigate>
-                                    {{ __('Settings') }}
+                                    Settings
                                 </x-dropdown-link>
                             @endif
 
                             <!-- Authentication -->
                             <button wire:click="logout" class="w-full text-start">
                                 <x-dropdown-link>
-                                    {{ __('Log Out') }}
+                                    Log Out
                                 </x-dropdown-link>
                             </button>
                         </x-slot>
