@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function admin_dashboard()
+    public function adminDashboard()
     {
         return view('layouts.admin.dashboard');
     }
@@ -53,7 +53,7 @@ class UserController extends Controller
 
     public function viewMyDetails()
     {
-        return view('layouts.user.user_details', ['user' => auth()->user()]);
+        return view('livewire.pages.user.user_details');
     }
 
     public function visitUserProfile($id) {

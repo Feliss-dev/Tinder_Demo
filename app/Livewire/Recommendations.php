@@ -45,6 +45,7 @@ class Recommendations extends Component
             $this->error = __('recommendation.error.internal_error');
         }
     }
+
     public function render()
     {
         return view('livewire.recommendations');

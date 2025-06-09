@@ -39,7 +39,6 @@ Route::middleware(['language'])->group(function () {
 
     Route::middleware(['auth', 'only-banned', 'language'])->group(function () {
         Route::get('/banned', [UserController::class, 'showBan'])->name('banned.user');
-        // Route::view('/banned', 'banned')->name('banned');
     });
 
     // Routes for user who has login, authenticated and forbid banned user.
@@ -58,10 +57,6 @@ Route::middleware(['language'])->group(function () {
 
         Route::get('/settings', [UserController::class, 'showSettings'])->name('settings');
 
-        Route::post('/avatar', [AvatarController::class, 'store'])->name('avatar.store');
-        Route::delete('/avatar/{avatar}', [AvatarController::class, 'destroy'])->name('avatar.destroy');
-        Route::get('/avatar/{avatar}/set-active', [AvatarController::class, 'setActive'])->name('avatar.setActive');
-
         // User dashboard
         Route::get('/dashboard', [UserController::class, 'userDashboard'])
             ->middleware('verified')
@@ -76,7 +71,7 @@ Route::middleware(['language'])->group(function () {
 
         // Routes for admins
         Route::middleware('isAdmin')->group(function () {
-            Route::get('admin/dashboard', [UserController::class, 'admin_dashboard'])->name('admin.dashboard');
+            Route::get('admin/dashboard', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
         });
 
         // Route::post('/broadcasting/auth', [PusherController::class, 'pusherAuth']);

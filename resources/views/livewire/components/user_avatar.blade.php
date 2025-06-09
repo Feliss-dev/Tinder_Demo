@@ -1,6 +1,8 @@
 @props(['alt' => 'User Avatar'])
 
-<div {{ $attributes->merge(['class' => "shrink-0 inline-flex items-center justify-center overflow-hidden"]) }}>
+<div class="size-full inline-flex items-center justify-center" @user-avatar_changed.window.dot="$wire.$refresh()">
+    @php($user = auth()->user())
+
     @if ($user->activeAvatar)
         <img class='shrink-0 size-full object-cover object-center'
              src="{{ asset('storage/' . $user->activeAvatar->path) }}"

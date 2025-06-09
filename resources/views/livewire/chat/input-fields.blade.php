@@ -49,7 +49,6 @@
                     <div class="relative h-[3rem] gap-2 items-center pr-1 border-2 border-gray-500 rounded-tr-full rounded-br-full overflow-hidden flex flex-row flex-shrink-0">
                         <img x-bind:src="item.previewUrl" x-bind:alt="item.file.name" class="h-full aspect-square mx-auto object-cover flex-initial"/>
                         <p x-text="item.file.name" class="max-w-56 truncate"></p>
-
                     </div>
 
                     <button type="button" x-show="displayExtra" class="bg-white hover:bg-gray-200 active:bg-gray-300 border-2 border-gray-500 rounded-full absolute top-0 right-0 p-[0.125rem]" @click="deletePreviewImage(index)">
