@@ -1,16 +1,16 @@
 <div {{ $attributes }}>
     <div class="flex flex-row">
-        <strong>Email:</strong>
+        <strong>{{__('view_my_details.profile.email')}}:</strong>
         <p class="ml-2">{{$user->email}}</p>
     </div>
 
     <div class="flex flex-row">
-        <strong>Birthdate:</strong>
+        <strong>{{__('view_my_details.profile.birthdate')}}:</strong>
         <p class="ml-2">{{$user->birth_date}}</p>
     </div>
 
     <div class="flex flex-row">
-        <strong class="mr-2">Gender:</strong>
+        <strong class="mr-2">{{__('view_my_details.profile.gender')}}:</strong>
 
         @if ($user->genders->isNotEmpty())
             <div class="flex flex-wrap gap-2">
@@ -21,15 +21,15 @@
                 @endforeach
             </div>
         @else
-            <p>No data available</p>
+            <p>{{__('view_my_details.profile.no_data')}}</p>
         @endif
     </div>
 
-    <strong>Bio:</strong>
+    <strong>{{__('view_my_details.profile.bio')}}:</strong>
     <p>{{$user->bio}}</p>
 
     <div class="flex flex-row">
-        <strong class="mr-2">Interests:</strong>
+        <strong class="mr-2">{{__('view_my_details.profile.interests')}}:</strong>
 
         @if ($user->interests->isNotEmpty())
             <div class="flex flex-wrap gap-2">
@@ -40,12 +40,12 @@
                 @endforeach
             </div>
         @else
-            <p>No data available</p>
+            <p>{{__('view_my_details.profile.no_data')}}</p>
         @endif
     </div>
 
     <div class="flex flex-row">
-        <strong class="mr-2">Desired Gender:</strong>
+        <strong class="mr-2">{{__('view_my_details.profile.desired_gender')}}:</strong>
         @if ($user->desiredGenders->isNotEmpty())
             <div class="flex flex-wrap gap-2">
                 @foreach ($user->desiredGenders as $desiredGender)
@@ -55,12 +55,12 @@
                 @endforeach
             </div>
         @else
-            <p>No data available</p>
+            <p>{{__('view_my_details.profile.no_data')}}</p>
         @endif
     </div>
 
     <div class="flex flex-row">
-        <strong class="mr-2">Dating Goal:</strong>
+        <strong class="mr-2">{{__('view_my_details.profile.dating_goal')}}:</strong>
         @if ($user->datingGoals->isNotEmpty())
             <div class="flex flex-wrap gap-2">
                 @foreach ($user->datingGoals as $datingGoal)
@@ -70,12 +70,12 @@
                 @endforeach
             </div>
         @else
-            <p>No data available</p>
+            <p>{{__('view_my_details.profile.no_data')}}</p>
         @endif
     </div>
 
     <div class="flex flex-row">
-        <strong class="mr-2">Known languages:</strong>
+        <strong class="mr-2">{{__('view_my_details.profile.known_languages')}}:</strong>
         @if ($user->languages->isNotEmpty())
             <div class="flex flex-wrap gap-2">
                 @foreach ($user->languages as $language)
@@ -85,7 +85,7 @@
                 @endforeach
             </div>
         @else
-            <p>No data available</p>
+            <p>{{__('view_my_details.profile.no_data')}}</p>
         @endif
     </div>
 </div>

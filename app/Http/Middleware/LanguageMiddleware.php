@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,7 +19,12 @@ class LanguageMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        App::setLocale(Session::get('locale', Config::get('app.locale')));
+        // Cache session to reduce database accessing
+        if (!Session::has('locale')) {
+            Session::put('locale', auth()->user()->preferences->language->code);
+        }
+
+        App::setLocale(Session::get('locale'));
         return $next($request);
     }
 }

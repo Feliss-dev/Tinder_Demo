@@ -15,6 +15,6 @@ class UserPreference extends Model
     }
 
     public function language() {
-        return $this->hasOne(Language::class, 'id', 'language_id');
+        return $this->hasOne(ApplicationLanguage::class, 'id', 'language_id');
     }
 }

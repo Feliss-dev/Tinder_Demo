@@ -99,27 +99,12 @@
                         </svg>
                     </button>
 
-{{--                    <button type="button" class="rounded-lg size-8 bg-[#323232D0] p-1" :href="'{{route('user.image.download', $user->id)}}?' + new URLSearchParams({--}}
-{{--                        image_index: this.modalImageIndex,--}}
-{{--                    }).toString()">--}}
-{{--                        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">--}}
-{{--                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>--}}
-{{--                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>--}}
-{{--                        </svg>--}}
-{{--                    </button>--}}
-
                     <button type="button" class="rounded-lg size-8 bg-[#323232D0] p-1" @click="modalImageIndex = -1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
                             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
                         </svg>
                     </button>
                 </section>
-
-{{--                <button class="absolute top-2 right-2 rounded-full size-8 bg-[#1A1A1AD0] p-2" @click="modalImageIndex = -1">--}}
-{{--                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">--}}
-{{--                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>--}}
-{{--                    </svg>--}}
-{{--                </button>--}}
 
                 <div class="w-full h-full flex flex-row justify-center">
                     <img :src="images[modalImageIndex].url" alt="Modal Image" class="object-contain w-full"/>
@@ -129,12 +114,12 @@
             {{-- Delete confirmation modal --}}
             <x-confirmation-modal x-cloak x-show="impendingDeleteImageIndex != -1">
                 <x-slot:head>
-                    <strong class="text-black text-xl">Delete Image</strong>
+                    <strong class="text-black text-xl">{{__('view_my_details.images.delete.title')}}</strong>
                 </x-slot:head>
 
                 <x-slot:body>
-                    <p class="mt-6">Are you sure you want to delete this image?</p>
-                    <p class="font-bold">Warning: This action cannot be reverted.</p>
+                    <p class="mt-6">{{__('view_my_details.images.delete.body.1')}}</p>
+                    <p class="font-bold">{{__('view_my_details.images.delete.body.2')}}</p>
                 </x-slot>
 
                 <x-slot:actions>
@@ -142,11 +127,11 @@
 
                     <div class="flex flex-row-reverse gap-4 mt-4">
                         <button type="button" class="px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition duration-300" @click="deleteImage()">
-                            Delete Image
+                            {{__('view_my_details.images.delete.action.delete')}}
                         </button>
 
                         <button type="button" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition duration-300" @click="impendingDeleteImageIndex = -1">
-                            Cancel
+                            {{__('view_my_details.images.delete.action.cancel')}}
                         </button>
                     </div>
                 </x-slot>
@@ -154,7 +139,7 @@
         </div>
     @else
         <div class="h-full w-full flex flex-col justify-center items-center">
-            <p class="text-gray-600">No image available</p>
+            <p class="text-gray-600">{{__('view_my_details.images.no_image')}}</p>
         </div>
     @endif
 </div>
