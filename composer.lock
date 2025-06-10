@@ -961,16 +961,16 @@
         },
         {
             "name": "google-gemini-php/client",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google-gemini-php/client.git",
-                "reference": "baf8a451ab731555b5cba066ecf413debccd7191"
+                "reference": "01c8df862db1b72b13703ad572968c2d771fe8c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google-gemini-php/client/zipball/baf8a451ab731555b5cba066ecf413debccd7191",
-                "reference": "baf8a451ab731555b5cba066ecf413debccd7191",
+                "url": "https://api.github.com/repos/google-gemini-php/client/zipball/01c8df862db1b72b13703ad572968c2d771fe8c4",
+                "reference": "01c8df862db1b72b13703ad572968c2d771fe8c4",
                 "shasum": ""
             },
             "require": {
@@ -1023,9 +1023,9 @@
             ],
             "support": {
                 "issues": "https://github.com/google-gemini-php/client/issues",
-                "source": "https://github.com/google-gemini-php/client/tree/2.2.0"
+                "source": "https://github.com/google-gemini-php/client/tree/2.3.0"
             },
-            "time": "2025-05-30T08:23:40+00:00"
+            "time": "2025-06-09T12:20:53+00:00"
         },
         {
             "name": "google-gemini-php/laravel",
