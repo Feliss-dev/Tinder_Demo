@@ -31,8 +31,6 @@ class Swiper extends Component {
 
     public function swipedRight(User $user)
     {
-        Log::debug("swiped right: " . $user->id);
-
         //make user user is authenticated
         abort_unless(auth()->check(), 401);
 
@@ -41,8 +39,6 @@ class Swiper extends Component {
 
     public function swipedLeft(User $user)
     {
-        Log::debug("swiped left: " . $user->id);
-
         //make user user is authenticated
         abort_unless(auth()->check(), 401);
 
@@ -51,7 +47,6 @@ class Swiper extends Component {
 
     public function swipedUp(User $user)
     {
-        Log::debug("swiped up: " . $user->id);
         //make user user is authenticated
         abort_unless(auth()->check(), 401);
 

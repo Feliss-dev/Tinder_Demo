@@ -18,13 +18,9 @@ class MatchModal extends Component
     public function matchFound(User $matchedUser, int $matchId) {
         $this->matchedUser = $matchedUser;
         $this->matchId = $matchId;
-
-        Log::debug("Match Found: " . $this->matchId);
     }
 
     public function createConversation() {
-        Log::debug("createConversation");
-
         $conversation = Conversation::create([
             'sender_id' => auth()->id(),
             'receiver_id' => $this->matchedUser->id,

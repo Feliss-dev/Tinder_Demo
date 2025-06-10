@@ -48,8 +48,6 @@ class ConversationContainer extends Component
     }
 
     public function uploadLatestMessage($timeId) {
-        Log::debug("begin upload message " . $timeId);
-
         $payload = null;
 
         foreach ($this->uploadingMessages as $message) {
@@ -83,8 +81,6 @@ class ConversationContainer extends Component
 
             broadcast(new ConversationMessageSent($createdMessage, $this->conversation->id))->toOthers();
         }
-
-        Log::debug("end upload message " . $timeId);
 
         $this->uploadingMessages = array_filter($this->uploadingMessages, function($message) use ($timeId) {
             return $message['created_at'] !== $timeId;

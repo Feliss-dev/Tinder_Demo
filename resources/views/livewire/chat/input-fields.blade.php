@@ -14,8 +14,6 @@
                     previewUrl: URL.createObjectURL(files[i]),
                     file: files[i],
                 });
-
-                console.log('Pushed new URL: ' + this.uploadingImages[this.uploadingImages.length - 1].previewUrl + '. Current length: ' + this.uploadingImages.length);
             }
         },
 
