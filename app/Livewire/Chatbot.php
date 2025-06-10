@@ -7,20 +7,40 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\Wireable;
 use Livewire\WithFileUploads;
+
+class ChatbotMessage implements Wireable {
+    public function __construct(public string $role, public ?string $text, public ?string $imageSource, public ?array $audio) {}
+
+    public function toLivewire()
+    {
+        return [
+            'role' => $this->role,
+            'text' => $this->text,
+            'imageSource' => $this->imageSource,
+            'audio' => $this->audio,
+        ];
+    }
+
+    public static function fromLivewire($value)
+    {
+        return new static($value['role'], $value['text'], $value['imageSource'], $value['audio']);
+    }
+}
 
 class Chatbot extends Component
 {
     use WithFileUploads;
 
-    public $messages = [];
+    public array $messages = [];
     public $userMessage = '';
     public $userImage;
 
     public int $state = 0;
 
     public function mount() {
-        $this->messages[] = ['role' => 'bot', 'text' => 'How can I help you?', 'imageSource' => null, 'audioSource' => null];
+        $this->messages[] = new ChatbotMessage('bot', 'How can I help you?', null, null);
     }
 
     public function sendMessage()
@@ -30,7 +50,7 @@ class Chatbot extends Component
             'userImage' => 'nullable|image|mimes:jpeg,jpg,png|max:2048'
         ]);
 
-        $this->messages[] = ['role' => 'user', 'text' => $this->userMessage, 'imageSource' => $this->userImage?->temporaryUrl(), 'audioSource' => null ];
+        $this->messages[] = new ChatbotMessage('user', $this->userMessage, $this->userImage?->temporaryUrl(), null);
         $this->reset('userMessage');
 
         $this->state = 1;
@@ -54,7 +74,7 @@ class Chatbot extends Component
                     required: ['question_type']
                 )
             )
-        )->generateContent('Suggest the most relevent category for the following user request according to these categories: ["social_question", "image_generation", "translate_previous_chatting_message", "say_something", "translate_sentences", "others"]. User request: "' . $this->messages[count($this->messages) - 1]['text'] . '".');
+        )->generateContent('Suggest the most relevent category for the following user request according to these categories: ["social_question", "image_generation", "translate_previous_chatting_message", "say_something", "translate_sentences", "others"]. User request: "' . $this->messages[count($this->messages) - 1]->text . '".');
 
         $questionType = trim((string)$response->json()->question_type);
 
@@ -74,14 +94,14 @@ class Chatbot extends Component
 
             case "say_something":
             case "translate_sentences":
-                $this->state = 2;
+                // $this->state = 2;
                 $this->js('$wire.answerAudioGeneration()');
                 break;
 
             case "others":
                 Log::debug("D");
                 // No need to use any model, just use scripted one to reduce token count.
-                $this->messages[] = ['role' => 'bot', 'text' => 'Invalid question.', 'imageSource' => null, 'audioSource' => null];   // TODO: Make a better message.
+                $this->messages[] = new ChatbotMessage('bot', 'Invalid question.', null, null);
                 $this->state = 0;
                 break;
         }
@@ -89,9 +109,15 @@ class Chatbot extends Component
 
     public function answerTextOnlyQuestions() {
         // Use 'models/gemini-2.0-flash-001' to generate response because the response should very likely to be in pure text.
-        // Also this model provides 1M tokens for free, way more than image generation one.
 
-        $prompt = "You are a chatbot specialize in giving advices about social interactions, given this past chatlog in json: \"" . json_encode(array_slice($this->messages, -10)) . "\", continue the conversation. Answer in the same language as the latest message with the role 'user'.";
+        $context = array_map(function ($message) {
+            $obj = new \stdClass();
+            $obj->role = $message->role;
+            $obj->text = $message->text;
+
+            return $obj;
+        }, array_slice($this->messages, -10));
+        $prompt = "You are a chatbot specialize in giving advices about social interactions, given this past chatlog in json: \"" . json_encode($context) . "\", continue the conversation. Answer in the same language as the latest user's message.";
 
         $stream = Gemini::client(env('GEMINI_API_KEY'))->generativeModel("models/gemini-2.0-flash-001")->streamGenerateContent($prompt);
         $generatingMessage = '';
@@ -118,13 +144,13 @@ class Chatbot extends Component
             sleep(0.06);
         }
 
-        $this->messages[] = ['role' => 'bot', 'text' => $generatingMessage, 'imageSource' => null, 'audioSource' => null];
+        $this->messages[] = new ChatbotMessage('bot', $generatingMessage, null, null);
         $this->state = 0;
     }
 
     public function answerImageGeneration() {
         // TODO: Streaming
-        $payload = [$this->messages[count($this->messages) - 1]['text']];
+        $payload = [$this->messages[count($this->messages) - 1]->text];
         if ($this->userImage != null) {
             $payload[] = new Gemini\Data\Blob(
                 mimeType: Gemini\Enums\MimeType::from($this->userImage->getMimeType()),
@@ -149,7 +175,7 @@ class Chatbot extends Component
             }
         }
 
-        $this->messages[] = ['role' => 'bot', 'text' => $textPart, 'imageSource' => $imagePart, 'audioSource' => null];
+        $this->messages[] = new ChatbotMessage('bot', $textPart, $imagePart, null);
         $this->state = 0;
         $this->reset('userImage');
     }
@@ -159,10 +185,44 @@ class Chatbot extends Component
     const int BIT_DEPTH = 16;
 
     public function answerAudioGeneration() {
-        $prompt = $this->messages[count($this->messages) - 1]['text'];
-        Log::debug("Prompt: " . $prompt);
+        $geminiClient = Gemini::client(env('GEMINI_API_KEY'));
 
-        // TODO: Streaming
+        $userInput = $this->messages[count($this->messages) - 1]->text;
+
+        $response = $geminiClient->generativeModel("models/gemini-2.0-flash-001")->withGenerationConfig(
+            generationConfig: new Gemini\Data\GenerationConfig(
+                responseMimeType: Gemini\Enums\ResponseMimeType::APPLICATION_JSON,
+                responseSchema: new Gemini\Data\Schema(
+                    type: Gemini\Enums\DataType::OBJECT,
+                    properties: [
+                        'friendly_response' => new Gemini\Data\Schema(
+                            type: Gemini\Enums\DataType::STRING,
+                        ),
+
+                        'to_generate_speech' => new Gemini\Data\Schema(
+                            type: Gemini\Enums\DataType::STRING,
+                        ),
+                    ],
+                    required: ['friendly_response', 'to_generate_speech']
+                )
+            )
+        )->generateContent("Pretent you can generate audio data from user prompt. Take this input prompt: '" . $userInput . "'. Generate a friendly chatting response like \"Sure! I can definitely help with that. Here is the text\" into property \"friendly_response\" (make some variety and have it in the same language as the input (Example: if user requested 'Translate ... to Spanish' then answer in same language as them, in this case, english)) and extract the text part to generate speech into property \"to_generate_speech\". Do not mention speech generation in the response.");
+
+        $json = $response->json();
+        $text = $json->friendly_response;
+
+        $this->messages[] = new ChatbotMessage('bot', $text, null, [
+            'finish' => false,
+            'source' => null,
+        ]);
+
+        $this->state = 0;
+        $this->js('$wire.generateAudio(' . (count($this->messages) - 1) . ', "' . $json->to_generate_speech . '");');
+    }
+
+    public function generateAudio(int $messageIndex, string $prompt) {
+        Log::debug("Generating audio: '" . $prompt . "'.");
+
         $response = Gemini::client(env('GEMINI_API_KEY'))->generativeModel('gemini-2.5-flash-preview-tts')->withGenerationConfig(
             generationConfig: new Gemini\Data\GenerationConfig(
                 responseModalities: [Gemini\Enums\ResponseModality::AUDIO],
@@ -174,43 +234,34 @@ class Chatbot extends Component
             )
         )->generateContent($prompt);
 
-        $textPart = null;
-        $audioPart = null;
+        $parts = $response->candidates[0]->content->parts;
 
-        Log::debug("Candidate count: " . count($response->candidates));
-        Log::debug("Part count: " . count($response->parts()));
+        if (count($parts) == 0) {
+            Log::error("No audio data part.");
+        } else {
+            $pcmData = base64_decode($response->candidates[0]->content->parts[0]->inlineData->data);
 
-        foreach ($response->parts() as $part) {
-            if ($part->text != null) {
-                $textPart = $part->text;
-            } else if ($part->inlineData != null) {
-                $pcmData = base64_decode($part->inlineData->data);
+            $wavContent = 'RIFF';
+            $wavContent .= pack('V', strlen($pcmData) + 36);
+            $wavContent .= 'WAVEfmt ';
+            $wavContent .= pack('V', 16);
+            $wavContent .= pack('v', 1);            // PCM
+            $wavContent .= pack('v', static::NUM_CHANNELS);
+            $wavContent .= pack('V', static::SAMPLE_RATE);
+            $wavContent .= pack('V', static::SAMPLE_RATE * static::NUM_CHANNELS * static::BIT_DEPTH / 8);
+            $wavContent .= pack('v', static::NUM_CHANNELS * static::BIT_DEPTH / 8);
+            $wavContent .= pack('v', static::BIT_DEPTH);
+            $wavContent .= 'data';
+            $wavContent .= pack('V', strlen($pcmData));
 
-                $wavContent = 'RIFF';
-                $wavContent .= pack('V', strlen($pcmData) + 36);
-                $wavContent .= 'WAVEfmt ';
-                $wavContent .= pack('V', 16);
-                $wavContent .= pack('v', 1);            // PCM
-                $wavContent .= pack('v', static::NUM_CHANNELS);
-                $wavContent .= pack('V', static::SAMPLE_RATE);
-                $wavContent .= pack('V', static::SAMPLE_RATE * static::NUM_CHANNELS * static::BIT_DEPTH / 8);
-                $wavContent .= pack('v', static::NUM_CHANNELS * static::BIT_DEPTH / 8);
-                $wavContent .= pack('v', static::BIT_DEPTH);
-                $wavContent .= 'data';
-                $wavContent .= pack('V', strlen($pcmData));
+            $wavContent .= $pcmData;
+            $audioSource = "data:" . Gemini\Enums\MimeType::AUDIO_WAV->value . ";base64," . base64_encode($wavContent);
 
-                $wavContent .= $pcmData;
-
-                $audioPart = "data:" . Gemini\Enums\MimeType::AUDIO_WAV->value . ";base64," . base64_encode($wavContent);
-            }
+            $this->messages[$messageIndex]->audio = [
+                'finish' => true,
+                'source' => $audioSource,
+            ];
         }
-
-        if ($audioPart == null) {
-            Log::debug("Uh oh... No Audio Part.");
-        }
-
-        $this->messages[] = ['role' => 'bot', 'text' => $textPart, 'type' => 'text', 'imageSource' => null, 'audioSource' => $audioPart];
-        $this->state = 0;
     }
 
     public function render()
