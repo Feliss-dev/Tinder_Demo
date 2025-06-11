@@ -11,8 +11,8 @@
                 <header class="flex flex-row justify-between border-b-2 border-b-gray-300 p-3 flex-initial">
                     <h1 class="text-black font-bold text-xl">User Message Reports</h1>
 
-                    <button @click="open = false; $wire.close()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="gray" viewBox="0 0 16 16">
+                    <button @click="open = false; $wire.close()" class="size-6 p-[0.125rem] rounded-full bg-white hover:bg-gray-200 active:bg-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-full" fill="gray" viewBox="0 0 16 16">
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
                         </svg>
                     </button>
@@ -98,7 +98,7 @@
                                 Please select a report to inspect.
                             </main>
 
-                            <main x-cloak x-show="inspectingReportId > 0" class="flex-auto overflow-y-hidden p-2">
+                            <main x-cloak x-show="inspectingReportId > 0" class="flex-auto overflow-y-auto p-2">
                                 @if ($inspectingReport != null)
                                     <p class="font-semibold">Message Content</p>
 

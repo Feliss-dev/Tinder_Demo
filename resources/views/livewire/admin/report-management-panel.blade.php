@@ -1,6 +1,7 @@
 <div>
     <h1 class="font-semibold text-3xl text-center mt-4 mb-6">Report Management Dashboard</h1>
 
+    {{-- TODO: Report statistics --}}
 {{--    <section class="flex flex-row gap-2 mb-0" x-data="{year: @entangle('analyzingYear')}">--}}
 {{--        <div class="flex flex-col gap-2 flex-1">--}}
 {{--            <section class="rounded-xl border-2 bg-white p-4 flex-grow-0 flex-shrink">--}}
