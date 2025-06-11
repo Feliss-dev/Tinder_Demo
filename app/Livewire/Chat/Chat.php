@@ -3,6 +3,7 @@
 namespace App\Livewire\Chat;
 
 use App\Events\ConversationMessageSent;
+use App\Events\MessageDelete;
 use App\Models\MessageReport;
 use App\Models\MessageReportReason;
 use App\Models\Swipe;
@@ -35,6 +36,7 @@ class Chat extends Component
         $message->save();
 
         $this->dispatch("refresh-message.{$deleteMessageID}");
+        broadcast(new MessageDelete($this->conversation->id, $deleteMessageID));
     }
 
     public function reportMessage($messageID, string $reasonsString, string $extra) {

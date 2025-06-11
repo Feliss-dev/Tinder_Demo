@@ -4,20 +4,16 @@ namespace App\Events;
 
 use App\Models\Message;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class ConversationMessageSent implements ShouldBroadcast
-{
+class MessageDelete implements ShouldBroadcast {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public Message $message, public int $conversationID) {
-    }
+    public function __construct(public int $conversationID, public int $messageID) {}
 
     public function broadcastOn(): Channel
     {
@@ -26,11 +22,11 @@ class ConversationMessageSent implements ShouldBroadcast
 
     public function broadcastAs(): string
     {
-        return 'conversation-sent';
+        return 'message-delete';
     }
 
     public function broadcastWith(): array
     {
-        return ['message_id' => $this->message->id];
+        return ['message_id' => $this->messageID];
     }
 }

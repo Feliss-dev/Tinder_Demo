@@ -8,6 +8,7 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Renderless;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -38,6 +39,12 @@ class ConversationContainer extends Component
 
         #refresh chatlist
         $this->dispatch('new-message-created');
+    }
+
+    #[On('echo-private:conversation.{conversation.id},.message-delete')]
+    #[Renderless]
+    public function messageDelete($event) {
+        $this->dispatch("refresh-message.{$event['message_id']}");
     }
 
     #[On('user-send-message')]
