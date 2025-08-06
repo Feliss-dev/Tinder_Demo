@@ -6,9 +6,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserPreferences>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserPreference>
  */
-class UserPreferencesFactory extends Factory
+class UserPreferenceFactory extends Factory
 {
     /**
      * Define the model's default state.

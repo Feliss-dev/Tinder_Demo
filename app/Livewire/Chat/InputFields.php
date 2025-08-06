@@ -35,8 +35,8 @@ class InputFields extends Component
             'images.*' => 'image|mimes:jpeg,jpg,png|max:2048',  // TODO: Dynamically read the ini variable to determine size.
         ]);
 
-        if (!empty($this->allFiles)) {
-            foreach ($this->allFiles as $file) {
+        if (!empty($this->images)) {
+            foreach ($this->images as $file) {
                 $response = Http::post(env("IMAGE_DETECTOR_URL"), [
                     'image_content' => base64_encode($file->get()),
                 ]);

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\ApplicationLanguage;
 use App\Models\User;
-use App\Models\UserPreferences;
+use App\Models\UserPreference;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             'is_admin' => false,
         ]);
 
-        UserPreferences::factory($users->count())->sequence(function (Sequence $sequence) use ($users) {
+        UserPreference::factory($users->count())->sequence(function (Sequence $sequence) use ($users) {
             return [
                 'user_id' => $users[$sequence->index]->id,
             ];

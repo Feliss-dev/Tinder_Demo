@@ -13,6 +13,7 @@ use App\Models\UserImage;
 use App\Models\SwipeMatch;
 use App\Enums\BasicGroupEnum;
 use App\Models\UserPreference;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Redis;
 use Laravel\Sanctum\HasApiTokens;
@@ -71,23 +72,26 @@ class User extends Authenticatable implements MustVerifyEmail, BannableInterface
     {
         return $this->belongsToMany(DatingGoal::class, 'dating_goal_users', 'user_id', 'dating_goal_id');
     }
+
     public function desiredGenders()
     {
         return $this->belongsToMany(Gender::class, 'desired_gender_users', 'user_id', 'desired_gender_id');
     }
-    public function genders()
-    {
+
+    public function genders() : BelongsToMany {
         return $this->belongsToMany(Gender::class, 'gender_users', 'user_id', 'gender_id');
     }
 
-    public function avatars()
-    {
+    public function avatars() : HasMany {
         return $this->hasMany(Avatar::class);
     }
 
-    public function activeAvatar()
-    {
+    public function activeAvatar() : HasOne {
         return $this->hasOne(Avatar::class)->where('is_active', true);
+    }
+
+    public function chatbotMessages() : HasMany {
+        return $this->hasMany(ChatbotMessage::class);
     }
 
     /**

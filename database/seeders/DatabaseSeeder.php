@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\ApplicationLanguage;
 use App\Models\User;
-use App\Models\UserPreferences;
-use Database\Factories\UserPreferencesFactory;
+use App\Models\UserPreference;
+use Database\Factories\UserPreferenceFactory;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
 
-        UserPreferences::factory($users->count())->sequence(function (Sequence $sequence) use ($users) {
+        UserPreference::factory($users->count())->sequence(function (Sequence $sequence) use ($users) {
             return [
                 'user_id' => $users[$sequence->index]->id,
             ];
@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
             'is_admin' => false,
         ]);
 
-        UserPreferences::factory()->create([
+        UserPreference::factory()->create([
             'user_id' => $banUser->id,
             'language_id' => ApplicationLanguage::where('code', 'en')->pluck('id')->first(),
         ]);
