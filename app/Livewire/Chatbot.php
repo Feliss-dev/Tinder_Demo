@@ -321,14 +321,26 @@ class Chatbot extends Component
                     new Gemini\Data\VoiceConfig(
                         new Gemini\Data\PrebuiltVoiceConfig(voiceName: 'Kore')
                     ),
-                )
+                ),
             )
         )->generateContent($prompt);
 
         $parts = $response->candidates[0]->content->parts;
 
+        $message = ChatbotMessage::find($messageId);
+
         if (count($parts) == 0) {
-            Log::error("No audio data part.");
+            $message->audios = "[]";
+
+            $this->loadedMessages->push(ChatbotMessage::create([
+                'user_id' => auth()->id(),
+                'message' => "No audio generated, something went wrong.",
+                'images' => null,
+                'audios' => null,
+                'sender' => 'bot',
+                'bot_type' => 'conversation',
+            ]));
+            $this->loadAmount++;
         } else {
             $pcmData = base64_decode($response->candidates[0]->content->parts[0]->inlineData->data);
 
@@ -349,10 +361,10 @@ class Chatbot extends Component
             $path = 'chatbot/' . auth()->id() . '/' . date('YmdHis', time()) . '.wav';
             Storage::disk('public')->put($path, $wavContent);
 
-            $message = ChatbotMessage::find($messageId);
             $message->audios = json_encode([ $path ]);
-            $message->save();
         }
+
+        $message->save();
     }
 
     public function render()

@@ -21,7 +21,7 @@
         <div class="flex flex-col justify-center items-center h-full">
             <p class="text-center">{{$error}}</p>
             <button wire:click="fetchRecommendations" class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-                {{__('recommendation.error.retry')}}
+                {{__('Retry')}}
             </button>
         </div>
     @else

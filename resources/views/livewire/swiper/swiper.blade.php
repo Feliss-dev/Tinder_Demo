@@ -25,7 +25,7 @@
                     </div>
 
                     <div class="w-full">
-                        <label for="gender" class="block text-sm font-semibold text-gray-600">{{__('swiper.filter.gender')}}</label>
+                        <label for="gender" class="block text-sm font-semibold text-gray-600">{{__('Gender')}}</label>
                         <select id="gender" wire:model="gender"
                             class="w-full mt-1 p-3 rounded-lg border focus:ring-2 focus:ring-pink-400 focus:outline-none">
                             <option value="">Any</option>

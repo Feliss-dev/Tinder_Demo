@@ -71,7 +71,7 @@
             }
         @endphp
         <div class="mb-2 relative">
-            <p>Replying to <strong>{{ $who }}</strong>:</p>
+            <p>{{__('input_field.replying_to')}} <strong>{{ $who }}</strong>:</p>
             <p>{{$content}}</p>
 
             <button type="button" class="w-6 h-6 p-1 rounded-full absolute top-0 right-0 bg-white hover:bg-gray-200 active:bg-gray-300" wire:click="closeReplyingMessage">
@@ -95,7 +95,7 @@
         </label>
 
         <input x-model="body" type="text" autocomplete="off" autofocus
-               placeholder="Write your message here" maxlength="1700"
+               placeholder="{{__('input_field.write_here')}}" maxlength="1700"
                class="flex-auto bg-gray-100 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none placeholder-gray-500">
 
         <button type="submit" x-bind:disabled="!body?.trim() && uploadingImages.length == 0"

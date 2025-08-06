@@ -52,7 +52,7 @@
                         <tr>
                             <td class="text-center">{{$infos['shared_interests']}}</td>
                             <td class="text-center">{{$infos['shared_languages']}}</td>
-                            <td class="text-center">{{$infos['same_goal'] ? __('recommendation.modal.same_goal.yes') : __('recommendation.modal.same_goal.no')}}</td>
+                            <td class="text-center">{{$infos['same_goal'] ? __('Yes') : __('No')}}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -1,16 +1,16 @@
 <div {{ $attributes }}>
     <div class="flex flex-row">
-        <strong>{{__('view_my_details.profile.email')}}:</strong>
+        <strong>{{__('Email')}}:</strong>
         <p class="ml-2">{{$user->email}}</p>
     </div>
 
     <div class="flex flex-row">
-        <strong>{{__('view_my_details.profile.birthdate')}}:</strong>
+        <strong>{{__('Birthdate')}}:</strong>
         <p class="ml-2">{{$user->birth_date}}</p>
     </div>
 
     <div class="flex flex-row">
-        <strong class="mr-2">{{__('view_my_details.profile.gender')}}:</strong>
+        <strong class="mr-2">{{__('Gender')}}:</strong>
 
         @if ($user->genders->isNotEmpty())
             <div class="flex flex-wrap gap-2">
@@ -25,11 +25,11 @@
         @endif
     </div>
 
-    <strong>{{__('view_my_details.profile.bio')}}:</strong>
+    <strong>{{__('Bio')}}:</strong>
     <p>{{$user->bio}}</p>
 
     <div class="flex flex-row">
-        <strong class="mr-2">{{__('view_my_details.profile.interests')}}:</strong>
+        <strong class="mr-2">{{__('Interests')}}:</strong>
 
         @if ($user->interests->isNotEmpty())
             <div class="flex flex-wrap gap-2">

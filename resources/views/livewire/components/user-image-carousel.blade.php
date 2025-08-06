@@ -127,11 +127,11 @@
 
                     <div class="flex flex-row-reverse gap-4 mt-4">
                         <button type="button" class="px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition duration-300" @click="deleteImage()">
-                            {{__('view_my_details.images.delete.action.delete')}}
+                            {{__('Delete')}}
                         </button>
 
                         <button type="button" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition duration-300" @click="impendingDeleteImageIndex = -1">
-                            {{__('view_my_details.images.delete.action.cancel')}}
+                            {{__('Cancel')}}
                         </button>
                     </div>
                 </x-slot>

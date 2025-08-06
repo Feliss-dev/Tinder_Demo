@@ -54,7 +54,7 @@
                 </li>
                 <li class="items-center text-gray-6000 text-lg">
                     <p class="mb-2 mr-4">
-                        <strong>Gender:</strong>
+                        <strong>{{__('Gender')}}:</strong>
                         @if ($user->genders->isNotEmpty())
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($user->genders as $gender)
@@ -67,7 +67,7 @@
                     </p>
                 </li>
                 <li class="items-center text-gray-6000 text-lg">
-                    <p class="mb-2 mr-4"><strong>Interests:</strong>
+                    <p class="mb-2 mr-4"><strong>{{__('Interests')}}:</strong>
                     @if ($user->interests->isNotEmpty())
                         <div class="flex flex-wrap gap-2">
                             @foreach ($user->interests as $interest)

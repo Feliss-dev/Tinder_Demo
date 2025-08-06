@@ -16,7 +16,7 @@
         <header class="flex flex-row max-w-full overflow-x-auto overflow-y-hidden whitespace-nowrap px-4 gap-5 items-center webkit-small-scrollbar flex-grow-0 flex-shrink-0 basis-auto">
             <button @click="tab = 'matches'" :class="tab === 'matches' ? 'border-b-2 border-red-500' : ''"
                     class="font-bold text-sm px-2 py-3 flex-auto">
-                {{__('sidebar.tabs.matches')}}
+                {{__('Matches')}}
 
                 @if ($matches->count() > 0)
                     <span class="rounded-full text-xs p-1 px-2 font-bold text-white bg-tinder">
@@ -27,7 +27,7 @@
 
             <button @click="tab = 'messages'" :class="tab === 'messages' ? 'border-b-2 border-red-500' : ''"
                     class="font-bold text-sm px-2 py-3 flex-auto">
-                {{__('sidebar.tabs.messages')}}
+                {{__('Messages')}}
 
                 @php
                     $unreadMessageCount = auth()->user()->unReadMessagesCount()
@@ -42,7 +42,7 @@
 
             <button @click="tab = 'recommend'" :class="tab === 'recommend' ? 'border-b-2 border-red-500' : ''"
                     class="font-bold text-sm px-2 py-3 flex-auto">
-                {{__('sidebar.tabs.recommends')}}
+                {{__('Recommends')}}
             </button>
         </header>
 

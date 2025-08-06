@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <p class="text-3xl font-bold text-center mt-4">{{__('view_my_details.profile')}}</p>
+    <p class="text-3xl font-bold text-center mt-4">{{__('Profile')}}</p>
 
     <div class="flex flex-row w-full px-16 gap-8 my-4">
         <x-user-information-panel class="flex flex-col flex-1 gap-3 bg-white shadow-lg p-4 rounded-lg" :user="$user"/>

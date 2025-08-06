@@ -58,7 +58,7 @@
 
                             <x-slot name="content" class="w-48">
                                 <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-red-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">
-                                    Report
+                                    {{__('Report')}}
                                 </button>
                             </x-slot>
                         </x-dropdown>
@@ -167,14 +167,14 @@
 
                     <div x-cloak x-show="messageDelete.openModal" class="fixed inset-0 flex items-center justify-center z-50">
                         <div class="bg-black bg-opacity-65 w-full h-full flex justify-center items-center" x-on:click.self="messageDelete.openModal = false">
-                            <div class="bg-gray-700 p-8 rounded-xl">
-                                <h1 class="text-white font-bold text-xl">Delete Message</h1>
+                            <div class="bg-white p-8 rounded-xl shadow-sm">
+                                <h1 class="text-black font-bold text-xl">{{__('delete_message.title')}}</h1>
 
-                                <p class="text-white mt-4">Are you sure you want to delete this message? This action cannot be reverted on normal circumstance.</p>
+                                <p class="text-black mt-4">{{__('delete_message.body')}}</p>
 
                                 <div class="flex justify-end gap-6 mt-4">
-                                    <button class="bg-red-500 hover:bg-red-600 active:bg-red-700 rounded-md px-6 py-2 text-white" @click="messageDelete.openModal = false" wire:click="deleteMessage(`${messageDelete.id}`)">Delete</button>
-                                    <button class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 rounded-md px-6 py-2 text-black" @click="messageDelete.openModal = false">Cancel</button>
+                                    <button class="bg-red-500 hover:bg-red-600 active:bg-red-700 rounded-md px-6 py-2 text-white" @click="messageDelete.openModal = false" wire:click="deleteMessage(`${messageDelete.id}`)">{{__('Delete')}}</button>
+                                    <button class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 rounded-md px-6 py-2 text-white" @click="messageDelete.openModal = false">{{__('Cancel')}}</button>
                                 </div>
                             </div>
                         </div>
@@ -205,27 +205,27 @@
 
                     <div x-cloak x-show="messageReport.id > 0" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-65">
                         <section class="bg-white p-8 rounded-xl" x-data="{ reasons: [], extra: '' }">
-                            <h1 class="font-bold text-xl">Report Message</h1>
+                            <h1 class="font-bold text-xl">{{__('report_message.title')}}</h1>
 
-                            <p class="mt-4">Let us know any suspicious behaviour here.</p>
-                            <p>We will not let the person know who report them. Do not hesitate to call local emergency service if needed.</p>
+                            <p class="mt-4">{{__('report_message.body_text_1')}}</p>
+                            <p>{{__('report_message.body_text_2')}}</p>
 
                             <form class="mt-3">
                                 @csrf
                                 @foreach(\App\Models\MessageReportReason::all() as $reason)
                                     <div class="flex items-center mb-4">
                                         <input id="checkbox-reason-{{$reason->id}}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500" value="{{$reason->id}}" x-model="reasons">
-                                        <label for="checkbox-reason-{{$reason->id}}" class="ms-2 text-black">{{$reason->desc}}</label>
+                                        <label for="checkbox-reason-{{$reason->id}}" class="ms-2 text-black">{{__($reason->desc)}}</label>
                                     </div>
                                 @endforeach
 
-                                <p>Extra information for us (255 characters maximum):</p>
+                                <p>{{__('report_message.extra')}}</p>
                                 <textarea name="Extra" class="w-full h-20 resize-none" x-model="extra"></textarea>
                             </form>
 
                             <div class="flex justify-end gap-4 mt-4">
-                                <button class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50 rounded-md px-6 py-2 text-white" @click="messageReport.id = -1;" wire:click="reportMessage(`${messageReport.id}`, `${reasons}`, `${extra}`)" x-bind:disabled="reasons.length == 0" x-bind:class="{'cursor-not-allowed': reasons.length == 0}">Report</button>
-                                <button class="bg-red-500 hover:bg-red-600 active:bg-red-700 rounded-md px-6 py-2 text-white" @click="messageReport.id = -1">Cancel</button>
+                                <button class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50 rounded-md px-6 py-2 text-white" @click="messageReport.id = -1;" wire:click="reportMessage(`${messageReport.id}`, `${reasons}`, `${extra}`)" x-bind:disabled="reasons.length == 0" x-bind:class="{'cursor-not-allowed': reasons.length == 0}">{{__('Report')}}</button>
+                                <button class="bg-red-500 hover:bg-red-600 active:bg-red-700 rounded-md px-6 py-2 text-white" @click="messageReport.id = -1">{{__('Cancel')}}</button>
                             </div>
                         </section>
                     </div>

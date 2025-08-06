@@ -10,6 +10,8 @@
             <button class="admin-sidebar-tab-btn w-full" :class="selectedTab === 'language' ? 'bg-gray-200' : ''" @click="selectedTab = 'language'">
                 {{__('settings.tabs.appsettings.languages')}}
             </button>
+
+            <hr class="h-[1px] bg-gray-400 my-2"/>
         </section>
 
         <section class="col-span-3">
