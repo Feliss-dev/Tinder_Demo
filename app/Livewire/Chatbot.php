@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\ChatbotMessage;
 use Gemini;
+use GuzzleHttp\Psr7\MimeType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -13,6 +14,7 @@ use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\Wireable;
 use Livewire\WithFileUploads;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 enum BotType : string {
     case Auto = 'auto';
@@ -71,7 +73,7 @@ class Chatbot extends Component
         $this->loadedMessages->push(ChatbotMessage::create([
             'user_id' => auth()->id(),
             'message' => $this->userMessage,
-            'images' => '[' . $imageLocation . ']',
+            'images' => json_encode([$imageLocation]),
             'audios' => null,
             'sender' => 'user',
         ]));
@@ -224,8 +226,9 @@ class Chatbot extends Component
             foreach (json_decode($message->images) as $imageLocation) {
                 $content = Storage::disk('public')->get($imageLocation);
 
+                // TODO: Probably should get mime type from content.
                 $payload[] = new Gemini\Data\Blob(
-                    mimeType: Gemini\Enums\MimeType::from(File::mimeType($imageLocation)),
+                    mimeType: Gemini\Enums\MimeType::from(MimeType::fromFilename($imageLocation)),
                     data: base64_encode($content),
                 );
             }
